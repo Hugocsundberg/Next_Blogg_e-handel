@@ -1,11 +1,11 @@
 import styled from 'styled-components'
-import { blurPx, blurColor, margin, lineWidth, optionDivPadding, imageHeight, marginLogo, lineHeightLogo } from '../../styles/styleVariables'
+import { blurPx, blurColor, margin, lineWidth, imageHeight, rem } from '../../styles/globalStyleVariables'
+import { optionDivPadding, marginLogo, lineHeightLogo    } from './styleVariables'
 import { getOptionsHeight, getBottomNavHeight } from './functions'
  
 export const BlurDiv = styled.div`
     transform: translate(0, ${props=>props.isExpanded ? getOptionsHeight : 0}px);
     background: ${blurColor};
-    background: rgba(255, 255, 255, 0.78);
     width: 100%;
     backdrop-filter: blur(${blurPx}px);
     position: fixed;
@@ -13,6 +13,7 @@ export const BlurDiv = styled.div`
     top: -${getOptionsHeight}px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
     transition: .3s;
+    transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955)
 `
 
 export const OptionDiv = styled.button`
@@ -49,15 +50,15 @@ export const BottomContainer = styled.div`
     align-items: center;
 `
 
-export const Hamburger = styled.button`
-    height: ${imageHeight}rem;
+export const HamburgerContainer = styled.button`
+    height: 48px;
     width: 2rem;
     position: relative;
     appearance: none;
     border: none;
     background: none;
     --webkit-appearance: none;
-    margin-left: ${margin}rem;
+    margin-left: 0.8rem;
 `
 
 export const Logo = styled.p`

@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
-import { BlurDiv, OptionText, BottomContainer, Cart, Hamburger, ImageDiv, Logo, OptionDiv, Spacer } from './elements'
+import { BlurDiv, OptionText, BottomContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer } from './elements'
 import { Options } from './config'
+import { rem } from '../../styles/globalStyleVariables'
+import { Spiral as Hamburger } from 'hamburger-react'
+
 
 const Post = () => {
     const [ isExpanded, setIsExpanded ] = useState(false)
-    const burgerHandler = () => {
-        setIsExpanded(!isExpanded)
-    }
-
-    useEffect(()=>{
-        console.log(isExpanded)
-    }, [isExpanded])
+    // const burgerHandler = ():void => {
+    //     setIsExpanded(!isExpanded)
+    // }
 
     return (
         <>
@@ -33,14 +32,13 @@ const Post = () => {
             </OptionDiv>
             ))}
             <BottomContainer>
-                <Hamburger onClick={burgerHandler}>
-                    <Image
-                        src="/hamburger.svg"
-                        alt="hamburger"
-                        layout="fill"
-                        objectFit="contain"
+                <HamburgerContainer>
+                    <Hamburger
+                    size={rem * 1.8}    
+                    toggled={isExpanded} 
+                    toggle={setIsExpanded}
                     />
-                </Hamburger>
+                </HamburgerContainer>
                 <Logo>Marina Sundberg</Logo>
                 <Cart>
                     <Image

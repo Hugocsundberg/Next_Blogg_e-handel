@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { darkGray, margin } from '../../styles/styleVariables'
+import { darkGray, margin } from '../../styles/globalStyleVariables'
 
 const BackgroundContainer = styled.h1`
     color: ${darkGray};

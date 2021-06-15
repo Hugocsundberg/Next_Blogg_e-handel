@@ -5,6 +5,3 @@ export const blurColor:string = 'rgba(255, 255, 255, 0.78)'
 export const margin:number = 1.5
 export const lineWidth:number = 1
 export const imageHeight:number = 1.7
-export const optionDivPadding:number = margin / 1.5
-export const lineHeightLogo:number = 2;
-export const marginLogo:number = 0.7;
