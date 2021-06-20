@@ -31,21 +31,21 @@ text-align: center;
 color: ${darkGray}
 `
 
-const Post = () => {
+const Post = ({ title, excerpt, imageRef, date }) => {
     return (
         <CardBackground>
             <HorisontalFlexDiv>
-                <Header>Hello</Header>
-                <Date>Date</Date>
+                <Header>{title}</Header>
+                <Date>{date}</Date>
             </HorisontalFlexDiv>
             <Image
-                src="/img.jpeg"
+                src={imageRef || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/2560px-Image_created_with_a_mobile_phone.png'}
                 alt="image"
                 width={500}
                 height={500}
                 layout="responsive"
             />
-            <Excerpt>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe unde quam sint id consequuntur quidem ad ea reiciendis facilis quis! Quisquam aliquam repellendus labore ab eveniet eaque laborum reprehenderit cupiditate.</Excerpt>
+            <Excerpt>{excerpt}</Excerpt>
         </CardBackground>
     );
 }

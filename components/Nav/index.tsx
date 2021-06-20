@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { BlurDiv, OptionText, BottomContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer } from './elements'
 import { Options } from './config'
 import { rem } from '../../styles/globalStyleVariables'
+import { GetStaticProps } from 'next';
 import { Spiral as Hamburger } from 'hamburger-react'
 
 
@@ -37,6 +38,8 @@ const Post = () => {
                     size={rem * 1.8}    
                     toggled={isExpanded} 
                     toggle={setIsExpanded}
+                    easing="cubic-bezier(0.165, 0.84, 0.44, 1)"
+                    duration={0.6}
                     />
                 </HamburgerContainer>
                 <Logo>Marina Sundberg</Logo>
@@ -53,5 +56,12 @@ const Post = () => {
         </>
     );
 }
+
+export async function getStaticProps(context) {
+
+    return {
+      props: {}, // will be passed to the page component as props
+    }
+  } 
 
 export default Post;

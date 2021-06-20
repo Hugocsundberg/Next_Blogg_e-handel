@@ -12,8 +12,8 @@ export const BlurDiv = styled.div`
     z-index: 10;
     top: -${getOptionsHeight}px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
-    transition: .3s;
-    transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955)
+    transition: 0.6s;
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1)
 `
 
 export const OptionDiv = styled.button`
