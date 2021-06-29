@@ -2,10 +2,9 @@
 import styled from 'styled-components'
 import { darkGray, margin } from '../../styles/globalStyleVariables'
 
-const Header = styled.h1`
-    /* color: ${darkGray}; */
-    color: ${props=>props.banan ? 'yellow' : 'blue'};
-    font-weight: bold;
+const Paragraph = styled.p`
+    color: ${darkGray};
+    font-weight: normal;
     font-size: 2.3rem;
     display: flex;
     justify-content: start;
@@ -14,4 +13,4 @@ const Header = styled.h1`
     align-items: center;
 `
 
-export default Header
+export default Paragraph

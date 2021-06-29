@@ -2,14 +2,15 @@ import Head from 'next/head'
 import client from '../client'
 import { GetStaticProps } from 'next'
 import { useEffect } from 'react'
-import Post from '../components/post'
+import Post from '../components/Post'
 import Header from '../components/elements/Header'
 import Nav from '../components/Nav'
 import { post } from '../generalTypes'
 import { title } from 'process'
+// @ts-ignore
 import BlockContent from '@sanity/block-content-to-react'
 
-export default function Home({ posts }) {
+export default function Home({ posts }: {posts: string}) {
   useEffect(() => {
     document.body.style.background="#F7F7F7"
   }, []);
@@ -39,7 +40,7 @@ export const getStaticProps:GetStaticProps = async (context) => {
     let data
     const query = '*[_type == "post"]{ "created": _createdAt, excerpt, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url}'
     await client.fetch(query)
-    .then(posts => data = posts)
+    .then((posts: Array<post>) => data = posts)
     const postsJson = JSON.stringify(data)
 
   return {

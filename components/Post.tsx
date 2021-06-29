@@ -1,4 +1,5 @@
 import React from 'react';
+//@ts-ignore
 import styled from 'styled-components'
 import Image from 'next/image'
 import { darkGray, margin } from '../styles/globalStyleVariables'

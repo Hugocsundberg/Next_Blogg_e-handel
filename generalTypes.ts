@@ -1,8 +1,12 @@
 export interface post {
 created: string,
 excerpt: string,
-imageUrl: string
+imageUrl?: string,
+imageAspectRatio?: number,
+imageHeight?: number,
+imageWidth?: number
+body: Array<any>
+alt?: string,
 slug: string,
 title: string,
-undefined?: boolean
 }

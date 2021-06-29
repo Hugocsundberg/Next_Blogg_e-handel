@@ -1,38 +1,66 @@
 import { useRouter } from 'next/router'
 import client from '../../client'
 import { post } from '../../generalTypes'
+// @ts-ignore
+import PortableText from '@sanity/block-content-to-react'
+import imageUrlBuilder from '@sanity/image-url'
+import ContentContainer from './elements/ContentContainer'
+import Image from 'next/image'
 
-const Post = ({ post }) => {
-  const router = useRouter()
-  const { slug } = router.query
-  let _post:post
-  if(post) {
-    _post = JSON.parse(post) 
-  }
-  if (router.isFallback) {
-    return <div>Loading...</div>
-  } else if(_post.undefined) {
-    return <h1>404</h1>
-  }
-  return (
-    <>
-    <p>Post: {slug}</p>
-    <h1>{_post.title}</h1>
-    <h1>hello</h1>
-    </>
-  )
+const builder = imageUrlBuilder(client)
+
+const urlFor = (source: string) => {
+  return builder.image(source)
 }
 
-export async function getStaticProps({ params }) {
+const Post = ({ post }: {post: string}) => {
+  const router = useRouter()
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
+  const _post: any = JSON.parse(post)
+
+  const serializers = {
+    types: {
+      image: (props:any) => (
+        <Image
+          src={urlFor(props.node.asset).url()}
+          alt="image"
+          width={500}
+          height={500}
+          layout="responsive"
+        />
+      )
+    }
+  }
+  
+  if(_post.title) {
+    return (
+      <ContentContainer>
+        <PortableText
+          blocks={(_post as post).body}
+          serializers={serializers}
+          projectId="9r33i0al"
+          dataset="production"
+        />
+      </ContentContainer>
+    )
+  }
+  else {
+    return <h1>404</h1>
+  }
+  
+}
+
+export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
-  console.log(params)
-  const query = `*[slug.current == "${slug}"]{"created": _createdAt, excerpt, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url}`
+  const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
   let data
   await client.fetch(query)
-  .then(posts => data = posts[0])
-   let postJson
+  .then((posts: Array<post>) => data = posts[0])
+  console.log(data)
+   let postJson: string
    data ? postJson = JSON.stringify(data) : postJson = '{"undefined":"true"}'
-   console.log(postJson)
 
   return {
     props: {
@@ -44,12 +72,12 @@ export async function getStaticProps({ params }) {
 
 export async function getStaticPaths() {
   const query = `*[_type == "post"]{"slug": slug.current}[0...50]`
-  let data
+  let data:any
   await client.fetch(query)
-  .then(posts => data = posts)
+  .then((posts: Array<post>) => data = posts)
   
   return {
-    paths: data.map(post=> {
+    paths: data.map((post:any)=> {
       return {params: {slug: post.slug}}
     })
     ,
