@@ -4,7 +4,7 @@ import { darkGray, margin } from '../../styles/globalStyleVariables'
 
 const Header = styled.h1`
     /* color: ${darkGray}; */
-    color: ${props=>props.banan ? 'yellow' : 'blue'};
+    color: ${darkGray};
     font-weight: bold;
     font-size: 2.3rem;
     display: flex;

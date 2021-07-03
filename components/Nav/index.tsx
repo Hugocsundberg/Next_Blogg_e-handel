@@ -1,36 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { BlurDiv, OptionText, BottomContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer } from './elements'
-import { Options } from './config'
+import { Options, Option } from './config'
 import { rem } from '../../styles/globalStyleVariables'
 import { GetStaticProps } from 'next';
 import { Spiral as Hamburger } from 'hamburger-react'
+import Link from 'next/link'
 
 
 const Post = () => {
     const [ isExpanded, setIsExpanded ] = useState(false)
-    // const burgerHandler = ():void => {
-    //     setIsExpanded(!isExpanded)
-    // }
 
     return (
         <>
         <Spacer/>
         <BlurDiv isExpanded={isExpanded}>
-            {Options.map((option, key)=>(
-                <OptionDiv key={key}>
-                <ImageDiv>
-                    <Image
-                        src={option.image}
-                        alt={option.text}
-                        layout="fill"
-                        objectFit="contain"
-                    />
-                </ImageDiv>
-                <OptionText>
-                    {option.text}
-                </OptionText>
-            </OptionDiv>
+            {Options.map((option:Option, key:any)=>(
+                <Link href={option.link}>
+                    <OptionDiv key={key}>
+                        <ImageDiv>
+                            <Image
+                                src={option.image}
+                                alt={option.text}
+                                layout="fill"
+                                objectFit="contain"
+                            />
+                        </ImageDiv>
+                        <OptionText>
+                            {option.text}
+                        </OptionText>
+                    </OptionDiv>
+                </Link>
             ))}
             <BottomContainer>
                 <HamburgerContainer>
@@ -42,7 +42,10 @@ const Post = () => {
                     duration={0.6}
                     />
                 </HamburgerContainer>
-                <Logo>Marina Sundberg</Logo>
+                
+                <Link href="/">
+                    <Logo>Marina Sundberg</Logo>
+                </Link>
                 <Cart>
                     <Image
                         src="/cart.svg"
@@ -57,7 +60,7 @@ const Post = () => {
     );
 }
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
 
     return {
       props: {}, // will be passed to the page component as props

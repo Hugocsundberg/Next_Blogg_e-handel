@@ -32,18 +32,19 @@ text-align: center;
 color: ${darkGray}
 `
 
-const Post = ({ title, excerpt, imageRef, date }) => {
+const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth }: {title:string, excerpt:string, imageRef:string, date: string, imageHeight:number, imageWidth: number}) => {
     return (
+
         <CardBackground>
             <HorisontalFlexDiv>
                 <Header>{title}</Header>
                 <Date>{date}</Date>
             </HorisontalFlexDiv>
             <Image
-                src={imageRef || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/2560px-Image_created_with_a_mobile_phone.png'}
+                src={imageRef || '/noImage.jpeg'}
                 alt="image"
-                width={500}
-                height={500}
+                width={imageWidth || 500}
+                height={imageHeight|| 500}
                 layout="responsive"
             />
             <Excerpt>{excerpt}</Excerpt>

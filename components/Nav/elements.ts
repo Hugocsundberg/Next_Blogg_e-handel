@@ -1,10 +1,11 @@
 import styled from 'styled-components'
-import { blurPx, blurColor, margin, lineWidth, imageHeight, rem } from '../../styles/globalStyleVariables'
-import { optionDivPadding, marginLogo, lineHeightLogo    } from './styleVariables'
+import { blurPx, blurColor, margin, lineWidth, imageHeight, darken, lighten} from '../../styles/globalStyleVariables'
+import { optionDivPadding, marginLogo, lineHeightLogo} from './styleVariables'
 import { getOptionsHeight, getBottomNavHeight } from './functions'
+import {  } from 'styled-components'
  
-export const BlurDiv = styled.div`
-    transform: translate(0, ${props=>props.isExpanded ? getOptionsHeight : 0}px);
+export const BlurDiv = styled.div<{isExpanded: boolean}>`
+    transform: translate(0, ${props =>props.isExpanded ? getOptionsHeight : 0}px);
     background: ${blurColor};
     width: 100%;
     backdrop-filter: blur(${blurPx}px);
@@ -13,7 +14,7 @@ export const BlurDiv = styled.div`
     top: -${getOptionsHeight}px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
     transition: 0.6s;
-    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1)
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
 `
 
 export const OptionDiv = styled.button`
@@ -25,9 +26,18 @@ export const OptionDiv = styled.button`
     border-bottom-width: ${lineWidth}px;
     border-bottom-style: solid;
     display: flex;
+    cursor: pointer;
     justify-content: start;
     align-items: center;
     padding: ${optionDivPadding}rem ${margin}rem;
+    transition: 0.6s;
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    &:hover{
+        background-color: ${darken};
+    }
+    &:active{
+        background-color: ${lighten};
+    }
 `
 
 export const ImageDiv = styled.div`
@@ -63,6 +73,7 @@ export const HamburgerContainer = styled.button`
 
 export const Logo = styled.p`
     font-size: 1.5rem;
+    cursor: pointer;
     width: 7rem;
     text-align: center;
     margin: ${marginLogo}rem;

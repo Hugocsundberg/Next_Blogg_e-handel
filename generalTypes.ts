@@ -1,4 +1,4 @@
-export interface post {
+export interface PostType {
 created: string,
 excerpt: string,
 imageUrl?: string,
