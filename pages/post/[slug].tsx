@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router'
 import client from '../../client'
-import { PostType } from '../../generalTypes'
+import { Post as PostType } from '../../generalTypes'
 // @ts-ignore
 import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
-import ContentContainer from './elements/ContentContainer'
+import { ContentContainer } from './elements'
 import Image from 'next/image'
-import FlexCenterCenter from '../../components/elements/FlexCenterCenter'
-import Paragraph from './elements/Paragraph'
+import FlexCenterCenter from '../../components/GlobalElements/FlexCenterCenter'
+import { Paragraph } from './elements'
 
 const builder = imageUrlBuilder(client)
 
@@ -24,7 +24,7 @@ const Post = ({ post }: {post: string}) => {
       </FlexCenterCenter>
     )
   }
-  const _post: any = JSON.parse(post)
+  const _post: PostType = JSON.parse(post)
 
   const serializers = {
     types: {
@@ -83,12 +83,12 @@ export async function getStaticProps({ params }: {params: any}) {
 
 export async function getStaticPaths() {
   const query = `*[_type == "post"]{"slug": slug.current}[0...50]`
-  let data:any
+  let data:Array<PostType> = []
   await client.fetch(query)
   .then((posts: Array<PostType>) => data = posts)
   
   return {
-    paths: data.map((post:any)=> {
+    paths: data.map((post:PostType)=> {
       return {params: {slug: post.slug}}
     })
     ,

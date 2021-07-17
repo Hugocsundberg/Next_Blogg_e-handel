@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { BlurDiv, OptionText, BottomContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer } from './elements'
-import { Options, Option } from './config'
+import { getOptions, Option } from './config'
 import { rem } from '../../styles/globalStyleVariables'
 import { GetStaticProps } from 'next';
 import { Spiral as Hamburger } from 'hamburger-react'
 import Link from 'next/link'
+import { AboutMe } from '../../generalTypes';
+import { getOptionsHeight } from './functions';
 
 
-const Post = () => {
+const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
     const [ isExpanded, setIsExpanded ] = useState(false)
-
     return (
         <>
         <Spacer/>
-        <BlurDiv isExpanded={isExpanded}>
-            {Options.map((option:Option, key:any)=>(
-                <Link href={option.link}>
-                    <OptionDiv key={key}>
+        <BlurDiv isExpanded={isExpanded} optionsHeight={getOptionsHeight(aboutMe)}>
+            {getOptions(aboutMe).map((option:Option, key:any)=>(
+                <Link href={option.link} key={key}>
+                    <OptionDiv >   
                         <ImageDiv>
                             <Image
                                 src={option.image}
@@ -43,7 +44,7 @@ const Post = () => {
                     />
                 </HamburgerContainer>
                 
-                <Link href="/">
+                <Link href="/" scroll={false}>
                     <Logo>Marina Sundberg</Logo>
                 </Link>
                 <Cart>

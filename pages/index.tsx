@@ -3,28 +3,49 @@ import client from '../client'
 import { GetStaticProps } from 'next'
 import { useEffect } from 'react'
 import PostComponent from '../components/Post'
-import Header from '../components/elements/Header'
+import Header from '../components/GlobalElements/Header'
 import Nav from '../components/Nav'
-import { PostType } from '../generalTypes'
-import { title } from 'process'
-// @ts-ignore
-import BlockContent from '@sanity/block-content-to-react'
-import { imageHeight } from '../styles/globalStyleVariables'
+import { AboutMe, Post as PostType, ScrollEvent } from '../generalTypes'
+import { ScrollPositionObjectType } from '../generalTypes'
 
-export default function Home({ posts }: {posts: string}) {
+export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string}) {
+  const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
+  const _posts:Array<PostType> = JSON.parse(posts)
   useEffect(() => {
+    //Scroll to last position or top
+    window.scrollTo(0, parseInt(window.sessionStorage.getItem('scrollPosition') || '0'))
+    
+    //Set background color to light gray
     document.body.style.background="#F7F7F7"
+
+    const handleScroll = (e: Event) => {
+      //Get scrollData JSON
+      let scrollPositionObject:ScrollPositionObjectType = JSON.parse(window.sessionStorage.getItem('scrollPosition') || '{}') 
+      //Set current page scroll position
+      scrollPositionObject['./'] = window.pageYOffset
+      //Check if page is correct
+      const URLstring:string = (e as ScrollEvent).path[0].URL
+      const regex = new RegExp('(?<!\/)\/[^\/].*')
+      if(!URLstring.match(regex))
+      //Update Sessionstorage
+      window.sessionStorage.setItem('scrollPosition', JSON.stringify(scrollPositionObject))
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      document.body.style.background="#FFF"
+    }
   }, []);
 
-  const _Posts:Array<PostType> = JSON.parse(posts)
 
   return (
     <>
+    <Nav aboutMe={_aboutMe}></Nav>
     <Head>
       <title>Blogg</title>
     </Head>
     <Header>BLOGG</Header>
-    { _Posts.map((post, index)=>(
+    { _posts.map((post, index)=>(
       <PostComponent 
       key={index}
       excerpt={post.excerpt} 
@@ -33,20 +54,30 @@ export default function Home({ posts }: {posts: string}) {
       date={post.created}
       imageHeight={post.imageHeight || 1300}
       imageWidth={post.imageWidth || 1950}
+      url={`/post/${post.slug}`}
       />
     ))}
     </>
   )
 }
 
-export const getStaticProps:GetStaticProps = async (context) => {
-    let data
-    const query = '*[_type == "post"]{"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}'
-    await client.fetch(query)
-    .then((posts: Array<PostType>) => data = posts)
-    const postsJson = JSON.stringify(data)
+export const getStaticProps:GetStaticProps = async (context) : Promise<any> => {
+    let postsData
+    const postsQuery = '*[_type == "post"]{"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}'
+    await client.fetch(postsQuery)
+    .then((posts: Array<PostType>) => postsData = posts)
+    const postsJson = JSON.stringify(postsData)
+
+    let settingsData
+    const settingsquery = '*[_type == "settings"]{"Slug": aboutme->slug,"Title": aboutme->title}'
+    await client.fetch(settingsquery)
+    .then((settings: Array<AboutMe>) => settingsData = settings)
+    const settingsJson = JSON.stringify(settingsData)
 
   return {
-    props: {posts: postsJson}, // will be passed to the page component as props
+    props: {
+      posts: postsJson,
+      aboutMe: settingsJson
+    }, // will be passed to the page component as props
   }
 }
