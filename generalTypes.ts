@@ -31,3 +31,18 @@ export interface ScrollEvent extends Event {
         window: Window
     ]
 }
+
+export interface Product {
+    "_createdAt": string
+    "_updatedAt": string
+    "desc"?: string
+    "image": {
+        "_type": string
+        "asset":{
+            "_ref": string
+            "_type": string
+            }
+    }
+    "price": number
+    "title": string
+    }
