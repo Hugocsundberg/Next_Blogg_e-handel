@@ -32,17 +32,21 @@ export interface ScrollEvent extends Event {
     ]
 }
 
+export interface Image {
+    "_ref": string
+    "_type": string
+}
+
+export type screenSize = 'S' | 'M' | 'L'
+
 export interface Product {
-    "_createdAt": string
-    "_updatedAt": string
-    "desc"?: string
-    "image": {
-        "_type": string
-        "asset":{
-            "_ref": string
-            "_type": string
-            }
-    }
-    "price": number
-    "title": string
+    "_createdAt": string,
+    "_updatedAt": string,
+    "desc"?: string,
+    "image": Image,
+    "price": number,
+    "title": string,
+    "imageHeight": number,
+    "imageWidth": number,
+    "alt"?: string
     }
