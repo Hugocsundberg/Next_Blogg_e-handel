@@ -1,39 +1,9 @@
 import React from 'react';
 //@ts-ignore
-import styled from 'styled-components'
+import { Header, Date, CardBackground, Excerpt, HorisontalFlexDiv } from './elements'
 import Image from 'next/image'
-import { darkGray, margin } from '../styles/globalStyleVariables'
 import { useRouter } from 'next/router'
-import { handleScroll } from '../functions'
-
-const Header = styled.h2`
-color: ${darkGray};
-`
-
-const Date = styled.p`
-color: ${darkGray};
-`
-
-const CardBackground = styled.div`
-background: white;
-width: 100%;
-margin-bottom: 1rem;
-cursor: pointer;
-`
-
-const HorisontalFlexDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding-right: ${margin}rem;
-    padding-left: ${margin}rem;
-`
-
-const Excerpt = styled.p`
-padding: ${margin}rem;
-text-align: center;
-color: ${darkGray}
-`
+import { handleScroll } from '../../functions'
 
 const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: {title:string, excerpt:string, imageRef:string, date: string, imageHeight:number, imageWidth: number, url:string}) => {
     const router = useRouter()
