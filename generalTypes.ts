@@ -37,7 +37,7 @@ export interface Image {
     "_type": string
 }
 
-export type screenSize = 'S' | 'M' | 'L'
+export type cols = 1 | 2 | 3
 
 export interface Product {
     "_createdAt": string,
