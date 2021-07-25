@@ -57,3 +57,9 @@ export interface Product extends Content {
     "alt"?: string,
     "slug": slug
     }
+
+export interface NavOption {
+    "text": string
+    "image": string
+    "link": string
+} 
