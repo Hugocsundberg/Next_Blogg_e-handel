@@ -9,7 +9,6 @@ import Image from 'next/image'
 import FlexCenterCenter from '../../components/GlobalElements/FlexCenterCenter'
 import { Paragraph } from './elements'
 import Nav from '../../components/Nav'
-import { useState, useEffect } from 'react'
 
 const builder = imageUrlBuilder(client)
 

@@ -13,32 +13,38 @@ import { useRouter } from 'next/router'
 
 const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
     
+    const [currentPath, setcurrentPath] = useState('');
     const router = useRouter()
     const _route = router.route.replace('/', '')
     const [ isExpanded, setIsExpanded ] = useState(false)
-    console.log(getOptions(aboutMe, _route))
-    
+    useEffect(()=>{
+        if(process.browser) {
+            let path = window.location.toString().replace(/(?<!\/)\/[^\/].+/, '')
+            path = path.replace(/\/$/, '')
+            setcurrentPath(path)
+        }
+    }, [])
+
     return (
         <>
         <Spacer/>
-        {/* <a href="http://google.se">Hello</a> */}
         <BlurDiv isExpanded={isExpanded} optionsHeight={getOptionsHeight(aboutMe)}>
             {getOptions(aboutMe, _route).map((option:Option, key:any)=>(
-                <Link href={option.link} key={key}>
+                <a href={`${currentPath}${option.link}`}>
                     <OptionDiv >   
-                        <ImageDiv>
-                            <Image
-                                src={option.image}
-                                alt={option.text}
-                                layout="fill"
-                                objectFit="contain"
-                            />
-                        </ImageDiv>
-                        <OptionText>
-                            {option.text}
-                        </OptionText>
-                    </OptionDiv>
-                </Link>
+                            <ImageDiv>
+                                <Image
+                                    src={option.image}
+                                    alt={option.text}
+                                    layout="fill"
+                                    objectFit="contain"
+                                />
+                            </ImageDiv>
+                            <OptionText>
+                                {option.text}
+                            </OptionText>
+                        </OptionDiv>
+                </a>
             ))}
             <BottomContainer>
                 <HamburgerContainer>
