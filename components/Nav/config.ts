@@ -6,16 +6,10 @@ export interface Option {
     link: string
 }
 
-export const getOptions = (aboutMe:(Array<AboutMe>)) => {
-    if(aboutMe[0]) {
-        return [
-            {text: 'Tavlor', image: '/imageicon.svg', link: '/'},
-            {text: 'Om mig', image: '/personIcon.svg', link: `/post/${aboutMe[0].Slug.current}`}
-        ]
-    }
-    else {
-        return [
-            {text: 'Tavlor', image: '/imageicon.svg', link: '/'}
-        ]
-    }
+export const getOptions = (aboutMe:(Array<AboutMe>), slug:string | undefined) => {
+    const optionsArray:Array<any> = []
+    if(aboutMe[0]) optionsArray.push({text: 'Om mig', image: '/personIcon.svg', link: `/post/${aboutMe[0].Slug.current}`})  
+    if(slug !== 'products') optionsArray.push({text: 'Tavlor', image: '/imageicon.svg', link: '/products'},)  
+
+    return optionsArray
 }

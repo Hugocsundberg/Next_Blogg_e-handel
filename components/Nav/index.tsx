@@ -8,15 +8,22 @@ import { Spiral as Hamburger } from 'hamburger-react'
 import Link from 'next/link'
 import { AboutMe } from '../../generalTypes';
 import { getOptionsHeight } from './functions';
+import { useRouter } from 'next/router'
 
 
 const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
+    
+    const router = useRouter()
+    const _route = router.route.replace('/', '')
     const [ isExpanded, setIsExpanded ] = useState(false)
+    console.log(getOptions(aboutMe, _route))
+    
     return (
         <>
         <Spacer/>
+        {/* <a href="http://google.se">Hello</a> */}
         <BlurDiv isExpanded={isExpanded} optionsHeight={getOptionsHeight(aboutMe)}>
-            {getOptions(aboutMe).map((option:Option, key:any)=>(
+            {getOptions(aboutMe, _route).map((option:Option, key:any)=>(
                 <Link href={option.link} key={key}>
                     <OptionDiv >   
                         <ImageDiv>

@@ -1,12 +1,10 @@
 import document from "next/document";
 
-export interface Post {
+export interface Post extends Content {
 created: string,
 excerpt: string,
 imageUrl?: string,
 imageAspectRatio?: number,
-imageHeight?: number,
-imageWidth?: number
 body: Array<any>
 alt?: string,
 slug: string,
@@ -39,14 +37,23 @@ export interface Image {
 
 export type cols = 1 | 2 | 3
 
-export interface Product {
+export interface slug {
+    "_type": string,
+    "current": string
+}
+
+export interface Content {
+    "imageHeight": number,
+    "imageWidth": number,
+}
+
+export interface Product extends Content {
     "_createdAt": string,
     "_updatedAt": string,
     "desc"?: string,
     "image": Image,
     "price": number,
     "title": string,
-    "imageHeight": number,
-    "imageWidth": number,
-    "alt"?: string
+    "alt"?: string,
+    "slug": slug
     }
