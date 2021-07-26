@@ -68,6 +68,7 @@ export interface ImageHW {
     "asset": Image,
     "imageHeight": number,
     "imageWidth": number,
+    "alt"?: string
 }
 
 export interface Product {
