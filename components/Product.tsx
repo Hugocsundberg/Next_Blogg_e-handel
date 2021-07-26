@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/dist/client/image';
 import imageUrlBuilder from '@sanity/image-url'
 import client from '../client'
-import { Image as ImageType } from '../generalTypes'
+import { Image as ImageType, ImageHW } from '../generalTypes'
 import styled from 'styled-components';
 import Link from 'next/link'
 import { margin } from '../styles/globalStyleVariables';
@@ -20,15 +20,15 @@ const urlFor = (source: string) => {
   return builder.image(source)
 }
 
-const Product = ({imageHeight, imageWidth, alt, image, slug}:{imageHeight:number, imageWidth: number, alt:string, image: ImageType, slug:string}) => {
+const Product = ({alt, images, slug}:{alt:string, images: Array<ImageHW>, slug:string}) => {
     return (
         <Link href={`/product/${slug}`}>
             <Border>
                 <Image
-                    src={urlFor(image._ref).url() || '/noImage.jpg'}
+                    src={urlFor(images[0].asset._ref).url() || '/noImage.jpg'}
                     alt={alt}
-                    width={imageWidth}
-                    height={imageHeight}
+                    width={images[0].imageWidth}
+                    height={images[0].imageHeight}
                     layout="responsive"
                 />
             </Border>

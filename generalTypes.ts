@@ -64,10 +64,16 @@ export interface NavOption {
     "link": string
 } 
 
+export interface ImageHW {
+    "asset": Image,
+    "imageHeight": number,
+    "imageWidth": number,
+}
+
 export interface Product {
     "_createdAt": string,
     "_updatedAt": string,
-    "image": Image,
+    "images": Array<ImageHW>
     "price": number,
     "slug": slug,
     "title": string

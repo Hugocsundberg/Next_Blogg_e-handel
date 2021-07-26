@@ -43,7 +43,7 @@ const Products = ({ products, aboutMe }: {products: string, aboutMe: string}) =>
           className="masonry-grid"
           columnClassName="masonry-grid_column">
           {_products.map((product, key)=>(
-            <Product key={key} alt={product.alt || 'no alt text'} image={product.image} imageHeight={product.imageHeight} imageWidth={product.imageWidth} slug={product.slug.current}></Product>
+            <Product key={key} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current}></Product>
           ))}
         </Masonry>
       </>
@@ -51,7 +51,7 @@ const Products = ({ products, aboutMe }: {products: string, aboutMe: string}) =>
   }
 
 export async function getStaticProps({ params }: {params: any}) {
-    const query = `*[_type == "product"]{_createdAt, _updatedAt, slug, "alt":image.alt, "image":image.asset, price, desc, title, "imageHeight": image.asset->metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[0...50]`
+    const query = `*[_type == "product"]{_createdAt, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[0...50]`
     let productsData
     await client.fetch(query)
     .then((products: any) => productsData = products)
