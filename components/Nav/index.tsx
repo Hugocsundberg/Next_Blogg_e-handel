@@ -30,7 +30,7 @@ const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
         <Spacer/>
         <BlurDiv isExpanded={isExpanded} optionsHeight={getOptionsHeight(aboutMe)}>
             {getOptions(aboutMe, _route).map((option:Option, key:any)=>(
-                <a href={`${currentPath}${option.link}`}>
+                <a key={key} href={`${currentPath}${option.link}`}>
                     <OptionDiv >   
                             <ImageDiv>
                                 <Image
