@@ -11,6 +11,9 @@ import Paragraph from '../../components/GlobalElements/Paragraph'
 import styled from 'styled-components'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import { margin } from '../../styles/globalStyleVariables'
+import ArrowNext from '../../components/Arrow'
+import Arrow from '../../components/Arrow'
 
 const builder = imageUrlBuilder(client)
 
@@ -19,8 +22,24 @@ const urlFor = (source: string) => {
 }
 
 const Header  = styled.h1`
-
 `
+
+const P = styled.p`
+`
+
+const ThumbContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 2rem;
+`
+
+const ContentContainer = styled.div`
+  position: relative;
+  width: 100%;
+  padding-left: ${margin}rem;
+  padding-right: ${margin}rem;
+`
+
 
 const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
   console.log(product)
@@ -31,6 +50,24 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
   console.log(_product)
   console.log(`_aboutMe: ${_aboutMe}`)
   const router = useRouter()
+  
+  const renderThumbs = (props:any) => {
+    console.log(props)
+    return _product.images.map((image)=> (
+      <ThumbContainer>
+        <Image
+            src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
+            alt={image.alt || 'no alt text'}
+            // width={image.imageWidth}
+            // height={image.imageHeight}
+            layout={'fill'}
+            objectFit={'cover'}
+        />
+      </ThumbContainer>
+    ))
+  }
+
+  const renderArrowNext = (props:any) => <Arrow right={true}/>
   
   if (router.isFallback) {
     return (
@@ -46,20 +83,24 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     return (
       <>
         <Nav aboutMe={_aboutMe}></Nav>
-        <Header>{_product.title}</Header>
-        <Carousel useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
-                {_product.images.map(image=>(
-                    <>
-                    <Image
-                        src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
-                        alt={image.alt || 'no alt text'}
-                        width={image.imageWidth}
-                        height={image.imageHeight}
-                        layout="responsive"
-                    />
-                    </>
-                ))}
-        </Carousel>
+        <ContentContainer>
+          {/* <ArrowNext right={true}/> */}
+          <Header>{_product.title}</Header>
+          <Carousel renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
+                  {_product.images.map(image=>(
+                      <>
+                      <Image
+                          src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
+                          alt={image.alt || 'no alt text'}
+                          width={image.imageWidth}
+                          height={image.imageHeight}
+                          layout="responsive"
+                      />
+                      </>
+                  ))}
+          </Carousel>
+          <P>{_product.desc}</P>
+        </ContentContainer>
       </>
     )
   }

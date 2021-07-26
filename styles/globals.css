@@ -28,3 +28,19 @@ a {
   padding-left: 1.5rem; /* gutter size */
   background-clip: padding-box;
 }
+
+.carousel-root .carousel .thumbs-wrapper {
+  margin: 0;
+}
+.carousel-root .carousel .thumbs-wrapper .thumbs.animated {
+  padding: 0;
+}
+
+.thumb.selected {
+  padding: 0;
+}
+
+.carousel-status {
+  margin-right: 10px;
+  text-shadow: 0 0 8px black !important;
+}
