@@ -69,7 +69,7 @@ export const getStaticProps:GetStaticProps = async (context) : Promise<any> => {
     const postsJson = JSON.stringify(postsData)
 
     let settingsData
-    const settingsquery = '*[_type == "settings"]{"Slug": aboutme->slug,"Title": aboutme->title}'
+    const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
     await client.fetch(settingsquery)
     .then((settings: Array<AboutMe>) => settingsData = settings)
     const settingsJson = JSON.stringify(settingsData)

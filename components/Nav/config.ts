@@ -8,7 +8,7 @@ export interface Option {
 
 export const getOptions = (aboutMe:(Array<AboutMe>), slug:string | undefined) : Array<NavOption> => {
     const optionsArray:Array<NavOption> = []
-    if(aboutMe[0]) optionsArray.push({text: 'Om mig', image: '/personIcon.svg', link: `/post/${aboutMe[0].Slug.current}`})  
+    if(aboutMe[0]) optionsArray.push({text: 'Om mig', image: '/personIcon.svg', link: `/post/${aboutMe[0].slug.current}`})  
     if(slug !== 'products') optionsArray.push({text: 'Tavlor', image: '/imageicon.svg', link: '/products'},)  
 
     return optionsArray

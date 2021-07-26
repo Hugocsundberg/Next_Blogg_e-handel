@@ -16,8 +16,8 @@ export interface ScrollPositionObjectType {
 }
 
 export interface AboutMe {
-    Title: string, 
-    Slug: {
+    title: string, 
+    slug: {
         current: string,
         _type: string
     }
@@ -63,3 +63,12 @@ export interface NavOption {
     "image": string
     "link": string
 } 
+
+export interface Product {
+    "_createdAt": string,
+    "_updatedAt": string,
+    "image": Image,
+    "price": number,
+    "slug": slug,
+    "title": string
+}

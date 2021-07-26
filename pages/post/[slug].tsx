@@ -20,7 +20,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   console.log(aboutMe)
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const _post: PostType = JSON.parse(post)
-  if(_aboutMe[0].Slug.current === _post.slug) {
+  if(_aboutMe[0].slug.current === _post.slug) {
     _aboutMe.pop()
   }
   console.log(_aboutMe)
@@ -87,7 +87,7 @@ export async function getStaticProps({ params }: {params: any}) {
    postData ? postJson = JSON.stringify(postData) : postJson = '{"undefined":"true"}'
 
    let settingsData
-    const settingsquery = '*[_type == "settings"]{"Slug": aboutme->slug,"Title": aboutme->title}'
+    const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"Title": aboutme->title}'
     await client.fetch(settingsquery)
     .then((settings: Array<AboutMe>) => settingsData = settings)
     const settingsJson = JSON.stringify(settingsData)
