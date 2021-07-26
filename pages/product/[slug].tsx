@@ -9,6 +9,8 @@ import FlexCenterCenter from '../../components/GlobalElements/FlexCenterCenter'
 import Nav from '../../components/Nav'
 import Paragraph from '../../components/GlobalElements/Paragraph'
 import styled from 'styled-components'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 
 const builder = imageUrlBuilder(client)
 
@@ -26,6 +28,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
   const _product: ProductType = JSON.parse(product)
   console.log(JSON.parse(product))
   console.log(`_product: ${_product}`)
+  console.log(_product)
   console.log(`_aboutMe: ${_aboutMe}`)
   const router = useRouter()
   
@@ -44,6 +47,19 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
       <>
         <Nav aboutMe={_aboutMe}></Nav>
         <Header>{_product.title}</Header>
+        <Carousel useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
+                {_product.images.map(image=>(
+                    <>
+                    <Image
+                        src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
+                        alt={image.alt || 'no alt text'}
+                        width={image.imageWidth}
+                        height={image.imageHeight}
+                        layout="responsive"
+                    />
+                    </>
+                ))}
+        </Carousel>
       </>
     )
   }
@@ -60,7 +76,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
 
 export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
-  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, _updatedAt, image, price, slug, title}`
+  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
   let productData
   await client.fetch(query)
   .then((products: Array<ProductType>) => productData = products[0])
