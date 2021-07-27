@@ -77,5 +77,8 @@ export interface Product {
     "images": Array<ImageHW>
     "price": number,
     "slug": slug,
-    "title": string
+    "title": string,
+    "productHeight": number,
+    "productWidth": number,
+    "productDept"?: number
 }

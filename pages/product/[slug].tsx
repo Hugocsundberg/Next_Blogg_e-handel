@@ -25,6 +25,9 @@ const Header  = styled.h1`
 `
 
 const P = styled.p`
+margin-top: 0.5rem;
+margin-bottom: 2rem;
+font-weight: light;
 `
 
 const ThumbContainer = styled.div`
@@ -40,19 +43,22 @@ const ContentContainer = styled.div`
   padding-right: ${margin}rem;
 `
 
+const ArrowContainer = styled.div`
+`
+
+const H3 = styled.h3`
+font-weight: bold;
+margin: 0;
+margin-top: 2rem;
+`
+
 
 const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
-  console.log(product)
   const _aboutMe: Array<AboutMe> = JSON.parse(aboutMe)
   const _product: ProductType = JSON.parse(product)
-  console.log(JSON.parse(product))
-  console.log(`_product: ${_product}`)
-  console.log(_product)
-  console.log(`_aboutMe: ${_aboutMe}`)
   const router = useRouter()
   
   const renderThumbs = (props:any) => {
-    console.log(props)
     return _product.images.map((image)=> (
       <ThumbContainer>
         <Image
@@ -67,7 +73,31 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     ))
   }
 
-  const renderArrowNext = (props:any) => <Arrow right={true}/>
+  const renderArrowNext = (clickHandler:any , another:boolean) => {
+    console.log(another)
+    return (
+      another ? 
+      <ArrowContainer onClick={clickHandler}>
+        <Arrow right={true} fadeOut={false}/>
+      </ArrowContainer>
+      : 
+      <ArrowContainer onClick={clickHandler}>
+        <Arrow right={true} fadeOut={true}/>
+      </ArrowContainer>
+      )
+  }
+  const renderArrowPrev = (clickHandler:any , another:boolean) => {
+    return (
+      another ? 
+      <ArrowContainer onClick={clickHandler}>
+        <Arrow right={false} fadeOut={false}/>
+      </ArrowContainer>
+      : 
+      <ArrowContainer onClick={clickHandler}>
+        <Arrow right={false} fadeOut={true}/>
+      </ArrowContainer>
+      )
+  }
   
   if (router.isFallback) {
     return (
@@ -86,7 +116,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
         <ContentContainer>
           {/* <ArrowNext right={true}/> */}
           <Header>{_product.title}</Header>
-          <Carousel renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
+          <Carousel stopOnHover transitionTime={300} renderArrowPrev={renderArrowPrev} renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} interval={1000000} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
                   {_product.images.map(image=>(
                       <>
                       <Image
@@ -99,7 +129,12 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
                       </>
                   ))}
           </Carousel>
+          <H3>Beskrivning</H3>
           <P>{_product.desc}</P>
+          <H3>Storlek</H3>
+          <P>{`${_product.productWidth} x ${_product.productHeight}${_product.productDept ? ` x ${_product.productDept}` : ''}`} cm</P>
+          <H3>Pris</H3>
+          <P>{_product.price} kr</P>
         </ContentContainer>
       </>
     )
@@ -117,7 +152,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
 
 export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
-  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
+  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
   let productData
   await client.fetch(query)
   .then((products: Array<ProductType>) => productData = products[0])
