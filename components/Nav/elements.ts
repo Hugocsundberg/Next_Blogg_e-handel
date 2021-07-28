@@ -90,7 +90,15 @@ export const Cart = styled.button`
     background: none;
     --webkit-appearance: none;
     margin-right: ${margin}rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     `
+
+export const CartP = styled.p`
+    font-size: 0.7rem;
+    transform: translate(2px, -1px);
+`
 
 export const Spacer = styled.div`
     height: ${getBottomNavHeight()}px;

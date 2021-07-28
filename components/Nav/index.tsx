@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
-import { BlurDiv, OptionText, BottomContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer } from './elements'
+import { BlurDiv, OptionText, BottomContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer, CartP } from './elements'
 import { getOptions, Option } from './config'
 import { rem } from '../../styles/globalStyleVariables'
 import { GetStaticProps } from 'next';
 import { Spiral as Hamburger } from 'hamburger-react'
 import Link from 'next/link'
-import { AboutMe } from '../../generalTypes';
+import { AboutMe, Product } from '../../generalTypes';
 import { getOptionsHeight } from './functions';
 import { useRouter } from 'next/router'
+import { getFromStorage } from '../../functions';
 
 
 const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
@@ -17,11 +18,21 @@ const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
     const router = useRouter()
     const _route = router.route.replace('/', '')
     const [ isExpanded, setIsExpanded ] = useState(false)
+    const [ cartItems, setcartItems ] = useState<string | number>('-')
+    const updateCartItems = () => {
+        const cart:Array<Product> | null | undefined = getFromStorage('cart')
+        if(Array.isArray(cart)) {
+            setcartItems(cart.length)
+        }
+    }
     useEffect(()=>{
-        if(process.browser) {
+        if(process.browser) {   
             let path = window.location.toString().replace(/(?<!\/)\/[^\/].+/, '')
             path = path.replace(/\/$/, '')
             setcurrentPath(path)
+
+            updateCartItems()
+            window.addEventListener('addcart', updateCartItems)
         }
     }, [])
 
@@ -61,8 +72,9 @@ const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
                     <Logo>Marina Sundberg</Logo>
                 </Link>
                 <Cart>
+                    <CartP>{cartItems}</CartP>
                     <Image
-                        src="/cart.svg"
+                        src="/shop-cart.svg"
                         alt="hamburger"
                         layout="fill"
                         objectFit="contain"
