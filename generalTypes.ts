@@ -9,6 +9,7 @@ body: Array<any>
 alt?: string,
 slug: string,
 title: string,
+productSlug?: string
 }
 
 export interface ScrollPositionObjectType {
