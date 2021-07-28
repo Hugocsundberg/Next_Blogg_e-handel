@@ -20,7 +20,7 @@ const urlFor = (source: string) => {
   return builder.image(source)
 }
 
-const Product = ({alt, images, slug}:{alt:string, images: Array<ImageHW>, slug:string}) => {
+export const Product = ({alt, images, slug}:{alt:string, images: Array<ImageHW>, slug:string}) => {
     return (
         <Link href={`/product/${slug}`}>
             <Border>

@@ -9,6 +9,7 @@ import Image from 'next/image'
 import FlexCenterCenter from '../../components/GlobalElements/FlexCenterCenter'
 import { Paragraph } from './elements'
 import Nav from '../../components/Nav'
+import ActionButton from '../../components/ActionButton'
 
 const builder = imageUrlBuilder(client)
 
@@ -49,6 +50,11 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
       )
     }
   }
+
+  const actionButtonHandler = () => {
+    if(_post.productSlug)
+    router.push(`/product/${_post.productSlug}`)
+  }
   
   if(_post.title) {
     return (
@@ -62,6 +68,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
             dataset="production"
           />
         </ContentContainer>
+        {_post.productSlug ? <ActionButton onClick={actionButtonHandler} text='Gå till produkt'></ActionButton> : ''}
       </>
     )
   }
@@ -78,7 +85,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
 
 export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
-  const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
+  const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, "productSlug": product->slug.current, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
   let postData
   await client.fetch(query)
   .then((posts: Array<PostType>) => postData = posts[0])

@@ -14,6 +14,9 @@ import { Carousel } from 'react-responsive-carousel';
 import { margin } from '../../styles/globalStyleVariables'
 import ArrowNext from '../../components/Arrow'
 import Arrow from '../../components/Arrow'
+import ActionButton from '../../components/ActionButton'
+import { Product as ProductComponent } from '../../components/Product'
+import { addObjectToStorage, addToStorage } from '../../functions'
 
 const builder = imageUrlBuilder(client)
 
@@ -50,6 +53,17 @@ const H3 = styled.h3`
 font-weight: bold;
 margin: 0;
 margin-top: 2rem;
+`
+
+const ImageBorder = styled.div`
+  background: black;
+  padding: 1.5%;
+`
+
+const BlackLine = styled.div`
+  background: black;
+  height: 10px;
+  width: 100%;
 `
 
 
@@ -98,6 +112,10 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
       </ArrowContainer>
       )
   }
+
+  const addProductToStorage = () => {
+    addObjectToStorage('cart', _product)
+  }
   
   if (router.isFallback) {
     return (
@@ -116,17 +134,16 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
         <ContentContainer>
           {/* <ArrowNext right={true}/> */}
           <Header>{_product.title}</Header>
-          <Carousel stopOnHover transitionTime={300} renderArrowPrev={renderArrowPrev} renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} interval={1000000} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
+          <Carousel width={'105%'} stopOnHover transitionTime={300} renderArrowPrev={renderArrowPrev} renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} interval={1000000} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
                   {_product.images.map(image=>(
-                      <>
-                      <Image
-                          src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
-                          alt={image.alt || 'no alt text'}
-                          width={image.imageWidth}
-                          height={image.imageHeight}
-                          layout="responsive"
-                      />
-                      </>
+                        <Image
+                            src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
+                            alt={image.alt || 'no alt text'}
+                            width={image.imageWidth}
+                            height={image.imageHeight}
+                            layout="responsive"
+                            className="image-border"
+                        />
                   ))}
           </Carousel>
           <H3>Beskrivning</H3>
@@ -136,6 +153,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
           <H3>Pris</H3>
           <P>{_product.price} kr</P>
         </ContentContainer>
+        <ActionButton onClick={addProductToStorage} text='Lägg till i kundvagn'></ActionButton>
       </>
     )
   }
