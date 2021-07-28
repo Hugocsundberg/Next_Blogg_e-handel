@@ -15,12 +15,12 @@ export const getCols = (screenWidth:number): cols => {
   return 3
 }
 
-export const addObjectToStorage = (key:string, data: object) : void => {
+export function addObjectToStorage<T>(key:string, data: T) : void {
   if(process.browser) {
-    const event = new Event(`add${key}`)
     const storageData:Array<Object> = JSON.parse(window.localStorage.getItem(key) || '[]')
     storageData.push(data)
     window.localStorage.setItem(key, JSON.stringify(storageData))
+    const event = new Event(`add${key}`)
     window.dispatchEvent(event)
   }
 }
