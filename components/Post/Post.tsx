@@ -12,11 +12,18 @@ const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: 
         window.removeEventListener('scroll', handleScroll)
         router.push(url)
     }
+
+    let formattedDate
+    if(process.browser) {
+        const newDate: Date = new window.Date(date);  
+        formattedDate = new Intl.DateTimeFormat('se', { dateStyle: 'short', timeStyle: 'short' }).format(newDate);
+    }
+
     return (
             <CardBackground onClick={route}>
                 <HorisontalFlexDiv>
                     <Header>{title}</Header>
-                    <Date>{date}</Date>
+                    <Date>{formattedDate}</Date>
                 </HorisontalFlexDiv>
                 <Image
                     src={imageRef || '/noImage.jpeg'}
