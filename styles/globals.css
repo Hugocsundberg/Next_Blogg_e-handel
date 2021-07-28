@@ -53,6 +53,7 @@ a {
 .image-border {
   border: 4px solid black !important;
   transform: scale(0.92);
+  box-shadow: 6px 6px 15px -5px #272727c4;
 }
 
 .carousel-root {

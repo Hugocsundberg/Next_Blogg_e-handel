@@ -170,7 +170,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
 
 export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
-  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
+  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
   let productData
   await client.fetch(query)
   .then((products: Array<ProductType>) => productData = products[0])

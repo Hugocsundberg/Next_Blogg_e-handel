@@ -9,3 +9,4 @@ export const darken:string = 'rgba(0, 0, 0, 0.07)';
 export const lighten:string = 'rgba(255, 255, 255, 0.8)';
 export const screenSizes:Array<number> = [600, 900]
 export const navHeight:number = 5.375
+export const buttonBorderRadius:number = 5
