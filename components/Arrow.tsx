@@ -18,7 +18,7 @@ const Background = styled.div<{right:boolean, fadeOut:boolean}>`
     backdrop-filter:  blur(5px);
     transform: rotate(${props => props.right ? -90 : 90}deg) translate(${props => props.right ? '-' : '+'}50%, 0);
     z-index: 1000;
-    right: ${props => props.right ? '1rem' : `calc(100% - 3rem - 10px)`} ;
+    right: ${props => props.right ? '2rem' : `calc(100% - 3rem - 1.3rem)`} ;
     bottom: 50%;
     :hover {
         opacity: 1;
