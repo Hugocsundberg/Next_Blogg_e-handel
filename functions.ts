@@ -25,10 +25,10 @@ export function addObjectToStorage<T>(key:string, data: T) : void {
   }
 }
 
-export const getFromStorage = (key:string) : (Array<Product> | null | undefined) => {
+export const getFromStorage = (key:string) : (Array<object>) => {
   if(process.browser) {
     const data:string | null = window.localStorage.getItem(key)
-    if( data == null) return data
+    if( data == null) return []
     return JSON.parse(data)
-  }
+  } else return [] 
 }
