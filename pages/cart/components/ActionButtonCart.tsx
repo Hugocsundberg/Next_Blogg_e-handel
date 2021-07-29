@@ -38,8 +38,8 @@ const ActionButtonCart = ({price, tax}: {price: number, tax: number}) => {
         </Spacer>
         <Background>
             <H>Total</H>
-            <P>{`${price}SEK`}</P>
-            <P>{`(includes ${tax}SEK Tax)`}</P>
+            <P>{`${price} SEK`}</P>
+            <P>{`(includes ${tax} SEK Tax)`}</P>
             <Button color="black" bgcolor="rgb(245,106,141)">Checka ut med klarna</Button>
         </Background>
         </>

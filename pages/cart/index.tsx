@@ -18,6 +18,8 @@ const Background = styled.div`
 const index = ({ aboutMe }: {aboutMe: string}) => {
     const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
     const [inCart, setinCart] = useState<Array<Object>>([]);
+    const [totalPrice, settotalPrice] = useState(0);
+    const [tax, settax] = useState(0);
 
     const updateCart = () => {
         const inCart:Array<Object> = getFromStorage('cart')
@@ -28,6 +30,14 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
         updateCart()
         window.addEventListener('updatecart', updateCart)
     }, []);
+
+    useEffect(() => {
+        let totalPrice:number = 0
+        inCart.forEach((product) => {
+            totalPrice += (product as Product).price
+        })
+        settotalPrice(totalPrice)
+    }, [inCart]);
 
     return (
         <>  
@@ -41,7 +51,7 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
                     const _product = (product as Product);
                     return <CartItem product={_product}/>
                 })}
-                <ActionButtonCart price={200} tax={30}/>
+                <ActionButtonCart price={totalPrice} tax={30}/>
             </Background>
         </>
     );
