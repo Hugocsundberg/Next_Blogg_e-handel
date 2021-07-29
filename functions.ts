@@ -20,7 +20,7 @@ export function addObjectToStorage<T>(key:string, data: T) : void {
     const storageData:Array<Object> = JSON.parse(window.localStorage.getItem(key) || '[]')
     storageData.push(data)
     window.localStorage.setItem(key, JSON.stringify(storageData))
-    const event = new Event(`add${key}`)
+    const event = new Event(`update${key}`)
     window.dispatchEvent(event)
   }
 }
@@ -31,4 +31,20 @@ export const getFromStorage = (key:string) : (Array<object>) => {
     if( data == null) return []
     return JSON.parse(data)
   } else return [] 
+}
+
+export const removeProductFromStorage = (key:string, removeProduct:Product): boolean => {
+  if(process.browser) {
+    const data:string | null = window.localStorage.getItem(key)
+    if( data == null) return false
+    const parsedData:Array<Product> = JSON.parse(data)
+    const updatedArray:Array<Product> = parsedData.filter((product)=>{
+      if(product.slug.current !== removeProduct.slug.current) return product
+    })
+    console.log(updatedArray)
+    window.localStorage.setItem(key, JSON.stringify(updatedArray))
+    const event = new Event(`update${key}`)
+    window.dispatchEvent(event)
+    return true
+  } else return false 
 }
