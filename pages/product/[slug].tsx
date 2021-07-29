@@ -16,7 +16,7 @@ import ArrowNext from '../../components/Arrow'
 import Arrow from '../../components/Arrow'
 import ActionButton from '../../components/ActionButton'
 import { Product as ProductComponent } from '../../components/Product'
-import { addObjectToStorage, addToStorage } from '../../functions'
+import { addObjectToStorage, getFromStorage } from '../../functions'
 
 const builder = imageUrlBuilder(client)
 
@@ -114,7 +114,10 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
   }
 
   const addProductToStorage = () => {
+    const cart = getFromStorage('cart')
+    if(!cart.find((product => (product as ProductType).slug.current === _product.slug.current)))
     addObjectToStorage('cart', _product)
+    else alert('Product already added to cart')
   }
   
   if (router.isFallback) {
