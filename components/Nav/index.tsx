@@ -32,7 +32,7 @@ const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
             setcurrentPath(path)
 
             updateCartItems()
-            window.addEventListener('addcart', updateCartItems)
+            window.addEventListener('updatecart', updateCartItems)
         }
     }, [])
 
@@ -71,15 +71,17 @@ const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
                 <Link href="/" scroll={false}>
                     <Logo>Marina Sundberg</Logo>
                 </Link>
-                <Cart>
-                    <CartP>{cartItems}</CartP>
-                    <Image
-                        src="/shop-cart.svg"
-                        alt="hamburger"
-                        layout="fill"
-                        objectFit="contain"
-                    />
-                </Cart>
+                <Link href="/cart">
+                    <Cart>
+                        <CartP>{cartItems}</CartP>
+                        <Image
+                            src="/shop-cart.svg"
+                            alt="hamburger"
+                            layout="fill"
+                            objectFit="contain"
+                        />
+                    </Cart>
+                </Link>
             </BottomContainer>
         </BlurDiv>
         </>

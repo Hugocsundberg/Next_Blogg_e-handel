@@ -19,9 +19,14 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
     const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
     const [inCart, setinCart] = useState<Array<Object>>([]);
 
-    useEffect(() => {
+    const updateCart = () => {
         const inCart:Array<Object> = getFromStorage('cart')
         setinCart(inCart) 
+    }
+
+    useEffect(() => {
+        updateCart()
+        window.addEventListener('updatecart', updateCart)
     }, []);
 
     return (
