@@ -9,22 +9,22 @@ import { margin } from '../styles/globalStyleVariables';
 
 const builder = imageUrlBuilder(client)
 
-const Border = styled.div<{removeMargin: boolean}>`
+const Border = styled.div<{hasShadow:boolean, removeMargin: boolean}>`
     background: black;
     padding: 2%;
     margin-bottom: ${props => props.removeMargin ? '0px' : `${margin}rem`};
     cursor: pointer;
-    box-shadow: 6px 6px 15px -5px #272727c4;
+    box-shadow: ${props => props.hasShadow ? '6px 6px 15px -5px #272727c4' : ''};
 `
 
 const urlFor = (source: string) => {
   return builder.image(source)
 }
 
-export const Product = ({alt, images, slug, removeMargin = false}:{alt:string, images: Array<ImageHW>, slug:string, removeMargin?: boolean}) => {
+export const Product = ({alt, images, slug, removeMargin = false, hasShadow = true}:{alt:string, images: Array<ImageHW>, slug:string, removeMargin?: boolean, hasShadow:boolean}) => {
     return (
         <Link href={`/product/${slug}`}>
-            <Border removeMargin={removeMargin}>
+            <Border hasShadow={hasShadow} removeMargin={removeMargin}>
                 <Image
                     src={urlFor(images[0].asset._ref).url() || '/noImage.jpg'}
                     alt={alt}
