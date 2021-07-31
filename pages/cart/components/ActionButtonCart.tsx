@@ -36,7 +36,7 @@ const ActionButtonCart = ({price, tax}: {price: number, tax: number}) => {
             <P>S</P>
             <Button color="black" bgcolor="rgb(245,106,141)">S</Button>
         </Spacer>
-        <Background>
+        <Background className="bottomOverlay">
             <H>Total</H>
             <P>{`${price} SEK`}</P>
             <P>{`(includes ${tax} SEK Tax)`}</P>
