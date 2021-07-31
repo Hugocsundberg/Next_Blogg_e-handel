@@ -83,3 +83,9 @@ export interface Product {
     "productWidth": number,
     "productDept"?: number
 }
+
+export interface ScreenSizes {
+    S: number
+    M: number
+    L: number
+}
