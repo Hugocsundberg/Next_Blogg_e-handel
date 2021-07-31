@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 import { getFromStorage } from '../../functions';
 
 
-const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
+const Post = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boolean}) => {
     
     const [currentPath, setcurrentPath] = useState('');
     const router = useRouter()
@@ -38,7 +38,7 @@ const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
 
     return (
         <>
-        <Spacer/>
+        {spacer ? <Spacer/> : ''}
         <BlurDiv isExpanded={isExpanded} optionsHeight={getOptionsHeight(aboutMe)}>
             {getOptions(aboutMe, _route).map((option:Option, key:any)=>(
                 <a key={key} href={`${currentPath}${option.link}`}>
@@ -57,7 +57,7 @@ const Post = ({ aboutMe }: {aboutMe: Array<AboutMe>}) => {
                         </OptionDiv>
                 </a>
             ))}
-            <BottomContainer>
+            <BottomContainer className="topOverlay">
                 <HamburgerContainer>
                     <Hamburger
                     size={rem * 1.8}    

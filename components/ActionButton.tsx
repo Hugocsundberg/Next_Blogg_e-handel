@@ -15,13 +15,15 @@ const Spacer = styled.div`
     opacity: 0;
 `
 
-const ActionButton = ({ text, onClick }: {text:string, onClick:any}) => {
+const ActionButton = ({ spacer = true, text, onClick }: {spacer: boolean, text:string, onClick:any}) => {
     return (
         <>
+        {spacer ? 
         <Spacer>
             <Button color="white" bgcolor="black">S</Button>
         </Spacer>
-        <Background onClick={onClick}>
+        : ''}
+        <Background className="bottomOverlay" onClick={onClick}>
             <Button color="white" bgcolor="black">{text}</Button>
         </Background>
         </>
