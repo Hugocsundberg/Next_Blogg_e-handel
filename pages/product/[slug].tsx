@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import client from '../../client'
-import { AboutMe, Post as PostType, Product as ProductType } from '../../generalTypes'
+import { AboutMe, Post as PostType, Product as ProductType, ScreenSizes } from '../../generalTypes'
 // @ts-ignore
 import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
@@ -15,8 +15,9 @@ import { margin } from '../../styles/globalStyleVariables'
 import ArrowNext from '../../components/Arrow'
 import Arrow from '../../components/Arrow'
 import ActionButton from '../../components/ActionButton'
-import { Product as ProductComponent } from '../../components/Product'
-import { addObjectToStorage, getFromStorage } from '../../functions'
+import { addObjectToStorage, getBottomOverlayHeight, getFromStorage, getTopOverlayHeight } from '../../functions'
+import { screenSizes } from '../../styles/globalStyleVariables'
+import { useEffect, useState } from 'react'
 
 const builder = imageUrlBuilder(client)
 
@@ -25,6 +26,7 @@ const urlFor = (source: string) => {
 }
 
 const Header  = styled.h1`
+margin-bottom: 0;
 `
 
 const P = styled.p`
@@ -39,11 +41,26 @@ const ThumbContainer = styled.div`
   height: 2rem;
 `
 
-const ContentContainer = styled.div`
+const ContentContainer = styled.div<{overlayHeight: number}>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   width: 100%;
+  min-height: calc(100vh - ${props => props.overlayHeight}px);
   padding-left: ${margin}rem;
   padding-right: ${margin}rem;
+  @media (min-width: ${screenSizes.M}px) {
+    justify-content: center;
+    position: relative;
+  }
+`
+
+const CenterContent = styled.div`
+width: 100%;
+@media (min-width: ${screenSizes.M}px) {
+  width: unset;
+  }
 `
 
 const ArrowContainer = styled.div`
@@ -55,22 +72,51 @@ margin: 0;
 margin-top: 2rem;
 `
 
-const ImageBorder = styled.div`
-  background: black;
-  padding: 1.5%;
+const Block1 = styled.div`
+  flex-grow: 8;
+  `
+const Block2 = styled.div`
+  max-width: 40%;
+  flex-grow: 1;
+  position: relative;
+  margin-top: 2%;
 `
 
-const BlackLine = styled.div`
-  background: black;
-  height: 10px;
-  width: 100%;
+const BlockContainer = styled.div`
+  @media (min-width: ${screenSizes.M}px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    width: 70%;
+    min-width: 700px;
+  }
 `
+
 
 
 const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
   const _aboutMe: Array<AboutMe> = JSON.parse(aboutMe)
   const _product: ProductType = JSON.parse(product)
+  const [isDesktop, setisDesktop] = useState(false);
+  const [navoverlayHeight, setnavoverlayHeight] = useState(0);
   const router = useRouter()
+  
+  const resizeHandler = () => {
+      if(window.innerWidth >= 700)
+        setisDesktop(true)
+      else 
+        setisDesktop(false)
+  }
+
+  useEffect(() => {
+    resizeHandler()
+    window.addEventListener('resize', resizeHandler)
+    const topOverlayHeight:number = getTopOverlayHeight()
+    const bottomOverlayHeight:number = getBottomOverlayHeight()
+
+    setnavoverlayHeight(topOverlayHeight + bottomOverlayHeight)
+  }, []);
   
   const renderThumbs = (props:any) => {
     return _product.images.map((image)=> (
@@ -78,8 +124,6 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
         <Image
             src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
             alt={image.alt || 'no alt text'}
-            // width={image.imageWidth}
-            // height={image.imageHeight}
             layout={'fill'}
             objectFit={'cover'}
         />
@@ -88,7 +132,6 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
   }
 
   const renderArrowNext = (clickHandler:any , another:boolean) => {
-    console.log(another)
     return (
       another ? 
       <ArrowContainer onClick={clickHandler}>
@@ -134,27 +177,35 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     return (
       <>
         <Nav aboutMe={_aboutMe}></Nav>
-        <ContentContainer>
-          {/* <ArrowNext right={true}/> */}
-          <Header>{_product.title}</Header>
-          <Carousel width={'105%'} stopOnHover transitionTime={300} renderArrowPrev={renderArrowPrev} renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} interval={1000000} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
-                  {_product.images.map(image=>(
-                        <Image
-                            src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
-                            alt={image.alt || 'no alt text'}
-                            width={image.imageWidth}
-                            height={image.imageHeight}
-                            layout="responsive"
-                            className="image-border"
-                        />
-                  ))}
-          </Carousel>
-          <H3>Beskrivning</H3>
-          <P>{_product.desc}</P>
-          <H3>Storlek</H3>
-          <P>{`${_product.productWidth} x ${_product.productHeight}${_product.productDept ? ` x ${_product.productDept}` : ''}`} cm</P>
-          <H3>Pris</H3>
-          <P>{_product.price} kr</P>
+        <ContentContainer overlayHeight={navoverlayHeight}>
+          <CenterContent>
+            {!isDesktop ? <Header>{_product.title}</Header> : ''} 
+            <BlockContainer>
+              <Block1>
+                <Carousel width={'100%'} stopOnHover transitionTime={300} renderArrowPrev={renderArrowPrev} renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} interval={1000000} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
+                        {_product.images.map(image=>(
+                          <Image
+                          src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
+                          alt={image.alt || 'no alt text'}
+                          width={image.imageWidth}
+                          height={image.imageHeight}
+                          layout="responsive"
+                          className="image-border"
+                          />
+                          ))}
+                </Carousel>
+              </Block1>
+              <Block2>
+              {isDesktop ? <Header>{_product.title}</Header> : ''}
+                <H3>Beskrivning</H3>
+                <P>{_product.desc}</P>
+                <H3>Storlek</H3>
+                <P>{`${_product.productWidth} x ${_product.productHeight}${_product.productDept ? ` x ${_product.productDept}` : ''}`} cm</P>
+                <H3>Pris</H3>
+                <P>{_product.price} kr</P>
+              </Block2>
+            </BlockContainer>
+          </CenterContent>
         </ContentContainer>
         <ActionButton onClick={addProductToStorage} text='Lägg till i kundvagn'></ActionButton>
       </>
