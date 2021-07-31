@@ -48,3 +48,17 @@ export const removeProductFromStorage = (key:string, removeProduct:Product): boo
     return true
   } else return false 
 }
+
+export const getTopOverlayHeight = (): number => {
+  if(process.browser) {
+    const overlay = document.querySelector('.topOverlay')
+    return overlay?.clientHeight ?? 0
+  } else return 0
+}
+
+export const getBottomOverlayHeight = () :number => {
+  if(process.browser) {
+    const overlay = document.querySelector('.bottomOverlay')
+    return overlay?.clientHeight ?? 0
+  } else return 0
+}
