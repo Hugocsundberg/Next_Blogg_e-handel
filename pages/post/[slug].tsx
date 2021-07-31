@@ -4,12 +4,36 @@ import { AboutMe, Post as PostType } from '../../generalTypes'
 // @ts-ignore
 import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
-import { ContentContainer } from './elements'
+// import { ContentContainer, ImageContainer, CenterContent } from './elements'
 import Image from 'next/image'
 import FlexCenterCenter from '../../components/GlobalElements/FlexCenterCenter'
-import { Paragraph } from './elements'
 import Nav from '../../components/Nav'
 import ActionButton from '../../components/ActionButton'
+import styled from 'styled-components'
+import { margin, screenSizes } from '../../styles/globalStyleVariables'
+import { getTopOverlayHeight } from '../../functions'
+import { useState, useEffect } from 'react'
+import { getBottomOverlayHeight } from '../../functions'
+
+const CenterContent = styled.div<{overlayHeight: number}>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    @media (min-width: ${screenSizes.M}px) {
+      min-height: calc(100vh - ${props => props.overlayHeight}px);
+    }
+`
+
+const ContentContainer = styled.div`
+    width: 100%;
+    max-width: 500px;
+    padding: ${margin}rem;
+`
+
+const Paragraph = styled.p`
+    margin: ${margin / 4}rem;
+`
 
 const builder = imageUrlBuilder(client)
 
@@ -21,6 +45,15 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   console.log(aboutMe)
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const _post: PostType = JSON.parse(post)
+  const [navoverlayHeight, setnavoverlayHeight] = useState(0);
+
+  useEffect(()=>{
+    const topOverlayHeight:number = getTopOverlayHeight()
+    const bottomOverlayHeight:number = getBottomOverlayHeight()
+
+    setnavoverlayHeight(topOverlayHeight + bottomOverlayHeight)
+  }, [])
+
   if(_aboutMe[0].slug.current === _post.slug) {
     _aboutMe.pop()
   }
@@ -40,13 +73,13 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   const serializers = {
     types: {
       image: (props:any) => (
-        <Image
-          src={urlFor(props.node.asset).url() || '/noImage.jpg'}
-          alt="image"
-          width={(_post as PostType).imageWidth || 1950}
-          height={(_post as PostType).imageHeight || 1300}
-          layout="responsive"
-        />
+          <Image
+            src={urlFor(props.node.asset).url() || '/noImage.jpg'}
+            alt="image"
+            width={(_post as PostType).imageWidth || 1950}
+            height={(_post as PostType).imageHeight || 1300}
+            layout="responsive"
+          />
       )
     }
   }
@@ -60,14 +93,16 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
     return (
       <>
         <Nav aboutMe={_aboutMe}></Nav>
-        <ContentContainer>
-          <PortableText
-            blocks={(_post as PostType).body}
-            serializers={serializers}
-            projectId="9r33i0al"
-            dataset="production"
-          />
-        </ContentContainer>
+        <CenterContent overlayHeight={navoverlayHeight}>
+          <ContentContainer>
+            <PortableText
+              blocks={(_post as PostType).body}
+              serializers={serializers}
+              projectId="9r33i0al"
+              dataset="production"
+            />
+          </ContentContainer>
+        </CenterContent>
         {_post.productSlug ? <ActionButton onClick={actionButtonHandler} text='Gå till produkt'></ActionButton> : ''}
       </>
     )
