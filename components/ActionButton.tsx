@@ -15,7 +15,7 @@ const Spacer = styled.div`
     opacity: 0;
 `
 
-const ActionButton = ({ spacer = true, text, onClick }: {spacer: boolean, text:string, onClick:any}) => {
+const ActionButton = ({ spacer = true, text, onClick }: {spacer?: boolean, text:string, onClick:any}) => {
     return (
         <>
         {spacer ? 
