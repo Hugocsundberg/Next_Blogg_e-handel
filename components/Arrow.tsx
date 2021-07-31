@@ -8,8 +8,8 @@ const Background = styled.div<{right:boolean, fadeOut:boolean}>`
     transition: .3s;
     background: #ffffffbb;
     border-radius: 50%;
-    height: 3rem;
-    width: 3rem;
+    height: 2.8rem;
+    width: 2.8rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +18,7 @@ const Background = styled.div<{right:boolean, fadeOut:boolean}>`
     backdrop-filter:  blur(5px);
     transform: rotate(${props => props.right ? -90 : 90}deg) translate(${props => props.right ? '-' : '+'}50%, 0);
     z-index: 1000;
-    right: ${props => props.right ? '2rem' : `calc(100% - 3rem - 1.3rem)`} ;
+    right: ${props => props.right ? '3rem' : `calc(100% - 4.5rem - 1.3rem)`} ;
     bottom: 50%;
     :hover {
         opacity: 1;
@@ -26,12 +26,18 @@ const Background = styled.div<{right:boolean, fadeOut:boolean}>`
     @media (max-width: 700px) {
         height: 2.8rem;
         width: 2.8rem;
+        right: ${props => props.right ? '3.5rem' : `calc(100% - 5rem - 1.3rem)`} ;
     }
     @media (max-width: 600px) {
         height: 2.4rem;
         width: 2.4rem;
+        right: ${props => props.right ? '3rem' : `calc(100% - 4.5rem - 1.3rem)`} ;
+    }
+    @media (max-width: 500px) {
+        right: ${props => props.right ? '2.5rem' : `calc(100% - 3.5rem - 1.3rem)`} ;
     }
     @media (max-width: 400px) {
+        right: ${props => props.right ? '2rem' : `calc(100% - 2.5rem - 1.3rem)`} ;
         height: 2rem;
         width: 2rem;
     }
