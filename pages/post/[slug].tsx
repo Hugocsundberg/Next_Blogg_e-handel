@@ -17,7 +17,6 @@ import { getBottomOverlayHeight } from '../../functions'
 
 const CenterContent = styled.div<{overlayHeight: number}>`
     display: flex;
-    align-items: center;
     justify-content: center;
     position: relative;
     @media (min-width: ${screenSizes.M}px) {
