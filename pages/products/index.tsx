@@ -6,7 +6,7 @@ import Masonry from 'react-masonry-css'
 import Product from "../../components/Product"
 import Nav from '../../components/Nav'
 import styled from 'styled-components'
-import { margin } from '../../styles/globalStyleVariables'
+import { margin, screenSizes } from '../../styles/globalStyleVariables'
 import Head from "next/head"
 import Header from "../../components/GlobalElements/Header"
 
@@ -27,9 +27,9 @@ const Products = ({ products, aboutMe }: {products: string, aboutMe: string}) =>
     const _products: Array<ProductType> = JSON.parse(products)
     const breakpointColumnsObj = {
       default: 4,
-      1100: 3,
-      700: 2,
-      500: 1
+      [screenSizes.L]: 3,
+      [screenSizes.M]: 2,
+      [screenSizes.S]: 1
     };
     return (
       <>

@@ -5,7 +5,7 @@ export const Header = styled.h2`
 color: ${darkGray};
 `
 
-export const Date = styled.p`
+export const Date = styled.p   `
 color: ${darkGray};
 `
 
@@ -14,6 +14,8 @@ background: white;
 width: 100%;
 margin-bottom: 1rem;
 cursor: pointer;
+box-shadow: 4px 4px 15px -5px darkgray;
+border-radius: 10px;
 `
 
 export const HorisontalFlexDiv = styled.div`

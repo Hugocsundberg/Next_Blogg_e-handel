@@ -7,6 +7,8 @@ import Header from '../components/GlobalElements/Header'
 import Nav from '../components/Nav'
 import { AboutMe, Post as PostType, ScrollEvent } from '../generalTypes'
 import { ScrollPositionObjectType } from '../generalTypes'
+import Masonry from 'react-masonry-css'
+import { screenSizes } from '../styles/globalStyleVariables'
 
 export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string}) {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
@@ -37,6 +39,12 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
     }
   }, []);
 
+  const breakpointColumnsObj = {
+    default: 4,
+    [1400]: 3,
+    [screenSizes.L]: 2,
+    [screenSizes.M]: 1
+  };
 
   return (
     <>
@@ -45,18 +53,24 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
       <title>Blogg</title>
     </Head>
     <Header>BLOGG</Header>
-    { _posts.map((post, index)=>(
-      <PostComponent 
-      key={index}
-      excerpt={post.excerpt} 
-      title={post.title} 
-      imageRef={post.imageUrl || '/noImage.jpeg'} 
-      date={post.created}
-      imageHeight={post.imageHeight || 1300}
-      imageWidth={post.imageWidth || 1950}
-      url={`/post/${post.slug}`}
-      />
-    ))}
+    <Masonry 
+      breakpointCols={breakpointColumnsObj}
+      className="masonry-grid"
+      columnClassName="masonry-grid_column"
+      >
+      { _posts.map((post, index)=>(
+        <PostComponent 
+        key={index}
+        excerpt={post.excerpt} 
+        title={post.title} 
+        imageRef={post.imageUrl || '/noImage.jpeg'} 
+        date={post.created}
+        imageHeight={post.imageHeight || 1300}
+        imageWidth={post.imageWidth || 1950}
+        url={`/post/${post.slug}`}
+        />
+      ))}
+    </Masonry>
     </>
   )
 }
