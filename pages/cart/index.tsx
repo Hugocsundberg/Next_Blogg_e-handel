@@ -7,17 +7,31 @@ import Header from "../../components/GlobalElements/Header"
 import Nav from '../../components/Nav'
 import CartItem from './components/CartItem';
 import { useState, useEffect } from 'react';
-import { getFromStorage } from '../../functions';
+import { getFromStorage, getTopOverlayHeight } from '../../functions';
 import styled from 'styled-components';
+import { margin, screenSizes } from '../../styles/globalStyleVariables';
+import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements';
+import { Background } from '../../components/GlobalElements/Background';
 
-const Background = styled.div`
-    min-height: 100vh;
-    background: #f7f7f7;
+const CartContainer = styled.div<{ topOverlayHeight: number }>`
+    width: 100%;
+    min-height: calc(100vh - ${props=>props.topOverlayHeight}px);
+    padding: ${margin}rem;
+    padding-top: 0;
+    padding-bottom: 14rem;
+    max-width: 800px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    @media (min-width: ${screenSizes.M}px) {
+        padding-bottom: 6rem;
+    }
 `
 
 const index = ({ aboutMe }: {aboutMe: string}) => {
     const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
     const [inCart, setinCart] = useState<Array<Object>>([]);
+    const [topOverlayHeight, settopOverlayHeight] = useState(0);
     const [totalPrice, settotalPrice] = useState(0);
     const [tax, settax] = useState(0);
 
@@ -29,6 +43,7 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
     useEffect(() => {
         updateCart()
         window.addEventListener('updatecart', updateCart)
+        settopOverlayHeight(getTopOverlayHeight())
     }, []);
 
     useEffect(() => {
@@ -46,12 +61,16 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
             </Head>
             <Background>
                 <Nav aboutMe={_aboutMe}></Nav>
-                <Header>CART</Header>
-                {inCart.map((product: Object) => {
-                    const _product = (product as Product);
-                    return <CartItem product={_product}/>
-                })}
-                <ActionButtonCart price={totalPrice} tax={30}/>
+                <CartContainer topOverlayHeight={topOverlayHeight}>
+                <Header noLeftMargin={true}>CART</Header>
+                    {inCart.map((product: Object) => {
+                        const _product = (product as Product);
+                        return <CartItem product={_product}/>
+                    })}
+                </CartContainer>
+                <ButtonContainer>
+                    <ActionButtonCart price={totalPrice} tax={30}/>
+                </ButtonContainer>
             </Background>
         </>
     );
