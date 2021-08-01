@@ -8,7 +8,6 @@ import Nav from '../components/Nav'
 import { AboutMe, Post as PostType, ScrollEvent } from '../generalTypes'
 import { ScrollPositionObjectType } from '../generalTypes'
 import Masonry from 'react-masonry-css'
-import { screenSizes } from '../styles/globalStyleVariables'
 
 export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string}) {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
@@ -41,9 +40,9 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
 
   const breakpointColumnsObj = {
     default: 4,
-    [1400]: 3,
-    [screenSizes.L]: 2,
-    [screenSizes.M]: 1
+    [1800]: 3,
+    [1400]: 2,
+    [800]: 1
   };
 
   return (
