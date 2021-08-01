@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { margin, buttonBorderRadius,darkGray } from '../../../styles/globalStyleVariables';
+import { margin, buttonBorderRadius,darkGray, boxShadowBigElement } from '../../../styles/globalStyleVariables';
 import { Product } from '../../../generalTypes';
 import { Product as ProductComponent } from '../../../components/Product';
 import { removeProductFromStorage } from '../../../functions';
@@ -14,6 +14,8 @@ const ItemBackground = styled.div`
     flex-direction: row;
     padding: ${margin}rem;
     margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: ${boxShadowBigElement};
 `
 
 const FlexLeft = styled.div`
