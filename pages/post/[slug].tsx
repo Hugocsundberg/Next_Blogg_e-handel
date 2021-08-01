@@ -10,24 +10,38 @@ import FlexCenterCenter from '../../components/GlobalElements/FlexCenterCenter'
 import Nav from '../../components/Nav'
 import ActionButton from '../../components/ActionButton'
 import styled from 'styled-components'
-import { margin, screenSizes } from '../../styles/globalStyleVariables'
+import { boxShadowBigElement, margin, screenSizes } from '../../styles/globalStyleVariables'
 import { getTopOverlayHeight } from '../../functions'
 import { useState, useEffect } from 'react'
 import { getBottomOverlayHeight } from '../../functions'
+import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements'
+import { Background } from '../../components/GlobalElements/Background'
+import Head from 'next/head'
 
 const CenterContent = styled.div<{overlayHeight: number}>`
     display: flex;
     justify-content: center;
     position: relative;
+    padding: ${margin}rem 0;
     @media (min-width: ${screenSizes.M}px) {
       min-height: calc(100vh - ${props => props.overlayHeight}px);
     }
 `
 
-const ContentContainer = styled.div`
+const ContentContainer = styled.div<{ hasProduct: boolean }>`
     width: 100%;
+    height: fit-content;
     max-width: 500px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: ${boxShadowBigElement};
     padding: ${margin}rem;
+    padding-bottom: ${props => props.hasProduct ?' 6rem' : `${margin}rem`};
+    padding-top: 0;
+`
+
+const ImageContainer = styled.div`
+  box-shadow: ${boxShadowBigElement};
 `
 
 const Paragraph = styled.p`
@@ -72,6 +86,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   const serializers = {
     types: {
       image: (props:any) => (
+        <ImageContainer>
           <Image
             src={urlFor(props.node.asset).url() || '/noImage.jpg'}
             alt="image"
@@ -79,6 +94,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
             height={(_post as PostType).imageHeight || 1300}
             layout="responsive"
           />
+        </ImageContainer>
       )
     }
   }
@@ -91,18 +107,27 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   if(_post.title) {
     return (
       <>
-        <Nav aboutMe={_aboutMe}></Nav>
-        <CenterContent overlayHeight={navoverlayHeight}>
-          <ContentContainer>
-            <PortableText
-              blocks={(_post as PostType).body}
-              serializers={serializers}
-              projectId="9r33i0al"
-              dataset="production"
-            />
-          </ContentContainer>
-        </CenterContent>
-        {_post.productSlug ? <ActionButton onClick={actionButtonHandler} text='Gå till produkt'></ActionButton> : ''}
+        <Head>
+        <title>Cart</title>
+        </Head>
+        <Background>
+          <Nav aboutMe={_aboutMe}></Nav>
+          <CenterContent overlayHeight={navoverlayHeight}>
+            <ContentContainer hasProduct={_post.productSlug ? true : false}>
+              <PortableText
+                blocks={(_post as PostType).body}
+                serializers={serializers}
+                projectId="9r33i0al"
+                dataset="production"
+              />
+            </ContentContainer>
+          </CenterContent>
+          {_post.productSlug ? 
+          <ButtonContainer doubleMargin={true}>
+            <ActionButton onClick={actionButtonHandler} text='Gå till produkt'></ActionButton>
+          </ButtonContainer>
+          : '' }
+        </Background>
       </>
     )
   }

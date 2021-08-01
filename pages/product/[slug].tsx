@@ -18,6 +18,7 @@ import ActionButton from '../../components/ActionButton'
 import { addObjectToStorage, getBottomOverlayHeight, getFromStorage, getTopOverlayHeight } from '../../functions'
 import { screenSizes } from '../../styles/globalStyleVariables'
 import { useEffect, useState } from 'react'
+import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements'
 
 const builder = imageUrlBuilder(client)
 
@@ -50,6 +51,7 @@ const ContentContainer = styled.div<{overlayHeight: number}>`
   min-height: calc(100vh - ${props => props.overlayHeight}px);
   padding-left: ${margin}rem;
   padding-right: ${margin}rem;
+  padding-bottom: 6rem;
   @media (min-width: ${screenSizes.M}px) {
     justify-content: center;
     position: relative;
@@ -207,7 +209,9 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
             </BlockContainer>
           </CenterContent>
         </ContentContainer>
-        <ActionButton onClick={addProductToStorage} text='Lägg till i kundvagn'></ActionButton>
+        <ButtonContainer>
+          <ActionButton onClick={addProductToStorage} text='Lägg till i kundvagn'></ActionButton>
+        </ButtonContainer>
       </>
     )
   }
