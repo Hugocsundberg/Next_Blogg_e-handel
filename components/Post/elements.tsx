@@ -12,7 +12,7 @@ color: ${darkGray};
 export const CardBackground = styled.div`
 background: white;
 width: 100%;
-margin-bottom: 1rem;
+margin-bottom: ${margin}rem;
 cursor: pointer;
 box-shadow: 4px 4px 15px -5px darkgray;
 border-radius: 10px;
