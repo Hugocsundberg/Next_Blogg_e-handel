@@ -9,6 +9,8 @@ import { AboutMe, Post as PostType, ScrollEvent } from '../generalTypes'
 import { ScrollPositionObjectType } from '../generalTypes'
 import Masonry from 'react-masonry-css'
 import { Background } from '../components/GlobalElements/Background'
+// @ts-ignore
+import * as smoothScroll from 'smoothscroll'
 
 export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string}) {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
@@ -20,6 +22,23 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
     [1400]: 2,
     [800]: 1
   };
+
+const scrollHandler = (e:Event) => {
+  const URLstring:string = (e as ScrollEvent).path[0].URL
+  const regex = new RegExp('(?<!\/)\/[^\/].*')
+  if(!URLstring.match(regex))
+  window.sessionStorage.setItem('BloggScrollPosition', window.scrollY.toString())
+}
+
+useEffect(()=>{
+  const previousScrollPosition:number = parseInt(window.sessionStorage.getItem('BloggScrollPosition') || '0')
+  if(previousScrollPosition > 0)
+  smoothScroll(previousScrollPosition)
+  window.addEventListener('scroll', scrollHandler)
+  return () => {
+    window.removeEventListener('scroll', scrollHandler)
+  }
+}, [])
 
   return (
     <Background>
