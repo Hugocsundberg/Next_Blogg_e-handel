@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
-import { BlurDiv, OptionText, BottomContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer, CartP } from './elements'
+import { BlurDiv, OptionText, BottomContainer, RightSideContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer, CartP } from './elements'
 import { getOptions, Option } from './config'
 import { rem } from '../../styles/globalStyleVariables'
 import { GetStaticProps } from 'next';
@@ -15,32 +15,52 @@ import { getFromStorage } from '../../functions';
 const Post = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boolean}) => {
     
     const [currentPath, setcurrentPath] = useState('');
+    const [isDesktop, setisDesktop] = useState(false);
     const router = useRouter()
     const _route = router.route.replace('/', '')
     const [ isExpanded, setIsExpanded ] = useState(false)
     const [ cartItems, setcartItems ] = useState<string | number>('-')
+    const desktopSize:number = 700
+    
     const updateCartItems = () => {
         const cart:Array<Product> | null | undefined = getFromStorage('cart')
         if(Array.isArray(cart)) {
             setcartItems(cart.length)
         }
     }
+    
+    const resizeHandlerIsDesktop = (): void => {
+        if(window.innerWidth > desktopSize) setisDesktop(true)
+        else setisDesktop(false)
+    }
+
     useEffect(()=>{
         if(process.browser) {   
+            //Set path
             let path = window.location.toString().replace(/(?<!\/)\/[^\/].+/, '')
             path = path.replace(/\/$/, '')
             setcurrentPath(path)
 
+            //Update Cart
             updateCartItems()
             window.addEventListener('updatecart', updateCartItems)
+
+            //Check if desktop
+            resizeHandlerIsDesktop()
+            window.addEventListener('resize', resizeHandlerIsDesktop)
+
+            return () => {
+                window.removeEventListener('updatecart', updateCartItems)
+                window.removeEventListener('resize', resizeHandlerIsDesktop)
+            }
         }
     }, [])
 
     return (
         <>
         {spacer ? <Spacer/> : ''}
-        <BlurDiv isExpanded={isExpanded} optionsHeight={getOptionsHeight(aboutMe)}>
-            {getOptions(aboutMe, _route).map((option:Option, key:any)=>(
+        <BlurDiv isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
+            {isDesktop ? '' : getOptions(aboutMe, _route, isDesktop).map((option:Option, key:any)=>(
                 <a key={key} href={`${currentPath}${option.link}`}>
                     <OptionDiv >   
                             <ImageDiv>
@@ -58,6 +78,8 @@ const Post = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:bool
                 </a>
             ))}
             <BottomContainer className="topOverlay">
+                {
+                isDesktop ? '' :
                 <HamburgerContainer>
                     <Hamburger
                     size={rem * 1.8}    
@@ -67,21 +89,59 @@ const Post = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:bool
                     duration={0.6}
                     />
                 </HamburgerContainer>
+                }
                 
                 <Link href="/" scroll={false}>
                     <Logo>Marina Sundberg</Logo>
                 </Link>
-                <Link href="/cart">
-                    <Cart>
-                        <CartP>{cartItems}</CartP>
-                        <Image
-                            src="/shop-cart.svg"
-                            alt="hamburger"
-                            layout="fill"
-                            objectFit="contain"
-                        />
-                    </Cart>
-                </Link>
+                <RightSideContainer>
+                    {
+                    isDesktop ? 
+                    getOptions(aboutMe, _route, isDesktop).map((option:Option, key:any)=>(
+                        <a key={key} href={`${currentPath}${option.link}`}>
+                            <OptionDiv noBorder={true}>   
+                                {option.text === 'Kundvagn' ?
+                                <Link href="/cart">
+                                    <Cart>
+                                        <CartP>{cartItems}</CartP>
+                                        <Image
+                                            src="/shop-cart.svg"
+                                            alt="hamburger"
+                                            layout="fill"
+                                            objectFit="contain"
+                                        />
+                                    </Cart>
+                                </Link>
+                                :
+                                <ImageDiv>
+                                    <Image
+                                        src={option.image}
+                                        alt={option.text}
+                                        layout="fill"
+                                        objectFit="contain"
+                                    />
+                                </ImageDiv>
+                                }  
+                                    <OptionText>
+                                        {option.text}
+                                    </OptionText>
+                                </OptionDiv>
+                        </a>
+                    )) 
+                    : 
+                    <Link href="/cart">
+                        <Cart>
+                            <CartP>{cartItems}</CartP>
+                            <Image
+                                src="/shop-cart.svg"
+                                alt="hamburger"
+                                layout="fill"
+                                objectFit="contain"
+                            />
+                        </Cart>
+                    </Link>
+                    }
+                </RightSideContainer>
             </BottomContainer>
         </BlurDiv>
         </>

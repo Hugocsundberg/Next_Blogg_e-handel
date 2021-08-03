@@ -17,7 +17,7 @@ export const BlurDiv = styled.div<{isExpanded: boolean, optionsHeight: number}>`
     transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
 `
 
-export const OptionDiv = styled.button`
+export const OptionDiv = styled.button<{noBorder?:boolean}>`
     width: 100%;
     border: none;
     background: none;
@@ -25,6 +25,7 @@ export const OptionDiv = styled.button`
     border-bottom: #E0E0E0;
     border-bottom-width: ${lineWidth}px;
     border-bottom-style: solid;
+    border: ${props => props.noBorder ? 'none' : ''};
     display: flex;
     cursor: pointer;
     justify-content: start;
@@ -58,6 +59,7 @@ export const BottomContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 ${margin}rem;
 `
 
 export const HamburgerContainer = styled.button`
@@ -68,7 +70,7 @@ export const HamburgerContainer = styled.button`
     border: none;
     background: none;
     --webkit-appearance: none;
-    margin-left: 0.8rem;
+    margin-left: ${1 - margin}rem;
 `
 
 export const Logo = styled.p`
@@ -80,6 +82,10 @@ export const Logo = styled.p`
     line-height: ${lineHeightLogo}rem;
 `
 
+export const RightSideContainer = styled.div`
+display: flex;
+`
+
 
 export const Cart = styled.button`
     height: ${imageHeight}rem;
@@ -89,7 +95,6 @@ export const Cart = styled.button`
     border: none;
     background: none;
     --webkit-appearance: none;
-    margin-right: ${margin}rem;
     display: flex;
     justify-content: center;
     align-items: center;
