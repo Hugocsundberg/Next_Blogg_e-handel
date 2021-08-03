@@ -36,12 +36,15 @@ const ContentContainer = styled.div<{ hasProduct: boolean }>`
     border-radius: 10px;
     box-shadow: ${boxShadowBigElement};
     padding: ${margin}rem;
-    padding-bottom: ${props => props.hasProduct ?' 6rem' : `${margin}rem`};
+    padding-bottom: ${props => props.hasProduct ?' 6rem' : `0`};
     padding-top: 0;
 `
 
 const ImageContainer = styled.div`
-  box-shadow: ${boxShadowBigElement};
+  /* box-shadow: ${boxShadowBigElement}; */
+  margin: 1.5rem 0;
+  border-radius: 2px;
+  overflow: hidden;
 `
 
 const Paragraph = styled.p`
