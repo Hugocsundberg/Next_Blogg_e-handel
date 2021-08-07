@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { BlurDiv, OptionText, BottomContainer, RightSideContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer, CartP } from './elements'
-import { getOptions, Option } from './config'
+import { getOptions } from './config'
 import { rem } from '../../styles/globalStyleVariables'
 import { GetStaticProps } from 'next';
 import { Spiral as Hamburger } from 'hamburger-react'
 import Link from 'next/link'
-import { AboutMe, Product } from '../../generalTypes';
+import { AboutMe, Product, NavOption } from '../../generalTypes';
 import { getOptionsHeight } from './functions';
 import { useRouter } from 'next/router'
 import { getFromStorage } from '../../functions';
 
 
-const Post = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boolean}) => {
+const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boolean}) => {
     
     const [currentPath, setcurrentPath] = useState('');
     const [isDesktop, setisDesktop] = useState(false);
@@ -60,9 +60,9 @@ const Post = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:bool
         <>
         {spacer ? <Spacer/> : ''}
         <BlurDiv isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
-            {isDesktop ? '' : getOptions(aboutMe, _route, isDesktop).map((option:Option, key:any)=>(
+            {isDesktop ? '' : getOptions(aboutMe, _route, isDesktop, ).map((option:Option, key:any)=>(
                 <a key={key} href={`${currentPath}${option.link}`}>
-                    <OptionDiv >   
+                    <OptionDiv>   
                             <ImageDiv>
                                 <Image
                                     src={option.image}
@@ -97,9 +97,9 @@ const Post = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:bool
                 <RightSideContainer>
                     {
                     isDesktop ? 
-                    getOptions(aboutMe, _route, isDesktop).map((option:Option, key:any)=>(
+                    getOptions(aboutMe, _route, isDesktop, router.asPath === `/post/${aboutMe[0].slug.current}` ).map((option:NavOption, key:any)=>(
                         <a key={key} href={`${currentPath}${option.link}`}>
-                            <OptionDiv noBorder={true}>   
+                            <OptionDiv noBorder={true} isActive={option.isActive}>   
                                 {option.text === 'Kundvagn' ?
                                 <Link href="/cart">
                                     <Cart>
@@ -155,4 +155,4 @@ export async function getStaticProps() {
     }
   } 
 
-export default Post;
+export default Nav;

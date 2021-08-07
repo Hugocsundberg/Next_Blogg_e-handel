@@ -17,10 +17,10 @@ export const BlurDiv = styled.div<{isExpanded: boolean, optionsHeight: number}>`
     transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
 `
 
-export const OptionDiv = styled.button<{noBorder?:boolean}>`
+export const OptionDiv = styled.button<{noBorder?:boolean, isActive?:boolean}>`
     width: 100%;
     border: none;
-    background: none;
+    background: ${props=>props.isActive ? `${darken}` : 'none'};
     font-size: 1rem;
     border-bottom: #E0E0E0;
     border-bottom-width: ${lineWidth}px;
@@ -40,6 +40,7 @@ export const OptionDiv = styled.button<{noBorder?:boolean}>`
         background-color: ${lighten};
     }
 `
+
 
 export const ImageDiv = styled.div`
     height: ${imageHeight}rem;

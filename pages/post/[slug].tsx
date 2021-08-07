@@ -59,6 +59,7 @@ const urlFor = (source: string) => {
 
 const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   console.log(aboutMe)
+  const aboutMeStatic:Array<AboutMe> = JSON.parse(aboutMe)
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const _post: PostType = JSON.parse(post)
   const [navoverlayHeight, setnavoverlayHeight] = useState(0);
@@ -73,7 +74,6 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   if(_aboutMe[0].slug.current === _post.slug) {
     _aboutMe.pop()
   }
-  console.log(_aboutMe)
   const router = useRouter()
   
   if (router.isFallback) {
@@ -85,6 +85,8 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
       </>
     )
   }
+
+  console.log(_aboutMe)
   
   const serializers = {
     types: {
@@ -114,7 +116,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
         <title>Cart</title>
         </Head>
         <Background>
-          <Nav aboutMe={_aboutMe}></Nav>
+          <Nav aboutMe={aboutMeStatic}></Nav>
           <CenterContent overlayHeight={navoverlayHeight}>
             <ContentContainer hasProduct={_post.productSlug ? true : false}>
               <PortableText
@@ -156,10 +158,10 @@ export async function getStaticProps({ params }: {params: any}) {
    postData ? postJson = JSON.stringify(postData) : postJson = '{"undefined":"true"}'
 
    let settingsData
-    const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"Title": aboutme->title}'
-    await client.fetch(settingsquery)
-    .then((settings: Array<AboutMe>) => settingsData = settings)
-    const settingsJson = JSON.stringify(settingsData)
+   const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
+   await client.fetch(settingsquery)
+   .then((settings: Array<AboutMe>) => settingsData = settings)
+   const settingsJson = JSON.stringify(settingsData)
 
   return {
     props: {

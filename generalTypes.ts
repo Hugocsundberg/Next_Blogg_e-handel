@@ -60,6 +60,7 @@ export interface Product extends Content {
     }
 
 export interface NavOption {
+    "isActive": boolean;
     "text": string
     "image": string
     "link": string
