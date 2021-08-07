@@ -20,7 +20,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     const _route = router.route.replace('/', '')
     const [ isExpanded, setIsExpanded ] = useState(false)
     const [ cartItems, setcartItems ] = useState<string | number>('-')
-    const desktopSize:number = 700
+    const desktopSize:number = 800
     
     const updateCartItems = () => {
         const cart:Array<Product> | null | undefined = getFromStorage('cart')

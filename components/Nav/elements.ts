@@ -85,6 +85,7 @@ export const Logo = styled.p`
 
 export const RightSideContainer = styled.div`
 display: flex;
+gap: 10px
 `
 
 
