@@ -1,6 +1,6 @@
 import { AboutMe, NavOption } from "../../generalTypes"
 
-export const getOptions = (aboutMe:(Array<AboutMe>), slug:string | undefined, isDesktop:boolean, isAboutMe?:boolean) : Array<NavOption> => {
+export const getOptions = (aboutMe:(Array<AboutMe>), slug:string | undefined, isAboutMe?:boolean) : Array<NavOption> => {
     const optionsArray:Array<NavOption> = [
         {isActive: slug === '' ? true : false, text: 'Blogg', image: '/postIcon.svg', link: '/'},
         {isActive: slug === 'products' ? true : false, text: 'Tavlor', image: '/imageicon.svg', link: '/products'},

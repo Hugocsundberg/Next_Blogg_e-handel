@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { BlurDiv, OptionText, BottomContainer, RightSideContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer, CartP } from './elements'
 import { getOptions } from './config'
 import { rem } from '../../styles/globalStyleVariables'
-import { GetStaticProps } from 'next';
 import { Spiral as Hamburger } from 'hamburger-react'
 import Link from 'next/link'
 import { AboutMe, Product, NavOption } from '../../generalTypes';
@@ -13,7 +12,6 @@ import { getFromStorage } from '../../functions';
 
 
 const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boolean}) => {
-    
     const [currentPath, setcurrentPath] = useState('');
     const [componentLoaded, setcomponentLoaded] = useState(false);
     const [isDesktop, setisDesktop] = useState(false);
@@ -22,11 +20,11 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     const [ isExpanded, setIsExpanded ] = useState(false)
     const [ cartItems, setcartItems ] = useState<string | number>('-')
     const desktopSize:number = 800
-    
+
     const updateCartItems = () => {
-        const cart:Array<Product> | null | undefined = getFromStorage('cart')
+        const cart:Array<Object> | null | undefined = getFromStorage('cart')
         if(Array.isArray(cart)) {
-            setcartItems(cart.length)
+            setcartItems((cart as Array<Product>).length)
         }
     }
     
@@ -66,9 +64,9 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
         <>
         {spacer ? <Spacer/> : ''}
         <BlurDiv componentIsLoaded={componentLoaded} isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
-            {isDesktop ? '' : getOptions(aboutMe, _route, isDesktop, ).map((option:Option, key:any)=>(
+            {isDesktop ? '' : getOptions(aboutMe, _route, router.asPath === `/post/${aboutMe[0].slug.current}`).map((option:NavOption, key:any)=>(
                 <a key={key} href={`${currentPath}${option.link}`}>
-                    <OptionDiv>   
+                    <OptionDiv isActive={option.isActive}>   
                             <ImageDiv>
                                 <Image
                                     src={option.image}
@@ -103,7 +101,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                 <RightSideContainer>
                     {
                     isDesktop ? 
-                    getOptions(aboutMe, _route, isDesktop, router.asPath === `/post/${aboutMe[0].slug.current}` ).map((option:NavOption, key:any)=>(
+                    getOptions(aboutMe, _route, router.asPath === `/post/${aboutMe[0].slug.current}` ).map((option:NavOption, key:any)=>(
                         <a key={key} href={`${currentPath}${option.link}`}>
                             <OptionDiv noBorder={true} isActive={option.isActive}>   
                                 {option.text === 'Kundvagn' ?
