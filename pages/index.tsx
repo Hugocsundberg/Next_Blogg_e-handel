@@ -6,7 +6,6 @@ import PostComponent from '../components/Post/Post'
 import { Header } from '../components/GlobalElements'
 import Nav from '../components/Nav'
 import { AboutMe, Post as PostType, ScrollEvent } from '../generalTypes'
-import { ScrollPositionObjectType } from '../generalTypes'
 import Masonry from 'react-masonry-css'
 import { Background } from '../components/GlobalElements'
 // @ts-ignore
@@ -69,7 +68,7 @@ useEffect(()=>{
   )
 }
 
-export const getStaticProps:GetStaticProps = async (context) : Promise<any> => {
+export const getStaticProps:GetStaticProps = async () : Promise<any> => {
     let postsData
     const postsQuery = '*[_type == "post"]{"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}'
     await client.fetch(postsQuery)
@@ -86,6 +85,6 @@ export const getStaticProps:GetStaticProps = async (context) : Promise<any> => {
     props: {
       posts: postsJson,
       aboutMe: settingsJson
-    }, // will be passed to the page component as props
+    },
   }
 }

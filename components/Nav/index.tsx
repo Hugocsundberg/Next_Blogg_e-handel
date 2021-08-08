@@ -15,10 +15,10 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     const [currentPath, setcurrentPath] = useState('');
     const [componentLoaded, setcomponentLoaded] = useState(false);
     const [isDesktop, setisDesktop] = useState(false);
-    const router = useRouter()
-    const _route = router.route.replace('/', '')
     const [ isExpanded, setIsExpanded ] = useState(false)
     const [ cartItems, setcartItems ] = useState<string | number>('-')
+    const router = useRouter()
+    const _route = router.route.replace('/', '')
     const desktopSize:number = 800
 
     const updateCartItems = () => {
@@ -34,25 +34,25 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     }
 
     useEffect(()=>{
+        //set component loaded
+        setTimeout(() => {
+            setcomponentLoaded(true)
+        }, 1);
+
         if(process.browser) {   
             //Set path
             let path = window.location.toString().replace(/(?<!\/)\/[^\/].+/, '')
             path = path.replace(/\/$/, '')
             setcurrentPath(path)
-
-            //set component loaded
-            setTimeout(() => {
-                setcomponentLoaded(true)
-            }, 1);
-
+            
             //Update Cart
             updateCartItems()
             window.addEventListener('updatecart', updateCartItems)
-
+            
             //Check if desktop
             resizeHandlerIsDesktop()
             window.addEventListener('resize', resizeHandlerIsDesktop)
-
+            
             return () => {
                 window.removeEventListener('updatecart', updateCartItems)
                 window.removeEventListener('resize', resizeHandlerIsDesktop)
@@ -151,12 +151,5 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
         </>
     );
 }
-
-export async function getStaticProps() {
-
-    return {
-      props: {}, // will be passed to the page component as props
-    }
-  } 
 
 export default Nav;

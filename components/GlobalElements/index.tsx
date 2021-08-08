@@ -15,7 +15,7 @@ export const FlexCenter = styled.div`
 `
 
 interface Props {
-    height: string
+    height: string,
 }
 
 export const FlexCenterCenter = styled.div<Props>`

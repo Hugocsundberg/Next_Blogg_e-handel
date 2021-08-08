@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router'
 import client from '../../client'
-import { AboutMe, Post as PostType, Product as ProductType, ScreenSizes } from '../../generalTypes'
+import { AboutMe, Product as ProductType } from '../../generalTypes'
 // @ts-ignore
-import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
 import Image from 'next/image'
 import { FlexCenterCenter } from '../../components/GlobalElements'
@@ -12,13 +11,13 @@ import styled from 'styled-components'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { margin } from '../../styles/globalStyleVariables'
-import ArrowNext from '../../components/Arrow'
 import Arrow from '../../components/Arrow'
 import ActionButton from '../../components/ActionButton'
 import { addObjectToStorage, getBottomOverlayHeight, getFromStorage, getTopOverlayHeight } from '../../functions'
 import { screenSizes } from '../../styles/globalStyleVariables'
 import { useEffect, useState } from 'react'
 import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements'
+import SquareLoader from "react-spinners/SquareLoader";
 
 const builder = imageUrlBuilder(client)
 
@@ -115,12 +114,11 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     resizeHandler()
     window.addEventListener('resize', resizeHandler)
     const topOverlayHeight:number = getTopOverlayHeight()
-    const bottomOverlayHeight:number = getBottomOverlayHeight()
 
-    setnavoverlayHeight(topOverlayHeight + bottomOverlayHeight)
+    setnavoverlayHeight(topOverlayHeight)
   }, []);
   
-  const renderThumbs = (props:any) => {
+  const renderThumbs = () => {
     return _product.images.map((image)=> (
       <ThumbContainer>
         <Image
@@ -169,7 +167,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     return (
       <>
         <FlexCenterCenter height="100vh">
-          <div>Loading...</div>
+          <SquareLoader/>
         </FlexCenterCenter>
       </>
     )
@@ -219,7 +217,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     return (
       <FlexCenterCenter height="100vh">
         <h1>404</h1>
-        <Paragraph>Produkt finns inte</Paragraph>
+        <Paragraph>Sidan finns inte 🥲</Paragraph>
       </FlexCenterCenter>
     ) 
   }

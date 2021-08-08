@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { margin } from '../styles/globalStyleVariables';
 
 const Background = styled.div<{right:boolean, fadeOut:boolean}>`
     opacity: ${(props) => props.fadeOut ? 0 : 0.3 };

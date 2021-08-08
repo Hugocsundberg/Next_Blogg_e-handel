@@ -1,28 +1,14 @@
 import client from "../../client"
 import { AboutMe, Product as ProductType } from "../../generalTypes"
-import { getCols } from "../../functions"
-import { useEffect, useState} from "react"
 import Masonry from 'react-masonry-css'
 import Product from "../../components/Product"
 import Nav from '../../components/Nav'
-import styled from 'styled-components'
-import { margin, screenSizes } from '../../styles/globalStyleVariables'
+import { screenSizes } from '../../styles/globalStyleVariables'
 import Head from "next/head"
 import { Header } from "../../components/GlobalElements"
 
 const Products = ({ products, aboutMe }: {products: string, aboutMe: string}) => {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
-    // const [cols, setCols] = useState<number>(0);
-    // const sizeHandler = () => {
-    //     setCols(getCols(window.innerWidth))
-    // }
-    // useEffect(() => {
-    //     sizeHandler()
-    //     window.addEventListener('resize', sizeHandler)
-    //     return () => {
-    //         window.removeEventListener('resize', sizeHandler)
-    //     };
-    // }, []);
 
     const _products: Array<ProductType> = JSON.parse(products)
     const breakpointColumnsObj = {
@@ -50,7 +36,7 @@ const Products = ({ products, aboutMe }: {products: string, aboutMe: string}) =>
     ) 
   }
 
-export async function getStaticProps({ params }: {params: any}) {
+export async function getStaticProps() {
     const query = `*[_type == 'product']{_createdAt, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
     let productsData
     await client.fetch(query)

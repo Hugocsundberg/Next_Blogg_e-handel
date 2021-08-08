@@ -1,4 +1,3 @@
-import { exception } from "console"
 import { cols, Product } from "./generalTypes"
 import { screenSizes } from "./styles/globalStyleVariables"
 
@@ -7,8 +6,8 @@ export const handleScroll = () => {
   }
 
 export const getCols = (screenWidth:number): cols => {
-  const S:number = screenSizes[0]
-  const M:number = screenSizes[1]
+  const S:number = screenSizes.S
+  const M:number = screenSizes.M
 
   if(screenWidth < S) return 1
   if(screenWidth < M) return 2

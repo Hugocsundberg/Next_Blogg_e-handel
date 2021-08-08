@@ -4,28 +4,22 @@ import { AboutMe, Post as PostType } from '../../generalTypes'
 // @ts-ignore
 import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
-// import { ContentContainer, ImageContainer, CenterContent } from './elements'
 import Image from 'next/image'
 import { FlexCenterCenter } from '../../components/GlobalElements'
 import Nav from '../../components/Nav'
 import ActionButton from '../../components/ActionButton'
 import styled from 'styled-components'
-import { boxShadowBigElement, margin, screenSizes } from '../../styles/globalStyleVariables'
-import { getTopOverlayHeight } from '../../functions'
-import { useState, useEffect } from 'react'
-import { getBottomOverlayHeight } from '../../functions'
+import { boxShadowBigElement, margin } from '../../styles/globalStyleVariables'
 import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements'
 import { Background } from '../../components/GlobalElements'
 import Head from 'next/head'
+import SquareLoader from "react-spinners/SquareLoader";
 
-const CenterContent = styled.div<{overlayHeight: number}>`
+const CenterContent = styled.div`
     display: flex;
     justify-content: center;
     position: relative;
-    padding: ${margin}rem 0;
-    @media (min-width: ${screenSizes.M}px) {
-      min-height: calc(100vh - ${props => props.overlayHeight}px);
-    }
+    padding: ${margin}rem;
 `
 
 const ContentContainer = styled.div<{ hasProduct: boolean }>`
@@ -41,7 +35,6 @@ const ContentContainer = styled.div<{ hasProduct: boolean }>`
 `
 
 const ImageContainer = styled.div`
-  /* box-shadow: ${boxShadowBigElement}; */
   margin: 1.5rem 0;
   border-radius: 2px;
   overflow: hidden;
@@ -58,18 +51,9 @@ const urlFor = (source: string) => {
 }
 
 const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
-  console.log(aboutMe)
   const aboutMeStatic:Array<AboutMe> = JSON.parse(aboutMe)
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const _post: PostType = JSON.parse(post)
-  const [navoverlayHeight, setnavoverlayHeight] = useState(0);
-
-  useEffect(()=>{
-    const topOverlayHeight:number = getTopOverlayHeight()
-    const bottomOverlayHeight:number = getBottomOverlayHeight()
-
-    setnavoverlayHeight(topOverlayHeight + bottomOverlayHeight)
-  }, [])
 
   if(_aboutMe[0].slug.current === _post.slug) {
     _aboutMe.pop()
@@ -80,13 +64,11 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
     return (
       <>
         <FlexCenterCenter height="100vh">
-          <div>Loading...</div>
+          <SquareLoader/>
         </FlexCenterCenter>
       </>
     )
   }
-
-  console.log(_aboutMe)
   
   const serializers = {
     types: {
@@ -117,7 +99,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
         </Head>
         <Background>
           <Nav aboutMe={aboutMeStatic}></Nav>
-          <CenterContent overlayHeight={navoverlayHeight}>
+          <CenterContent>
             <ContentContainer hasProduct={_post.productSlug ? true : false}>
               <PortableText
                 blocks={(_post as PostType).body}
@@ -140,7 +122,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
     return (
       <FlexCenterCenter height="100vh">
         <h1>404</h1>
-        <Paragraph>Nånting finns inte</Paragraph>
+        <Paragraph>Sidan finns inte 🥲</Paragraph>
       </FlexCenterCenter>
     ) 
   }
@@ -168,7 +150,7 @@ export async function getStaticProps({ params }: {params: any}) {
       post: postJson,
       aboutMe: settingsJson
     },
-    revalidate: 10
+    revalidate: 60
   }
 }
 

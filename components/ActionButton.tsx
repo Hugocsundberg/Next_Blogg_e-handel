@@ -1,5 +1,5 @@
 import React from 'react';
-import { Background, Button, Text } from './GlobalElements/ActionButtonElements';
+import { Background, Button } from './GlobalElements/ActionButtonElements';
 
 const ActionButton = ({ text, onClick }: {text:string, onClick:any}) => {
     return (

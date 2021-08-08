@@ -89,15 +89,4 @@ const CartItem = ({ product }: {product: Product}) => {
     );
 }
 
-
-{/* <Image
-                        src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
-                        alt={image.alt || 'no alt text'}
-                        width={image.imageWidth}
-                        height={image.imageHeight}
-                        layout="responsive"
-                    /> */}
-
-
-
 export default CartItem;

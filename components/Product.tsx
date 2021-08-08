@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/dist/client/image';
 import imageUrlBuilder from '@sanity/image-url'
 import client from '../client'
-import { Image as ImageType, ImageHW } from '../generalTypes'
+import { ImageHW } from '../generalTypes'
 import styled from 'styled-components';
 import Link from 'next/link'
 import { margin } from '../styles/globalStyleVariables';
@@ -21,7 +21,7 @@ const urlFor = (source: string) => {
   return builder.image(source)
 }
 
-export const Product = ({alt, images, slug, removeMargin = false, hasShadow = true}:{alt:string, images: Array<ImageHW>, slug:string, removeMargin?: boolean, hasShadow:boolean}) => {
+export const Product = ({alt, images, slug, removeMargin = false, hasShadow = true}:{alt:string, images: Array<ImageHW>, slug:string, removeMargin?: boolean, hasShadow?:boolean}) => {
     return (
         <Link href={`/product/${slug}`}>
             <Border hasShadow={hasShadow} removeMargin={removeMargin}>
