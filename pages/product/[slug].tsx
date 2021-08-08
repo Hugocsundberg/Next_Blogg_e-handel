@@ -61,6 +61,8 @@ const CenterContent = styled.div`
 width: 100%;
 @media (min-width: ${screenSizes.M}px) {
   width: unset;
+  display: flex;
+  justify-content: center;
   }
 `
 
@@ -77,10 +79,12 @@ const Block1 = styled.div`
   flex-grow: 8;
   `
 const Block2 = styled.div`
-  max-width: 40%;
   flex-grow: 1;
   position: relative;
   margin-top: 2%;
+  @media (min-width: ${screenSizes.M}px) {
+    max-width: 40%;
+  }
 `
 
 const BlockContainer = styled.div`
@@ -89,7 +93,7 @@ const BlockContainer = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
-    width: 70%;
+    width:80%;
     min-width: 700px;
   }
 `
