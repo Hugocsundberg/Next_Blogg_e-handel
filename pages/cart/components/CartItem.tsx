@@ -80,7 +80,7 @@ const CartItem = ({ product }: {product: Product}) => {
                     />
                 </ImageContainer>
                 <TextContainer>
-                    <H>Produkt</H>
+                    <H>{product.title}</H>
                     <P>{`${product.price}KR`}</P>
                 </TextContainer>
             </FlexLeft>
