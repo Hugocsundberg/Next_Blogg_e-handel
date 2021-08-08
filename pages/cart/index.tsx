@@ -3,7 +3,7 @@ import ActionButtonCart from './components/ActionButtonCart';
 import Head from "next/head"
 import client from '../../client';
 import { AboutMe, Product } from "../../generalTypes"
-import Header from "../../components/GlobalElements/Header"
+import { Header } from "../../components/GlobalElements"
 import Nav from '../../components/Nav'
 import CartItem from './components/CartItem';
 import { useState, useEffect } from 'react';
@@ -11,7 +11,7 @@ import { getFromStorage, getTopOverlayHeight } from '../../functions';
 import styled from 'styled-components';
 import { margin, screenSizes } from '../../styles/globalStyleVariables';
 import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements';
-import { Background } from '../../components/GlobalElements/Background';
+import { Background } from '../../components/GlobalElements';
 
 const CartContainer = styled.div<{ topOverlayHeight: number }>`
     width: 100%;

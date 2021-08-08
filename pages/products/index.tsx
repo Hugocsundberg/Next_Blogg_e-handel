@@ -8,7 +8,7 @@ import Nav from '../../components/Nav'
 import styled from 'styled-components'
 import { margin, screenSizes } from '../../styles/globalStyleVariables'
 import Head from "next/head"
-import Header from "../../components/GlobalElements/Header"
+import { Header } from "../../components/GlobalElements"
 
 const Products = ({ products, aboutMe }: {products: string, aboutMe: string}) => {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
@@ -43,7 +43,7 @@ const Products = ({ products, aboutMe }: {products: string, aboutMe: string}) =>
           className="masonry-grid"
           columnClassName="masonry-grid_column">
           {_products.map((product, key)=>(
-            <Product key={key} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current}></Product>
+            <Product key={key} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
           ))}
         </Masonry>
       </>

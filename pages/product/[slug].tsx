@@ -5,9 +5,9 @@ import { AboutMe, Post as PostType, Product as ProductType, ScreenSizes } from '
 import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
 import Image from 'next/image'
-import FlexCenterCenter from '../../components/GlobalElements/FlexCenterCenter'
+import { FlexCenterCenter } from '../../components/GlobalElements'
 import Nav from '../../components/Nav'
-import Paragraph from '../../components/GlobalElements/Paragraph'
+import { Paragraph } from '../../components/GlobalElements'
 import styled from 'styled-components'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
