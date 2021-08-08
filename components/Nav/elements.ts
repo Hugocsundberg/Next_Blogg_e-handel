@@ -2,9 +2,8 @@ import styled from 'styled-components'
 import { blurPx, blurColor, margin, lineWidth, imageHeight, darken, lighten} from '../../styles/globalStyleVariables'
 import { optionDivPadding, marginLogo, lineHeightLogo} from './styleVariables'
 import { getOptionsHeight, getBottomNavHeight } from './functions'
-import {  } from 'styled-components'
  
-export const BlurDiv = styled.div<{isExpanded: boolean, optionsHeight: number}>`
+export const BlurDiv = styled.div<{isExpanded: boolean, optionsHeight: number, componentIsLoaded:boolean}>`
     transform: translate(0, ${props =>props.isExpanded ? props.optionsHeight : 0}px);
     background: ${blurColor};
     width: 100%;
@@ -13,7 +12,7 @@ export const BlurDiv = styled.div<{isExpanded: boolean, optionsHeight: number}>`
     z-index: 10;
     top: -${props => props.optionsHeight}px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
-    transition: 0.6s;
+    transition: ${props=>props.componentIsLoaded ? '0.6s' : '0s'};
     transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
 `
 

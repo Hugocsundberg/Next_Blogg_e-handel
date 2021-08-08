@@ -15,6 +15,7 @@ import { getFromStorage } from '../../functions';
 const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boolean}) => {
     
     const [currentPath, setcurrentPath] = useState('');
+    const [componentLoaded, setcomponentLoaded] = useState(false);
     const [isDesktop, setisDesktop] = useState(false);
     const router = useRouter()
     const _route = router.route.replace('/', '')
@@ -41,6 +42,11 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
             path = path.replace(/\/$/, '')
             setcurrentPath(path)
 
+            //set component loaded
+            setTimeout(() => {
+                setcomponentLoaded(true)
+            }, 1);
+
             //Update Cart
             updateCartItems()
             window.addEventListener('updatecart', updateCartItems)
@@ -59,7 +65,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     return (
         <>
         {spacer ? <Spacer/> : ''}
-        <BlurDiv isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
+        <BlurDiv componentIsLoaded={componentLoaded} isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
             {isDesktop ? '' : getOptions(aboutMe, _route, isDesktop, ).map((option:Option, key:any)=>(
                 <a key={key} href={`${currentPath}${option.link}`}>
                     <OptionDiv>   
