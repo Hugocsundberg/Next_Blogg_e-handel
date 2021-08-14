@@ -8,6 +8,15 @@ html,body {
   background: white;
 }
 
+::selection {
+  background: #000000; /* WebKit/Blink Browsers */
+  color: white;
+}
+::-moz-selection {
+  background: #000000; /* Gecko Browsers */
+  color: white;
+}
+
 a {
   color: inherit;
   text-decoration: none;
