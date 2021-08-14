@@ -31,14 +31,14 @@ const PTax = styled.p`
     }
 `
 
-const ActionButtonCart = ({price, tax}: {price: number, tax: number}) => {
+const ActionButtonCart = ({price, tax, onClick}: {price: number, tax: number, onClick:()=>void}) => {
     return (
         <>
         <Background className="bottomOverlay">
             <H>Total</H>
             <P>{`${price} SEK`}</P>
             <PTax>{`(includes ${tax} SEK Tax)`}</PTax>
-            <Button color="white" bgcolor="rgb(245,106,141)">Checka ut med klarna</Button>
+            <Button onClick={onClick} color="white" bgcolor="rgb(245,106,141)">Checka ut med klarna</Button>
         </Background>
         </>
     );
