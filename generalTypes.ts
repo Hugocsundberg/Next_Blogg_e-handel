@@ -90,3 +90,7 @@ export interface ScreenSizes {
     M: number
     L: number
 }
+
+export interface KlarnaCheckoutSnippetResponse {
+    htmlSnippet: string
+}
