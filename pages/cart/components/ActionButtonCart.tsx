@@ -15,17 +15,8 @@ const P = styled.p`
     margin: 0.5rem 1rem;
     margin-top: 0rem;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     color: ${darkGray};
-    @media (min-width: ${screenSizes.M}px) {
-        margin: 1rem;
-    }
-`
-const PTax = styled.p`
-    margin: 0.5rem 1rem;
-    margin-bottom: 0rem;
-    font-size: 0.8rem;
-    color: ${lightGray};
     @media (min-width: ${screenSizes.M}px) {
         margin: 1rem;
     }
@@ -37,7 +28,6 @@ const ActionButtonCart = ({price, tax, onClick}: {price: number, tax: number, on
         <Background className="bottomOverlay">
             <H>Total</H>
             <P>{`${price} SEK`}</P>
-            <PTax>{`(includes ${tax} SEK Tax)`}</PTax>
             <Button onClick={onClick} color="white" bgcolor="rgb(245,106,141)">Checka ut med klarna</Button>
         </Background>
         </>
