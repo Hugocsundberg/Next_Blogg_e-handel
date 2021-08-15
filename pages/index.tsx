@@ -22,10 +22,8 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
     [800]: 1
   };
 
-const scrollHandler = (e:Event) => {
-  const URLstring:string = (e as ScrollEvent).path[0].URL
-  const regex = new RegExp('(?<!\/)\/[^\/].*')
-  if(!URLstring.match(regex))
+const scrollHandler = (e:any) => {
+  if((e.currentTarget.location.pathname || 'null') === '/')
   window.sessionStorage.setItem('BloggScrollPosition', window.scrollY.toString())
 }
 

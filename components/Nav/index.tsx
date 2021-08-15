@@ -41,8 +41,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
 
         if(process.browser) {   
             //Set path
-            let path = window.location.toString().replace(/(?<!\/)\/[^\/].+/, '')
-            path = path.replace(/\/$/, '')
+            let path = window.location.origin
             setcurrentPath(path)
             
             //Update Cart
