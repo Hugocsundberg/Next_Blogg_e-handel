@@ -17,7 +17,6 @@ const Flex = styled.div`
 const P = styled.p`
     color: ${darkGray};
     margin-left: ${margin}rem;
-
 `
 
 const terms = () => {
