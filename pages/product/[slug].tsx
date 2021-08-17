@@ -160,11 +160,17 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
       )
   }
 
-  const addProductToStorage = () => {
+  const handleAddToCart = () => {
+    //Add to local storage
     const cart = getFromStorage('cart')
     if(!cart.find((product => (product as ProductType).slug.current === _product.slug.current)))
     addObjectToStorage('cart', _product)
     else alert('Product already added to cart')
+    //Send pending request
+    if(process.browser)
+    window.fetch('/api/pending', {method: 'POST', body: product, headers: {'Content-Type': 'application/json' }})
+    .then((stream)=>stream.json())
+    .then((data)=>console.log(data))
   }
   
   if (router.isFallback) {
@@ -212,7 +218,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
           </CenterContent>
         </ContentContainer>
         <ButtonContainer>
-          <ActionButton onClick={addProductToStorage} text='Lägg till i kundvagn'></ActionButton>
+          <ActionButton onClick={handleAddToCart} text='Lägg till i kundvagn'></ActionButton>
         </ButtonContainer>
       </>
     )
@@ -230,7 +236,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
 
 export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
-  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
+  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, sold, pending, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
   let productData
   await client.fetch(query)
   .then((products: Array<ProductType>) => productData = products[0])

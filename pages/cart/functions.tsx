@@ -20,3 +20,22 @@ export const renderSnippet = (snippet:string) : void => {
       throw new Error('Checkout container not found')
     }
 }
+
+export const countDown = (time:number) => {
+  console.log('gothereyay')
+  return new Promise((res)=>{
+    let timeLeft = time
+    const runner = () => {
+      console.log('runner?')
+      timeLeft--
+      if(timeLeft <= 0) {
+        res('time out')
+      } else {
+        setTimeout(() => {
+          runner()
+        }, 1000);
+      }
+    }
+    runner()
+  })
+}

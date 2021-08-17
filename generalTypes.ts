@@ -57,7 +57,13 @@ export interface Product extends Content {
     "title": string,
     "alt"?: string,
     "slug": slug
+    "pending"?: string,
+    "sold": boolean 
     }
+
+export interface ProductWithId extends Product {
+    id: string
+}
 
 export interface NavOption {
     "isActive": boolean;
