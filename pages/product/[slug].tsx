@@ -13,7 +13,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { margin } from '../../styles/globalStyleVariables'
 import Arrow from '../../components/Arrow'
 import ActionButton from '../../components/ActionButton'
-import { addObjectToStorage, getBottomOverlayHeight, getFromStorage, getTopOverlayHeight } from '../../functions'
+import { addObjectToStorage, getFromStorage, getTopOverlayHeight } from '../../functions'
 import { screenSizes } from '../../styles/globalStyleVariables'
 import { useEffect, useState } from 'react'
 import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements'
@@ -168,7 +168,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     else alert('Product already added to cart')
     //Send pending request
     if(process.browser)
-    window.fetch('/api/pending', {method: 'POST', body: product, headers: {'Content-Type': 'application/json' }})
+    window.fetch('/api/reserve', {method: 'POST', body: product, headers: {'Content-Type': 'application/json' }})
     .then((stream)=>stream.json())
     .then((data)=>console.log(data))
   }
@@ -236,11 +236,10 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
 
 export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
-  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, sold, pending, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
+  const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, sold, lastReservedAt, "id": _id, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
   let productData
   await client.fetch(query)
   .then((products: Array<ProductType>) => productData = products[0])
-  console.log(productData)
    let postJson: string
    productData ? postJson = JSON.stringify(productData) : postJson = '{"undefined":"true"}'
 

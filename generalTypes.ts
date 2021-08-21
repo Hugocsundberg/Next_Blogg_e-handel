@@ -57,13 +57,10 @@ export interface Product extends Content {
     "title": string,
     "alt"?: string,
     "slug": slug
-    "pending"?: string,
-    "sold": boolean 
+    "lastReservedAt": null | number,
+    "sold": boolean,
+    'id': string
     }
-
-export interface ProductWithId extends Product {
-    id: string
-}
 
 export interface NavOption {
     "isActive": boolean;
@@ -99,4 +96,42 @@ export interface ScreenSizes {
 
 export interface KlarnaCheckoutSnippetResponse {
     htmlSnippet: string
+}
+
+export interface KlarnaOrder {
+    billing_address: {given_name: string, family_name: string, email: string, street_address: string, postal_code: string},
+    completed_at: string,
+    customer: {
+        date_of_birth: string,
+        gender: string
+    },
+    external_checkouts: Array<any>,
+    external_payment_methods: Array<any>,
+    html_snippet: string,
+    last_modified_at: string,
+    locale: string,
+    merchant_urls: {terms: string, checkout: string, confirmation: string, push: string},
+    options: {allow_separate_shipping_address: boolean, date_of_birth_mandatory: boolean, require_validate_callback_success: boolean},
+    order_amount: number,
+    order_id: string,
+    order_lines: Array<KlarnaResponseProduct>
+    order_tax_amount: number,
+    payment_type_allows_increase: boolean,
+    purchase_country: string,
+    purchase_currency: string,
+    shipping_address: {given_name: string, family_name: string, email: string, street_address: string, postal_code: string},
+    started_at: string,
+    status: string,
+}
+
+export interface KlarnaResponseProduct {
+    name: string,
+    quantity: 1,
+    merchant_data: string,
+    tax_rate: number,
+    total_amount: number,
+    total_discount_amount: number,
+    total_tax_amount: number,
+    type: string,
+    unit_price: number,
 }
