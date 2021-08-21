@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { AboutMe } from '../generalTypes';
 import Head from "next/head"
 import client from '../client';
 import Nav from '../components/Nav';
 import { useEffect, useState } from 'react';
 import { getTopOverlayHeight } from '../functions';
-import { Background } from '../components/GlobalElements';
 
 const OuterFlex = styled.div<{topOverlayHeight:number}>`
     display: flex;
@@ -42,10 +41,25 @@ const P = styled.p`
 const confirmation = ({ aboutMe }: {aboutMe: string}) => {
     const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
     const [topOverlayHeight, settopOverlayHeight] = useState(0);
+    const router = useRouter()
+
+    //Send order to sold API
+    useEffect(() => {
+        const data = {
+            orderId: router.query.order_id
+        }
+        if(process.browser && router.isReady) {
+            window.fetch('/api/sold', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json' }})
+            .then((stream)=>stream.json())
+            .then((data)=>console.log(data))
+        }
+    }, [router.isReady]);
+
     useEffect(()=>{
         settopOverlayHeight(getTopOverlayHeight())
         //set body scroll
         document.body.style.overflow="hidden"
+        
         return () => {
             document.body.style.overflow="initial"
         }
