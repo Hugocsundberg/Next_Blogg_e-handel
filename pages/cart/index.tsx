@@ -97,7 +97,7 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
 
     const purchaseHandler = () => {
         if(process.browser) {
-            window.fetch('/api/hello', {
+            window.fetch('/api/klarna', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                   'Content-Type': 'application/json'

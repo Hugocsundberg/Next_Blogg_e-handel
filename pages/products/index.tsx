@@ -17,6 +17,7 @@ const Products = ({ products, aboutMe }: {products: string, aboutMe: string}) =>
       [screenSizes.M]: 2,
       [screenSizes.S]: 1
     };
+    console.log(_products)
     return (
       <>
         <Head>
@@ -37,7 +38,7 @@ const Products = ({ products, aboutMe }: {products: string, aboutMe: string}) =>
   }
 
 export async function getStaticProps() {
-    const query = `*[_type == 'product']{_createdAt, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
+    const query = `*[_type == 'product']{_createdAt, productHeight, "id": _id, lastReservedAt, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
     let productsData
     await client.fetch(query)
     .then((products: any) => productsData = products)

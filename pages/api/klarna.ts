@@ -14,8 +14,9 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
           order_tax_amount: 0,
           order_lines: req.body.map((product:Product)=>{
             return {
-              name: `${product.title}`,
+              name: product.title,
               quantity: 1,
+              merchant_data: JSON.stringify({id: product.id}),
               unit_price: product.price * 100,
               tax_rate: 0,
               total_amount: product.price * 100,
