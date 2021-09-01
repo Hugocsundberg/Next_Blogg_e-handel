@@ -62,11 +62,16 @@ export const getBottomOverlayHeight = () :number => {
   } else return 0
 }
 
-export const isReserved = (product:Product) : boolean => {
-  if(product.lastReservedAt) {
-    const diff = Date.now() - product.lastReservedAt  
+export const isReserved = (reserved:Product | number | null ) : boolean => {
+  if(!reserved) return false;
+  let lastReservedAt;
+  if(typeof reserved === 'number') lastReservedAt = reserved;
+  else lastReservedAt = reserved.lastReservedAt;
+  
+  if(lastReservedAt) {
+    const diff = Date.now() - lastReservedAt  
     const minutes = diff / 1000 / 60
-    return minutes < 1 ? true : false
+    return minutes < 30 ? true : false
   } else {
     return false
   }
