@@ -12,11 +12,10 @@ const Products = ({ aboutMe }: { aboutMe: string}) => {
   let suscriptionHasRun:boolean = false;
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const [_products, set_products] = useState<Array<ProductType>>([]);
-  const productsQuery = `*[_type == 'product']{_createdAt, productHeight, "id": _id, lastReservedAt, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
+  const productsQuery = `*[_type == 'product']{_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
 
   useEffect(()=>{
     if(process.browser) {
-      
       client.fetch(productsQuery)
       .then((data:Array<ProductType>)=> {
         console.log(data)
@@ -50,7 +49,6 @@ const Products = ({ aboutMe }: { aboutMe: string}) => {
               set_products([...productArray])
             })
           }, 2500);
-          
         })  
   
         return () => {
