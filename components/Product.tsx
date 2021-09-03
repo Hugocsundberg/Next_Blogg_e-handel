@@ -10,12 +10,12 @@ import { isReserved } from '../functions';
 
 const builder = imageUrlBuilder(client)
 
-const Border = styled.div<{hasShadow:boolean, removeMargin: boolean}>`
+const Border = styled.div<{hasShadow:boolean, removeMargin: boolean, pointer:boolean}>`
     background: black;
     padding: 2%;
     position: relative;
     margin-bottom: ${props => props.removeMargin ? '0px' : `${margin}rem`};
-    cursor: pointer;
+    cursor: ${props=>props.pointer ? 'pointer' : 'auto'};
     box-shadow: ${props => props.hasShadow ? '6px 6px 15px -5px #272727c4' : ''};
 `
 
@@ -72,6 +72,11 @@ const Dot = styled.div<{color: 'red' | 'yellow' | 'transparent', sold:boolean, r
 
 const Container = styled.div`
     position: relative;
+    transition-timing-function: ${animationTiming};
+    transition-duration: 1s;
+    &:hover {
+        transform: scale(1.1);
+    }
 `
 
 const urlFor = (source: string) => {
@@ -85,8 +90,8 @@ export const Product = ({alt, images, slug, removeMargin = false, hasShadow = tr
     if(sold) dotColor = 'red'
 
     return (
-        <Link href={`/product/${slug}`}>
-            <Border hasShadow={hasShadow} removeMargin={removeMargin}>
+        <Link href={(sold || _isReserved) ? '' :`/product/${slug}`}>
+            <Border pointer={(!sold && !_isReserved)} hasShadow={hasShadow} removeMargin={removeMargin}>
                 <Dot sold={sold} reserved={_isReserved} color={dotColor}></Dot>
                 <Overlay active={(_isReserved || sold) ? true : false}>
                     <OverlayText>{sold ? 'Såld' : `Reserverad av någon i ${_isReserved ? _isReserved : 'false'} minuter till.`}</OverlayText>
