@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { blurPx, blurColor, margin, lineWidth, imageHeight, darken, lighten} from '../../styles/globalStyleVariables'
+import { blurPx, blurColor, animationTiming, margin, lineWidth, imageHeight, darken, lighten} from '../../styles/globalStyleVariables'
 import { optionDivPadding, marginLogo, lineHeightLogo} from './styleVariables'
 import { getOptionsHeight, getBottomNavHeight } from './functions'
  
@@ -9,11 +9,11 @@ export const BlurDiv = styled.div<{isExpanded: boolean, optionsHeight: number, c
     width: 100%;
     backdrop-filter: blur(${blurPx}px);
     position: fixed;
-    z-index: 10;
+    z-index: 30;
     top: -${props => props.optionsHeight}px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
     transition: ${props=>props.componentIsLoaded ? '0.6s' : '0s'};
-    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition-timing-function: ${animationTiming};
 `
 
 export const OptionDiv = styled.button<{noBorder?:boolean, isActive?:boolean}>`
@@ -31,7 +31,7 @@ export const OptionDiv = styled.button<{noBorder?:boolean, isActive?:boolean}>`
     align-items: center;
     padding: ${optionDivPadding}rem ${margin}rem;
     transition: 0.6s;
-    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition-timing-function: ${animationTiming};
     &:hover{
         background-color: ${darken};
     }

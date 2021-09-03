@@ -18,3 +18,4 @@ export const screenSizes:ScreenSizes = {
 export const navHeight:number = 5.375
 export const buttonBorderRadius:number = 5
 export const boxShadowBigElement:string = '6px 6px 12px -5px rgba(0, 0, 0, 0.25)';
+export const animationTiming:string = 'cubic-bezier(0.165, 0.84, 0.44, 1)'
