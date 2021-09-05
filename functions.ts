@@ -62,7 +62,7 @@ export const getBottomOverlayHeight = () :number => {
   } else return 0
 }
 
-export const isReserved = (reserved:Product | number | null ) : (number | false) => {
+export const isReserved = (reserved:Product | number | null | undefined ) : (number | false) => {
   if(!reserved) return false;
   let lastReservedAt;
   if(typeof reserved === 'number') lastReservedAt = reserved;
