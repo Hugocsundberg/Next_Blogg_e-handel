@@ -10,6 +10,8 @@ alt?: string,
 slug: string,
 title: string,
 productSlug?: string
+productReserved?: number
+productSold?: boolean
 }
 
 export interface ScrollPositionObjectType {
