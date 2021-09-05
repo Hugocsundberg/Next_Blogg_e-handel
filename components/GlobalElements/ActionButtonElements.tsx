@@ -24,7 +24,7 @@ export const ButtonContainer = styled.div<{ doubleMargin?:boolean }>`
     padding: ${props => props.doubleMargin ? `${margin * 2}rem` : `${margin}rem` };
 `
 
-export const Button = styled.button<{bgcolor: string, color: string}>`
+export const Button = styled.button<{bgcolor: string, color: string, disabled?:boolean}>`
     border-radius: 5px;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -36,7 +36,7 @@ export const Button = styled.button<{bgcolor: string, color: string}>`
     font-weight: bold;
     background: ${props => props.bgcolor};
     color: ${props => props.color};
-    cursor: pointer;
+    cursor: ${props=>props.disabled ? 'initial' : 'pointer'};
 `
 
 export const Text = styled.p`

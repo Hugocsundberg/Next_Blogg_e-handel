@@ -18,7 +18,6 @@ const Products = ({ aboutMe }: { aboutMe: string}) => {
     if(process.browser) {
       client.fetch(productsQuery)
       .then((data:Array<ProductType>)=> {
-        console.log(data)
         set_products([...data])
       })
     }

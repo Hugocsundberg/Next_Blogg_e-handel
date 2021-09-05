@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import Link from 'next/link'
 import { margin, animationTiming } from '../styles/globalStyleVariables';
 import { isReserved } from '../functions';
+import { useEffect, useState } from 'react';
 
 const builder = imageUrlBuilder(client)
 
@@ -65,8 +66,8 @@ const Dot = styled.div<{color: 'red' | 'yellow' | 'transparent', sold:boolean, r
     bottom: 1rem;
     box-shadow: ${(props)=>(props.sold || props.reserved) ? '1px 1px 10px' : 'none'} ;
     right: 1rem;
-    height: .5rem;
-    width: .5rem;
+    height: .6rem;
+    width: .6rem;
     z-index: 20;
 `
 
@@ -83,20 +84,35 @@ const urlFor = (source: string) => {
   return builder.image(source)
 }
 
-export const Product = ({alt, images, slug, removeMargin = false, hasShadow = true, sold, lastReserved}:{alt:string, images: Array<ImageHW>, slug:string, removeMargin?: boolean, hasShadow?:boolean, sold:boolean, lastReserved: number | null}) => {
-    const _isReserved = isReserved(lastReserved)
+export const Product = ({alt, images, slug, removeMargin = false, hasShadow = true, sold, lastReserved}:{alt:string, images: Array<ImageHW>, slug:string, removeMargin?: boolean, hasShadow?:boolean, sold?:boolean, lastReserved?: number | null}) => {
+    const [_isReserved, set_isReserved] = useState(isReserved(lastReserved));
+
+    useEffect(()=>{
+        set_isReserved(isReserved(lastReserved))
+    })
+
+    useEffect(() => {
+        const timeOut = setInterval(() => {
+            console.log('time')
+            set_isReserved(isReserved(lastReserved))
+        }, 60 * 1000);
+        return () => {
+            clearInterval(timeOut)
+        }
+    }, []);
+
     let dotColor:('red' | 'transparent' | 'yellow') = 'transparent'
     if(_isReserved) dotColor = 'yellow'
     if(sold) dotColor = 'red'
 
     return (
-        <Link href={(sold || _isReserved) ? '' :`/product/${slug}`}>
+        <Link scroll={(sold || _isReserved) ? false : true} href={(sold || _isReserved) ? '' :`/product/${slug}`}>
             <Border pointer={(!sold && !_isReserved)} hasShadow={hasShadow} removeMargin={removeMargin}>
-                <Dot sold={sold} reserved={_isReserved} color={dotColor}></Dot>
+                <Dot sold={sold ? true : false} reserved={_isReserved} color={dotColor}></Dot>
                 <Overlay active={(_isReserved || sold) ? true : false}>
-                    <OverlayText>{sold ? 'Såld' : `Reserverad av någon i ${_isReserved ? _isReserved : 'false'} minuter till.`}</OverlayText>
+                    <OverlayText>{sold ? 'Såld' : `Reserverad av någon i ${_isReserved ? _isReserved : 'false'} ${_isReserved === 1 ? 'minut' : 'minuter'} till.`}</OverlayText>
                 </Overlay>
-                <Container>
+                <Container> 
                     <Image
                         src={urlFor(images[0].asset._ref).url() || '/noImage.jpg'}
                         alt={alt}

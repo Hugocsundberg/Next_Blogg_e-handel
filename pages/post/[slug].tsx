@@ -14,6 +14,7 @@ import { ButtonContainer } from '../../components/GlobalElements/ActionButtonEle
 import { Background } from '../../components/GlobalElements'
 import Head from 'next/head'
 import SquareLoader from "react-spinners/SquareLoader";
+import { isReserved } from '../../functions'
 
 const CenterContent = styled.div`
     display: flex;
@@ -87,11 +88,16 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   }
 
   const actionButtonHandler = () => {
-    if(_post.productSlug)
+    if(_post.productSlug && (!_post.productSold && !isReserved(_post.productReserved) ? true : false) )
     router.push(`/product/${_post.productSlug}`)
   }
   
   if(_post.title) {
+    const _isReserved:(number | false) = isReserved(_post.productReserved || null)
+    let ProductButtonContent:string = 'Gå till produkt'
+    if(_isReserved) ProductButtonContent = `Reserverad av någon i ${_isReserved} min`
+    if(_post.productSold) ProductButtonContent = `Såld`
+
     return (
       <>
         <Head>
@@ -111,7 +117,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
           </CenterContent>
           {_post.productSlug ? 
           <ButtonContainer doubleMargin={true}>
-            <ActionButton onClick={actionButtonHandler} text='Gå till produkt'></ActionButton>
+            <ActionButton disabled={(_isReserved || _post.productSold) ? true : false} onClick={actionButtonHandler} text={ProductButtonContent}></ActionButton>
           </ButtonContainer>
           : '' }
         </Background>
@@ -131,7 +137,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
 
 export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
-  const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, "productSlug": product->slug.current, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
+  const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, "productSlug": product->slug.current, "productReserved": product->lastReservedAt, "productSold": product->sold, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
   let postData
   await client.fetch(query)
   .then((posts: Array<PostType>) => postData = posts[0])

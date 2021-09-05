@@ -163,8 +163,10 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
   const handleAddToCart = () => {
     //Add to local storage
     const cart = getFromStorage('cart')
+    const __product = {..._product}
+    __product.lastReservedAt = Date.now()
     if(!cart.find((product => (product as ProductType).slug.current === _product.slug.current)))
-    addObjectToStorage('cart', _product)
+    addObjectToStorage('cart', __product)
     else alert('Product already added to cart')
     //Send pending request
     if(process.browser)

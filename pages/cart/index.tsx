@@ -114,6 +114,7 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
     }
 
     useEffect(() => {
+        //Update cart
         if(process.browser) {
             updateCart()
             window.addEventListener('updatecart', updateCart)

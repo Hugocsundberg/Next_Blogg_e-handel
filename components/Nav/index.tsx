@@ -5,10 +5,10 @@ import { getOptions } from './config'
 import { rem } from '../../styles/globalStyleVariables'
 import { Spiral as Hamburger } from 'hamburger-react'
 import Link from 'next/link'
-import { AboutMe, Product, NavOption } from '../../generalTypes';
+import { AboutMe, Product as ProductType, NavOption } from '../../generalTypes';
 import { getOptionsHeight } from './functions';
 import { useRouter } from 'next/router'
-import { getFromStorage } from '../../functions';
+import { getFromStorage, isReserved, removeProductFromStorage } from '../../functions';
 
 
 const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boolean}) => {
@@ -24,7 +24,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     const updateCartItems = () => {
         const cart:Array<Object> | null | undefined = getFromStorage('cart')
         if(Array.isArray(cart)) {
-            setcartItems((cart as Array<Product>).length)
+            setcartItems((cart as Array<ProductType>).length)
         }
     }
     
@@ -52,11 +52,22 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
             resizeHandlerIsDesktop()
             window.addEventListener('resize', resizeHandlerIsDesktop)
             
+            const interval = setInterval(()=>{
+                const cart = getFromStorage('cart')
+                cart.forEach((cartItem)=>{
+                    if(!isReserved((cartItem as ProductType).lastReservedAt)) {
+                        removeProductFromStorage('cart', cartItem as ProductType)
+                    }
+                })
+            }, 3 * 1000)
+
             return () => {
                 window.removeEventListener('updatecart', updateCartItems)
                 window.removeEventListener('resize', resizeHandlerIsDesktop)
+                clearInterval(interval)
             }
         }
+
     }, [])
 
     return (
