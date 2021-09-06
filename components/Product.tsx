@@ -43,6 +43,7 @@ const OverlayText = styled.h2`
     font-size: large;
     height: 100%;
     width: 100%;
+    padding: 1rem;
     margin: 0;
     transition-timing-function: ${animationTiming};
     opacity: 0;
