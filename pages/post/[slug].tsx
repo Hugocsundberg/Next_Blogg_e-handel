@@ -52,11 +52,20 @@ const urlFor = (source: string) => {
 }
 
 const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
-  console.log(aboutMe)
+  console.log('type of post')
+  console.log(typeof post)
+  console.log('post')
+  console.log(post)
+  if(!post) {
+    return (
+      <FlexCenterCenter height="100vh">
+        <h1>418</h1>
+        <Paragraph>Problem 🫖</Paragraph>
+      </FlexCenterCenter>
+    )
+  }
   const aboutMeStatic:Array<AboutMe> = JSON.parse(aboutMe)
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
-  console.log('_aboutMe')
-  console.log(_aboutMe)
   const _post: PostType = JSON.parse(post)
 
   if(_aboutMe[0].slug.current === _post.slug) {
@@ -144,15 +153,16 @@ export async function getStaticProps({ params }: {params: any}) {
   const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, "productSlug": product->slug.current, "productReserved": product->lastReservedAt, "productSold": product->sold, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
   await client.fetch(query)
   .then((posts: Array<PostType>) => {
-    const postData = posts[0]
+    const postData = posts[0] || []
     postJson = JSON.stringify(postData)
   })
 
-   let settingsData
+   let settingsJson
    const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
    await client.fetch(settingsquery)
-   .then((settings: Array<AboutMe>) => settingsData = settings)
-   const settingsJson = JSON.stringify(settingsData)
+   .then((settings: Array<AboutMe>) => {
+    settingsJson = JSON.stringify(settings)
+   })
 
   return {
     props: {
@@ -168,6 +178,8 @@ export async function getStaticPaths() {
   let data:Array<PostType> = []
   await client.fetch(query)
   .then((posts: Array<PostType>) => data = posts)
+  console.log('ServerSidedata')
+  console.log(data)
   
   return {
     paths: data.map((post:PostType)=> {

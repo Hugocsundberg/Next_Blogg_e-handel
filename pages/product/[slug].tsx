@@ -101,6 +101,15 @@ const BlockContainer = styled.div`
 
 
 const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
+
+  if(!product) {
+    return (
+      <FlexCenterCenter height="100vh">
+        <h1>418</h1>
+        <Paragraph>Problem 🫖</Paragraph>
+      </FlexCenterCenter>
+    )
+  }
   const _aboutMe: Array<AboutMe> = JSON.parse(aboutMe)
   const _product: ProductType = JSON.parse(product)
   const [isDesktop, setisDesktop] = useState(false);
