@@ -1,11 +1,11 @@
-import client from "../../client"
-import { AboutMe, Product as ProductType } from "../../generalTypes"
+import client from "../client"
+import { AboutMe, Product as ProductType } from "../generalTypes"
 import Masonry from 'react-masonry-css'
-import Product from "../../components/Product"
-import Nav from '../../components/Nav'
-import { screenSizes } from '../../styles/globalStyleVariables'
+import Product from "../components/Product"
+import Nav from '../components/Nav'
+import { screenSizes } from '../styles/globalStyleVariables'
 import Head from "next/head"
-import { Header } from "../../components/GlobalElements"
+import { Header } from "../components/GlobalElements"
 import { useEffect, useState } from "react"
 
 const Products = ({ aboutMe }: { aboutMe: string}) => {

@@ -1,20 +1,20 @@
 import React from 'react';
-import ActionButtonCart from './components/ActionButtonCart';
+import ActionButtonCart from '../components/CartComponents/ActionButtonCart';
 import Head from "next/head"
-import client from '../../client';
-import { AboutMe, KlarnaCheckoutSnippetResponse, Product } from "../../generalTypes"
-import { Header } from "../../components/GlobalElements"
-import Nav from '../../components/Nav'
-import CartItem from './components/CartItem';
+import client from '../client';
+import { AboutMe, KlarnaCheckoutSnippetResponse, Product } from "../generalTypes"
+import { Header } from "../components/GlobalElements"
+import Nav from '../components/Nav'
+import CartItem from '../components/CartComponents/CartItem';
 import { useState, useEffect } from 'react';
-import { getFromStorage, getTopOverlayHeight } from '../../functions';
+import { getFromStorage, getTopOverlayHeight } from '../functions';
 import styled from 'styled-components';
-import { blurColor, blurPx, boxShadowBigElement, darkGray, margin, rem, screenSizes } from '../../styles/globalStyleVariables';
-import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements';
-import { Background } from '../../components/GlobalElements';
+import { blurColor, blurPx, boxShadowBigElement, darkGray, margin, rem, screenSizes } from '../styles/globalStyleVariables';
+import { ButtonContainer } from '../components/GlobalElements/ActionButtonElements';
+import { Background } from '../components/GlobalElements';
 import { useRouter } from 'next/router'
-import { renderSnippet } from './functions';
-import { CardBackground } from '../../components/Post/elements';
+import { renderSnippet } from '../functions';
+import { CardBackground } from '../components/Post/elements';
 
 
 const CartContainer = styled.div<{ topOverlayHeight: number }>`

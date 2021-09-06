@@ -1,6 +1,6 @@
 import React from 'react';
-import { Background, Button } from '../../../components/GlobalElements/ActionButtonElements';
-import { darkGray, lightGray, screenSizes } from '../../../styles/globalStyleVariables';
+import { Background, Button } from '../GlobalElements/ActionButtonElements';
+import { darkGray, lightGray, screenSizes } from '../../styles/globalStyleVariables';
 import styled from 'styled-components';
 
 const H = styled.p`

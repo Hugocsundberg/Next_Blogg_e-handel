@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { margin, buttonBorderRadius,darkGray, boxShadowBigElement } from '../../../styles/globalStyleVariables';
-import { Product } from '../../../generalTypes';
-import { Product as ProductComponent } from '../../../components/Product';
-import { isReserved, removeProductFromStorage } from '../../../functions';
+import { margin, buttonBorderRadius,darkGray, boxShadowBigElement } from '../../styles/globalStyleVariables';
+import { Product } from '../../generalTypes';
+import { Product as ProductComponent } from '../../components/Product';
+import { isReserved, removeProductFromStorage } from '../../functions';
 import { useEffect, useState } from 'react';
 
 const ItemBackground = styled.div`
