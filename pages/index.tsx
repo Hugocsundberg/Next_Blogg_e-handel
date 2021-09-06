@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import PostComponent from '../components/Post/Post'
 import { Header } from '../components/GlobalElements'
 import Nav from '../components/Nav'
-import { AboutMe, Post as PostType, ScrollEvent } from '../generalTypes'
+import { AboutMe, Post as PostType, } from '../generalTypes'
 import Masonry from 'react-masonry-css'
 import { Background } from '../components/GlobalElements'
 // @ts-ignore
@@ -14,6 +14,7 @@ import * as smoothScroll from 'smoothscroll'
 export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string}) {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const _posts:Array<PostType> = JSON.parse(posts)
+  console.log(_posts)
 
   const breakpointColumnsObj = {
     default: 4,
@@ -67,11 +68,16 @@ useEffect(()=>{
 }
 
 export const getStaticProps:GetStaticProps = async () : Promise<any> => {
-    let postsData
+    // let postsData:Array<PostType>
+    let postsJson:string = '[]'
+
     const postsQuery = '*[_type == "post"]{"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}'
+
     await client.fetch(postsQuery)
-    .then((posts: Array<PostType>) => postsData = posts)
-    const postsJson = JSON.stringify(postsData)
+    .then((posts: Array<PostType>) => {
+      console.log(`postsData length: ${posts.length}`)
+      postsJson = JSON.stringify(posts)
+    })
 
     let settingsData
     const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
