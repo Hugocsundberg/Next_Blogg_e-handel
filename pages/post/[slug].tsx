@@ -52,8 +52,11 @@ const urlFor = (source: string) => {
 }
 
 const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
+  console.log(aboutMe)
   const aboutMeStatic:Array<AboutMe> = JSON.parse(aboutMe)
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
+  console.log('_aboutMe')
+  console.log(_aboutMe)
   const _post: PostType = JSON.parse(post)
 
   if(_aboutMe[0].slug.current === _post.slug) {
@@ -139,8 +142,8 @@ export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
   const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, "productSlug": product->slug.current, "productReserved": product->lastReservedAt, "productSold": product->sold, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
   let postData
-  await client.fetch(query)
-  .then((posts: Array<PostType>) => postData = posts[0])
+  console.log(await client.fetch(query)
+  .then((posts: Array<PostType>) => postData = posts[0]))
   console.log(postData)
    let postJson: string
    postData ? postJson = JSON.stringify(postData) : postJson = '{"undefined":"true"}'
