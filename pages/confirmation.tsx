@@ -6,7 +6,7 @@ import Head from "next/head"
 import client from '../client';
 import Nav from '../components/Nav';
 import { useEffect, useState } from 'react';
-import { getTopOverlayHeight } from '../functions';
+import { getTopOverlayHeight, removeProductFromStorage } from '../functions';
 
 const OuterFlex = styled.div<{topOverlayHeight:number}>`
     display: flex;
@@ -50,12 +50,16 @@ const confirmation = ({ aboutMe }: {aboutMe: string}) => {
         }
         if(process.browser && router.isReady) {
             window.fetch('/api/sold', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json' }})
-            .then((stream)=>stream.json())
-            .then((data)=>console.log(data))
         }
     }, [router.isReady]);
 
     useEffect(()=>{
+        //Remove products in cart
+        if(process.browser) {
+            window.localStorage.removeItem('cart')
+            window.dispatchEvent(new Event('updatecart'))
+        }
+
         settopOverlayHeight(getTopOverlayHeight())
         //set body scroll
         document.body.style.overflow="hidden"
