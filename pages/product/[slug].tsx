@@ -128,7 +128,10 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     window.addEventListener('resize', resizeHandler)
     const topOverlayHeight:number = getTopOverlayHeight()
 
-    setnavoverlayHeight(topOverlayHeight)
+    setnavoverlayHeight(topOverlayHeight) 
+    return ()=>{
+      window.removeEventListener('resize', resizeHandler)
+    }
   }, []);
   
   const renderThumbs = () => {
@@ -242,7 +245,6 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
       </FlexCenterCenter>
     ) 
   }
-  
 }
 
 export async function getStaticProps({ params }: {params: any}) {

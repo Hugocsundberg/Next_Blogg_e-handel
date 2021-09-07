@@ -174,7 +174,7 @@ export async function getStaticProps({ params }: {params: any}) {
 }
 
 export async function getStaticPaths() {
-  const query = `*[_type == "post"]{"slug": slug.current}[0...50]`
+  const query = `*[_type == "post"]{"slug": slug.current}[0...10]`
   let data:Array<PostType> = []
   await client.fetch(query)
   .then((posts: Array<PostType>) => data = posts)
