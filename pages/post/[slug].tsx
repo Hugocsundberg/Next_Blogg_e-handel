@@ -168,8 +168,7 @@ export async function getStaticProps({ params }: {params: any}) {
     props: {
       post: postJson,
       aboutMe: settingsJson
-    },
-    revalidate: 60
+    }
   }
 }
 

@@ -266,8 +266,7 @@ export async function getStaticProps({ params }: {params: any}) {
     props: {
       product: postJson,
       aboutMe: settingsJson
-    },
-    revalidate: 10
+    }
   }
 }
 
