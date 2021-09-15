@@ -88,7 +88,7 @@ gap: 10px
 `
 
 
-export const Cart = styled.button`
+export const Cart = styled.div`
     height: ${imageHeight}rem;
     width: 2rem;
     position: relative;

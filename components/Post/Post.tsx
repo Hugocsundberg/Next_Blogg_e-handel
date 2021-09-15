@@ -23,7 +23,7 @@ const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: 
             <CardBackground onClick={route}>
                 <HorisontalFlexDiv>
                     <Header>{title}</Header>
-                    <Date>{formattedDate}</Date>
+                    <Date suppressHydrationWarning={true}>{formattedDate}</Date>
                 </HorisontalFlexDiv>
                 <Image
                     src={imageRef || '/noImage.jpeg'}

@@ -51,7 +51,7 @@ useEffect(()=>{
         columnClassName="masonry-grid_column"
         >
         { _posts.map((post, index)=>(
-          <PostComponent 
+          <PostComponent
           key={index}
           excerpt={post.excerpt} 
           title={post.title} 
