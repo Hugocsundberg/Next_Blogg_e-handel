@@ -137,3 +137,9 @@ export interface KlarnaResponseProduct {
     type: string,
     unit_price: number,
 }
+
+export interface breakPoints {
+    S: number
+    M: number
+    L: number
+}
