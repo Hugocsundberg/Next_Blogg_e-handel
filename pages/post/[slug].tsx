@@ -42,7 +42,10 @@ const ImageContainer = styled.div`
 `
 
 const Paragraph = styled.p`
+    font-family: 'Trirong', serif;
     margin: ${margin / 4}rem;
+    margin-bottom: ${margin}rem;
+    
 `
 
 const builder = imageUrlBuilder(client)
@@ -52,10 +55,6 @@ const urlFor = (source: string) => {
 }
 
 const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
-  console.log('type of post')
-  console.log(typeof post)
-  console.log('post')
-  console.log(post)
   if(!post) {
     return (
       <FlexCenterCenter height="100vh">
@@ -95,7 +94,12 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
             layout="responsive"
           />
         </ImageContainer>
-      )
+      ),
+      block: (props:any) => {
+        return props.children.map((child:string)=>(
+          <Paragraph>{child}</Paragraph>
+        ))
+      }
     }
   }
 
@@ -177,8 +181,6 @@ export async function getStaticPaths() {
   let data:Array<PostType> = []
   await client.fetch(query)
   .then((posts: Array<PostType>) => data = posts)
-  console.log('ServerSidedata')
-  console.log(data)
   
   return {
     paths: data.map((post:PostType)=> {
