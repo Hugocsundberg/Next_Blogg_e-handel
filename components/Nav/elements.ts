@@ -48,6 +48,7 @@ export const ImageDiv = styled.div`
 `
 
 export const OptionText = styled.p`
+    font-family: 'Open Sans', sans-serif;
     margin-left: .5rem;
     margin-top: 0;
     margin-bottom: 0;
@@ -74,6 +75,7 @@ export const HamburgerContainer = styled.button`
 `
 
 export const Logo = styled.p`
+    font-family: 'Open Sans', sans-serif;
     font-size: 1.5rem;
     cursor: pointer;
     width: 7rem;
