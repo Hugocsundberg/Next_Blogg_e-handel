@@ -104,17 +104,7 @@ export const Product = ({lastElementRef, alt, images, slug, removeMargin = false
 
     useEffect(()=>{
         set_isReserved(isReserved(lastReserved))
-    })
-
-    useEffect(() => {
-        const timeOut = setInterval(() => {
-            console.log('time')
-            set_isReserved(isReserved(lastReserved))
-        }, 60 * 1000);
-        return () => {
-            clearInterval(timeOut)
-        }
-    }, []);
+    }, [lastReserved])
 
     let dotColor:('red' | 'transparent' | 'yellow') = 'transparent'
     if(_isReserved) dotColor = 'yellow'
