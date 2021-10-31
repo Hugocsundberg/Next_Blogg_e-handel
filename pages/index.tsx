@@ -26,7 +26,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
 
   const breakPoints = {
     S: 800,
-    M: 1400,
+    M: 1200,
     L: 1800
   };
 
