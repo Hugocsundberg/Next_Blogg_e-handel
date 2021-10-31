@@ -16,8 +16,8 @@ import Masonry from "../components/Masonry"
 const MasonryComponent = React.forwardRef(Masonry)
 const MotionMasonry = motion(MasonryComponent)
 
-const SkeletonComponent = React.forwardRef(Skeleton)
-const MotionSkeleton = motion(SkeletonComponent)
+// const SkeletonComponent = React.forwardRef(Skeleton)
+// const MotionSkeleton = motion(SkeletonComponent)
 
 const Products = ({ aboutMe }: { aboutMe: string}) => {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
@@ -26,6 +26,13 @@ const Products = ({ aboutMe }: { aboutMe: string}) => {
   const {result, loading, error, hasMore, setResult} = useLazyLoad<ProductType>(query, incrementBy)
   const [skeletonArray, setSkeletonArray] = useState<Array<object>>([])
   const [currentProduct, setCurrentProduct] = useState(0);
+  const [cols, setCols] = useState<Array<Array<React.ReactNode>>>([]);
+
+  const breakPoints = {
+    S: screenSizes.S,
+    M: screenSizes.M,
+    L: screenSizes.L
+  };
   
   const containerVariants = {
     fade: {
@@ -34,7 +41,6 @@ const Products = ({ aboutMe }: { aboutMe: string}) => {
       }
   }, 
   }
-
   const itemVariants = {
     fade: {
       opacity: 0.2,
@@ -117,11 +123,7 @@ useEffect(() => {
     }
   }, [loading])
   
-  const breakpointColumnsObj = {
-    S: screenSizes.S,
-    M: screenSizes.M,
-    L: screenSizes.L
-  };
+
   
   return (
     <>
@@ -133,7 +135,10 @@ useEffect(() => {
         <MotionMasonry
           variants={containerVariants}
           animate={'fade'}
-          breakPoints={breakpointColumnsObj}
+          cols={cols}
+          setCols={setCols}
+          breakPoints={breakPoints}
+
           result={result}
           skeleton={skeletonArray}
           > 

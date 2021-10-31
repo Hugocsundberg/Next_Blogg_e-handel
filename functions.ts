@@ -1,5 +1,6 @@
-import { cols, Product } from "./generalTypes"
+import { breakPoints, cols, Product } from "./generalTypes"
 import { screenSizes } from "./styles/globalStyleVariables"
+import { Dispatch, SetStateAction } from "react"
 
 export const handleScroll = () => {
     window.sessionStorage.setItem('scrollPosition', window.pageYOffset.toString())
@@ -101,4 +102,12 @@ export const renderSnippet = (snippet:string) : void => {
   } else {
     throw new Error('Checkout container not found')
   }
+}
+
+export const updateColCount = (setColCount: Dispatch<SetStateAction<number>>, breakPoints: breakPoints) => {
+  const width = window.innerWidth
+  if(width < breakPoints.S) setColCount(1)  
+  else if(width < breakPoints.M) setColCount(2) 
+  else if(width < breakPoints.L) setColCount(3)  
+  else setColCount(4) 
 }

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import client from "../client";
 
-const useLazyLoad = <resultType>(query:string, incrementBy: number) => {
-    const [result, setResult] = useState<Array<resultType>>([]);
+const useLazyLoad = <resultType>(query:string | undefined, incrementBy: number, initialResult?: Array<resultType>) => {
+    const [result, setResult] = useState<Array<resultType>>(initialResult ?? []);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error>();
     const [hasMore, setHasMore] = useState(true);
     
     useEffect(()=>{
-        if(hasMore) {
+        if(hasMore && query) {
             setLoading(true)
             client.fetch(query)
             .then((data:Array<resultType>) => {
