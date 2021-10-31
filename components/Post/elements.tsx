@@ -1,15 +1,23 @@
 import styled from "styled-components"
 import { darkGray, margin } from '../../styles/globalStyleVariables'
+import { keyframes } from 'styled-components'
+
+const fadeIn = keyframes`
+    from {opacity: 0}
+    to {opacity: 1}
+`
 
 export const Header = styled.h2`
 color: ${darkGray};
 `
 
-export const Date = styled.p   `
+export const Date = styled.p`
 color: ${darkGray};
 `
 
 export const CardBackground = styled.div`
+animation-duration: .7s;
+animation-name: ${fadeIn};
 background: white;
 width: 100%;
 margin-bottom: ${margin}rem;
