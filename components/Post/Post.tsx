@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { handleScroll } from '../../functions'
 
-const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: {title:string, excerpt:string, imageRef:string, date: string, imageHeight:number, imageWidth: number, url:string}) => {
+const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: {title:string, excerpt:string, imageRef:string, date: string, imageHeight:number, imageWidth: number, url:string}, forwardedRef:any) => {
     const router = useRouter()
     const route = (e:any) => {
         e.preventDefault
@@ -20,7 +20,7 @@ const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: 
     }
 
     return (
-            <CardBackground onClick={route}>
+            <CardBackground ref={forwardedRef} onClick={route}>
                 <HorisontalFlexDiv>
                     <Header>{title}</Header>
                     <Date suppressHydrationWarning={true}>{formattedDate}</Date>
