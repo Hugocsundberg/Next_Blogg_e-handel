@@ -102,19 +102,18 @@ const urlFor = (source: string) => {
 export const Product = ({lastElementRef, alt, images, slug, removeMargin = false, hasShadow = true, sold, lastReserved}:{lastElementRef?:any, alt:string, images: Array<ImageHW>, slug:string, removeMargin?: boolean, hasShadow?:boolean, sold?:boolean, lastReserved?: number | null}) => {
     const [_isReserved, set_isReserved] = useState(isReserved(lastReserved));
 
+    //update reserved time left once every minute for minute countdown.
     useEffect(()=>{
         set_isReserved(isReserved(lastReserved))
-    })
 
-    useEffect(() => {
         const timeOut = setInterval(() => {
-            console.log('time')
             set_isReserved(isReserved(lastReserved))
         }, 60 * 1000);
+        
         return () => {
             clearInterval(timeOut)
         }
-    }, []);
+    }, [lastReserved])
 
     let dotColor:('red' | 'transparent' | 'yellow') = 'transparent'
     if(_isReserved) dotColor = 'yellow'
