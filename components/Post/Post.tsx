@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { handleScroll } from '../../functions'
 
-const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: {title:string, excerpt:string, imageRef:string, date: string, imageHeight:number, imageWidth: number, url:string}, forwardedRef:any) => {
+const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: {title:string, excerpt:string, imageRef:string, date: Date, imageHeight:number, imageWidth: number, url:string}, forwardedRef:any) => {
     const router = useRouter()
     const route = (e:any) => {
         e.preventDefault
@@ -13,17 +13,31 @@ const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: 
         router.push(url)
     }
 
-    let formattedDate
-    if(process.browser) {
-        const newDate: Date = new window.Date(date);  
-        formattedDate = new Intl.DateTimeFormat('se', { dateStyle: 'short', timeStyle: 'short' }).format(newDate);
+    const formatDate = (date:Date) => {
+        if(process.browser) {
+            const newDate = new window.Date(date);  
+            const then = newDate.getTime()
+            const now = window.Date.now()
+            const dif = now - then
+            const inHours = dif / 1000 / 60 / 60
+    
+            if(inHours <= 1) {
+                return 'Nyss'
+            }
+            else if(inHours < 24) {
+            return `${Math.round(inHours)} timmar sedan`
+            } 
+            else {
+                return `${Math.round(inHours / 24)} dagar sedan`
+            }
+        }
     }
 
     return (
             <CardBackground ref={forwardedRef} onClick={route}>
                 <HorisontalFlexDiv>
                     <Header>{title}</Header>
-                    <Date suppressHydrationWarning={true}>{formattedDate}</Date>
+                    <Date>{formatDate(date)}</Date>
                 </HorisontalFlexDiv>
                 <Image
                     src={imageRef || '/noImage.jpeg'}
@@ -31,6 +45,7 @@ const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: 
                     width={imageWidth || 1950}
                     height={imageHeight|| 1300}
                     layout="responsive"
+                    className='postImage'
                 />
                 <Excerpt>{excerpt}</Excerpt>
             </CardBackground>
