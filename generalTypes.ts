@@ -1,7 +1,7 @@
 import document from "next/document";
 
 export interface Post extends Content {
-created: string,
+created: Date,
 excerpt: string,
 imageUrl?: string,
 imageAspectRatio?: number,
