@@ -117,7 +117,7 @@ export const getStaticProps:GetStaticProps = async () : Promise<any> => {
     // let postsData:Array<PostType>
     let postsJson:string = '[]'
 
-    const postsQuery = `*[_type == "post"]{"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}[0...${CURRENT_PRODUCT_INITIAL}]`
+    const postsQuery = `*[_type == "post"] | order(_createdAt desc){"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}[0...${CURRENT_PRODUCT_INITIAL}]`
 
     await client.fetch(postsQuery)
     .then((posts: Array<PostType>) => {
