@@ -115,7 +115,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                         <a key={key} href={`${currentPath}${option.link}`}>
                             <OptionDiv noBorder={true} isActive={option.isActive}>   
                                 {option.text === 'Kundvagn' ?
-                                <Link href="/cart">
+                                <Link href="/kundvagn">
                                     <Cart>
                                         <CartP>{cartItems}</CartP>
                                         <Image

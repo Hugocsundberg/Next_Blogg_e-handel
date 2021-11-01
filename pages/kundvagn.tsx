@@ -1,4 +1,5 @@
 import React from 'react';
+import NothingInCart from '../components/CartComponents/NothingInCart';
 import ActionButtonCart from '../components/CartComponents/ActionButtonCart';
 import Head from "next/head"
 import client from '../client';
@@ -12,9 +13,7 @@ import styled from 'styled-components';
 import { blurColor, blurPx, boxShadowBigElement, darkGray, margin, rem, screenSizes } from '../styles/globalStyleVariables';
 import { ButtonContainer } from '../components/GlobalElements/ActionButtonElements';
 import { Background } from '../components/GlobalElements';
-import { useRouter } from 'next/router'
 import { renderSnippet } from '../functions';
-import { CardBackground } from '../components/Post/elements';
 
 
 const CartContainer = styled.div<{ topOverlayHeight: number }>`
@@ -138,16 +137,19 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
     return (
         <>  
             <Head>
-            <title>Cart</title>
+            <title>Kundvagn</title>
             </Head>
             <Background>
                 <Nav aboutMe={_aboutMe}></Nav>
                 <CartContainer topOverlayHeight={topOverlayHeight}>
-                    <Header noLeftMargin={true}>CART</Header>
-                    {inCart.map((product: Object) => {
+                    <Header noLeftMargin={true}>KUNDVAGN</Header>
+                    {inCart.length > 0 ? inCart.map((product: Object) => {
                         const _product = (product as Product);
                         return <CartItem product={_product}/>
-                    })}
+                    })
+                    :
+                    <NothingInCart/>
+                    }
                 </CartContainer>
                 <CheckoutContainerContainer isVisible={KlarnaCheckout ? true : false} topOverlayHeight={topOverlayHeight}>
                     <ExitKlarna>
