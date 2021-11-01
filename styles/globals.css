@@ -26,19 +26,6 @@ a {
   box-sizing: border-box;
 }
 
-.masonry-grid {
-  display: -webkit-box; /* Not needed if autoprefixing */
-  display: -ms-flexbox; /* Not needed if autoprefixing */
-  display: flex;
-  margin-right: 1.5rem;
-  width: auto;
-}
-
-.masonry-grid_column {
-  padding-left: 1.5rem; /* gutter size */
-  background-clip: padding-box;
-}
-
 .carousel-root .carousel .thumbs-wrapper {
   margin: 0;
 }
@@ -67,6 +54,14 @@ a {
 
 .carousel-root {
   transform: translate(-6%);
+}
+
+.postImage:hover { 
+  transform: scale(1.1);
+}
+
+.postImage {
+  transition: .7s;
 }
 
 @media screen and (min-width: 400px) {
