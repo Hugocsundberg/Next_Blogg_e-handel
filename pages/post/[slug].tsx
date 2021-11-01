@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import client from '../../client'
-import { AboutMe, Post as PostType } from '../../generalTypes'
+import { AboutMe, aboutMeSetting, Post as PostType } from '../../generalTypes'
 // @ts-ignore
 import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
@@ -15,6 +15,7 @@ import { Background } from '../../components/GlobalElements'
 import Head from 'next/head'
 import SquareLoader from "react-spinners/SquareLoader";
 import { isReserved } from '../../functions'
+import { useEffect } from 'react'
 
 const CenterContent = styled.div`
     display: flex;
@@ -70,6 +71,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   if(_aboutMe[0].slug.current === _post.slug) {
     _aboutMe.pop()
   }
+
   const router = useRouter()
   
   if (router.isFallback) {
@@ -177,11 +179,24 @@ export async function getStaticProps({ params }: {params: any}) {
 }
 
 export async function getStaticPaths() {
-  const query = `*[_type == "post"]{"slug": slug.current}[0...10]`
-  let data:Array<PostType> = []
-  await client.fetch(query)
-  .then((posts: Array<PostType>) => data = posts)
-  
+
+  // Get 20 first posts except aboutme post. Then add about me post to make sure it is always prerendered even if older than 20.
+  const data:Array<PostType> = []
+
+  // Get 'aboutme' post slug
+  const aboutMePostQuery = `*[_type == "settings"]{aboutme->{slug}}`
+  const aboutMeSettings:Array<aboutMeSetting> = await client.fetch(aboutMePostQuery)
+  const aboutMePostSlug = aboutMeSettings[0].aboutme.slug.current
+
+  // Get all posts except 'aboutme' post
+  const postsQueryWithoutAboutMe = `*[_type == "post" && slug.current != "${aboutMePostSlug}"]{"slug": slug.current}[0...20]`
+  const postsWithoutAboutMe:Array<PostType> =  await client.fetch(postsQueryWithoutAboutMe)
+
+  // Get about me post
+  const aboutMePosts:Array<PostType> = await client.fetch(`*[_type == "post" && slug.current == "${aboutMePostSlug}"]{"slug": slug.current}`)
+
+  data.push(...postsWithoutAboutMe, ...aboutMePosts)
+
   return {
     paths: data.map((post:PostType)=> {
       return {params: {slug: post.slug}}

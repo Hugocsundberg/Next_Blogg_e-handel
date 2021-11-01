@@ -143,3 +143,12 @@ export interface breakPoints {
     M: number
     L: number
 }
+
+export interface aboutMeSetting {
+        "aboutme":{
+        "slug": {
+            "type": string,
+            "current": string
+        }
+        }
+}
