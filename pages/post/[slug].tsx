@@ -15,7 +15,7 @@ import { Background } from '../../components/GlobalElements'
 import Head from 'next/head'
 import SquareLoader from "react-spinners/SquareLoader";
 import { isReserved } from '../../functions'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const CenterContent = styled.div`
     display: flex;
@@ -67,12 +67,20 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   const aboutMeStatic:Array<AboutMe> = JSON.parse(aboutMe)
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const _post: PostType = JSON.parse(post)
+  const [isReservedState, setIsReserevedState] = useState<number | false>(isReserved(_post.productReserved))
+  const router = useRouter()
+
+  useEffect(()=>{
+    const interval = setInterval(()=>{
+      setIsReserevedState(isReserved(_post.productReserved))
+    }, 1000 * 60)
+    
+    return () => clearInterval(interval)
+  })
 
   if(_aboutMe[0].slug.current === _post.slug) {
     _aboutMe.pop()
   }
-
-  const router = useRouter()
   
   if (router.isFallback) {
     return (
@@ -111,9 +119,8 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   }
   
   if(_post.title) {
-    const _isReserved:(number | false) = isReserved(_post.productReserved || null)
     let ProductButtonContent:string = 'Gå till produkt'
-    if(_isReserved) ProductButtonContent = `Reserverad av någon i ${_isReserved} min`
+    if(isReservedState) ProductButtonContent = `Reserverad av någon i ${isReservedState} min`
     if(_post.productSold) ProductButtonContent = `Såld`
 
     return (
@@ -135,7 +142,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
           </CenterContent>
           {_post.productSlug ? 
           <ButtonContainer doubleMargin={true}>
-            <ActionButton disabled={(_isReserved || _post.productSold) ? true : false} onClick={actionButtonHandler} text={ProductButtonContent}></ActionButton>
+            <ActionButton disabled={(isReservedState || _post.productSold) ? true : false} onClick={actionButtonHandler} text={ProductButtonContent}></ActionButton>
           </ButtonContainer>
           : '' }
         </Background>
