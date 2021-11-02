@@ -16,6 +16,7 @@ import Head from 'next/head'
 import SquareLoader from "react-spinners/SquareLoader";
 import { isReserved } from '../../functions'
 import { useEffect, useState } from 'react'
+const BlockContent = require('@sanity/block-content-to-react')
 
 const CenterContent = styled.div<{hasProduct: boolean}>`
 
@@ -106,7 +107,16 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
             layout="responsive"
           />
         </ImageContainer>
-      )
+        
+      ),
+      block: (props:any) => {
+        console.log(props)
+        if(props.node.style === 'normal') return (
+          <Paragraph>{props.children[0]}</Paragraph>
+        )
+
+        else return BlockContent.defaultSerializers.types.block(props)
+      },
     }
   }
 
