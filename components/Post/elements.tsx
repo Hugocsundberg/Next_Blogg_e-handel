@@ -9,6 +9,7 @@ const fadeIn = keyframes`
 
 export const Header = styled.h2`
 color: ${darkGray};
+font-size: 1.3rem;
 `
 
 export const Date = styled.p`
@@ -36,6 +37,7 @@ export const HorisontalFlexDiv = styled.div`
 
 export const Excerpt = styled.p`
 padding: ${margin}rem;
+margin: 0;
 text-align: center;
 color: ${darkGray}
 `
