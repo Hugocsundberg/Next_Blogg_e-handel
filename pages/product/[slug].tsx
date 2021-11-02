@@ -10,6 +10,7 @@ import { Paragraph } from '../../components/GlobalElements'
 import styled from 'styled-components'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import { SmallParagraph } from '../../components/GlobalElements'
 import { margin } from '../../styles/globalStyleVariables'
 import Arrow from '../../components/Arrow'
 import ActionButton from '../../components/ActionButton'
@@ -222,11 +223,11 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
               <Block2>
               {isDesktop ? <Header>{_product.title}</Header> : ''}
                 <H3>Beskrivning</H3>
-                <P>{_product.desc}</P>
+                <SmallParagraph>{_product.desc}</SmallParagraph>
                 <H3>Storlek</H3>
-                <P>{`${_product.productWidth} x ${_product.productHeight}${_product.productDept ? ` x ${_product.productDept}` : ''}`} cm</P>
+                <SmallParagraph>{`${_product.productWidth} x ${_product.productHeight}${_product.productDept ? ` x ${_product.productDept}` : ''}`} cm</SmallParagraph>
                 <H3>Pris</H3>
-                <P>{_product.price} kr</P>
+                <SmallParagraph>{_product.price} kr</SmallParagraph>
               </Block2>
             </BlockContainer>
           </CenterContent>

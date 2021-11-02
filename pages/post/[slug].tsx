@@ -5,7 +5,7 @@ import { AboutMe, aboutMeSetting, Post as PostType } from '../../generalTypes'
 import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
 import Image from 'next/image'
-import { FlexCenterCenter } from '../../components/GlobalElements'
+import { FlexCenterCenter, SmallParagraph } from '../../components/GlobalElements'
 import Nav from '../../components/Nav'
 import ActionButton from '../../components/ActionButton'
 import styled from 'styled-components'
@@ -45,13 +45,6 @@ const ImageContainer = styled.div`
   overflow: hidden;
 `
 
-const Paragraph = styled.p`
-    font-family: 'Trirong', serif;
-    margin: ${margin / 4}rem;
-    margin-bottom: ${margin}rem;
-    
-`
-
 const builder = imageUrlBuilder(client)
 
 const urlFor = (source: string) => {
@@ -63,7 +56,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
     return (
       <FlexCenterCenter height="100vh">
         <h1>418</h1>
-        <Paragraph>Problem 🫖</Paragraph>
+        <SmallParagraph>Problem 🫖</SmallParagraph>
       </FlexCenterCenter>
     )
   }
@@ -112,7 +105,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
       block: (props:any) => {
         console.log(props)
         if(props.node.style === 'normal') return (
-          <Paragraph>{props.children[0]}</Paragraph>
+          <SmallParagraph>{props.children[0]}</SmallParagraph>
         )
 
         else return BlockContent.defaultSerializers.types.block(props)
@@ -160,7 +153,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
     return (
       <FlexCenterCenter height="100vh">
         <h1>404</h1>
-        <Paragraph>Sidan finns inte 🥲</Paragraph>
+        <SmallParagraph>Sidan finns inte 🥲</SmallParagraph>
       </FlexCenterCenter>
     ) 
   }

@@ -46,4 +46,9 @@ export const Paragraph = styled.p`
     padding: ${margin}rem ${margin}rem;
     margin: 0;
     align-items: center;
+    `
+
+export const SmallParagraph = styled.p`
+    font-family: 'Trirong', serif;
+    margin-bottom: ${margin}rem;
 `
