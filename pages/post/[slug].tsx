@@ -17,11 +17,13 @@ import SquareLoader from "react-spinners/SquareLoader";
 import { isReserved } from '../../functions'
 import { useEffect, useState } from 'react'
 
-const CenterContent = styled.div`
+const CenterContent = styled.div<{hasProduct: boolean}>`
+
     display: flex;
     justify-content: center;
     position: relative;
     padding: ${margin}rem;
+    padding-bottom: ${props => props.hasProduct ? '8rem' : `2rem`};
 `
 
 const ContentContainer = styled.div<{ hasProduct: boolean }>`
@@ -32,8 +34,8 @@ const ContentContainer = styled.div<{ hasProduct: boolean }>`
     border-radius: 10px;
     box-shadow: ${boxShadowBigElement};
     padding: ${margin}rem;
-    padding-bottom: ${props => props.hasProduct ?' 6rem' : `0`};
     padding-top: 0;
+    padding-bottom: 0rem;
 `
 
 const ImageContainer = styled.div`
@@ -74,7 +76,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
     const interval = setInterval(()=>{
       setIsReserevedState(isReserved(_post.productReserved))
     }, 1000 * 60)
-    
+
     return () => clearInterval(interval)
   })
 
@@ -104,12 +106,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
             layout="responsive"
           />
         </ImageContainer>
-      ),
-      block: (props:any) => {
-        return props.children.map((child:string)=>(
-          <Paragraph>{child}</Paragraph>
-        ))
-      }
+      )
     }
   }
 
@@ -130,7 +127,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
         </Head>
         <Background>
           <Nav aboutMe={aboutMeStatic}></Nav>
-          <CenterContent>
+          <CenterContent hasProduct={_post.productSlug ? true : false}>
             <ContentContainer hasProduct={_post.productSlug ? true : false}>
               <PortableText
                 blocks={(_post as PostType).body}
