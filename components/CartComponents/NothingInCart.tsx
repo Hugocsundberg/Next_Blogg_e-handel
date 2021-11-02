@@ -39,7 +39,7 @@ const NothingInCart = () => {
             <H1>Här var det tomt</H1>
             <ImageContainer>
                 <Image
-                    src="/sadCart.png"
+                    src="/sadCart.svg"
                     alt="hamburger"
                     layout="fill"
                     objectFit="contain"
