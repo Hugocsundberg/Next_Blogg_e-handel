@@ -90,7 +90,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
               date={post.created}
               imageHeight={post.imageHeight || 1300}
               imageWidth={post.imageWidth || 1950}
-              url={`/post/${post.slug}`}
+              url={`/${post.slug}`}
               />
             )
             }
@@ -104,7 +104,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
               date={post.created}
               imageHeight={post.imageHeight || 1300}
               imageWidth={post.imageWidth || 1950}
-              url={`/post/${post.slug}`}
+              url={`/${post.slug}`}
               />
         )
         })}

@@ -121,7 +121,7 @@ export const Product = ({lastElementRef, alt, images, slug, removeMargin = false
 
     return (
         <div ref={lastElementRef || null}>
-            <Link scroll={(sold || _isReserved) ? false : true} href={(sold || _isReserved) ? '' :`/product/${slug}`}>
+            <Link scroll={(sold || _isReserved) ? false : true} href={(sold || _isReserved) ? '' :`/tavlor/${slug}`}>
                 <GrayOverlay>
                     <Border pointer={(!sold && !_isReserved)} hasShadow={hasShadow} removeMargin={removeMargin}>
                         <Dot sold={sold ? true : false} reserved={_isReserved} color={dotColor}></Dot>

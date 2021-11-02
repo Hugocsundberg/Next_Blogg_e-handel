@@ -111,7 +111,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                 <RightSideContainer>
                     {
                     isDesktop ? 
-                    getOptions(aboutMe, _route, router.asPath === `/post/${aboutMe[0].slug.current}` ).map((option:NavOption, key:any)=>(
+                    getOptions(aboutMe, _route, router.asPath === `/${aboutMe[0].slug.current}` ).map((option:NavOption, key:any)=>(
                         <a key={key} href={`${currentPath}${option.link}`}>
                             <OptionDiv noBorder={true} isActive={option.isActive}>   
                                 {option.text === 'Kundvagn' ?
@@ -143,7 +143,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                         </a>
                     )) 
                     : 
-                    <Link href="/cart">
+                    <Link href="/kundvagn">
                         <Cart>
                             <CartP>{cartItems}</CartP>
                             <Image

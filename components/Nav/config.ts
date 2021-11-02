@@ -7,7 +7,7 @@ export const getOptions = (aboutMe:(Array<AboutMe>), slug:string | undefined, is
         {isActive: slug === 'kundvagn' ? true : false, text: 'Kundvagn', image: '/shop-cart.svg', link: '/kundvagn'}
     ]
 
-    if(aboutMe[0]) optionsArray.splice(2, 0, {isActive: isAboutMe ? true : false, text: 'Om mig', image: '/personIcon.svg', link: `/post/${aboutMe[0].slug.current}`})  
+    if(aboutMe[0]) optionsArray.splice(2, 0, {isActive: isAboutMe ? true : false, text: 'Om mig', image: '/personIcon.svg', link: `/${aboutMe[0].slug.current}`})  
     
 
     return optionsArray

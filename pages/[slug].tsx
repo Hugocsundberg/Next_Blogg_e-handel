@@ -1,20 +1,20 @@
 import { useRouter } from 'next/router'
-import client from '../../client'
-import { AboutMe, aboutMeSetting, Post as PostType } from '../../generalTypes'
+import client from '../client'
+import { AboutMe, aboutMeSetting, Post as PostType } from '../generalTypes'
 // @ts-ignore
 import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
 import Image from 'next/image'
-import { FlexCenterCenter, SmallParagraph } from '../../components/GlobalElements'
-import Nav from '../../components/Nav'
-import ActionButton from '../../components/ActionButton'
+import { FlexCenterCenter, SmallParagraph } from '../components/GlobalElements'
+import Nav from '../components/Nav'
+import ActionButton from '../components/ActionButton'
 import styled from 'styled-components'
-import { boxShadowBigElement, margin } from '../../styles/globalStyleVariables'
-import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements'
-import { Background } from '../../components/GlobalElements'
+import { boxShadowBigElement, margin } from '../styles/globalStyleVariables'
+import { ButtonContainer } from '../components/GlobalElements/ActionButtonElements'
+import { Background } from '../components/GlobalElements'
 import Head from 'next/head'
 import SquareLoader from "react-spinners/SquareLoader";
-import { isReserved } from '../../functions'
+import { isReserved } from '../functions'
 import { useEffect, useState } from 'react'
 const BlockContent = require('@sanity/block-content-to-react')
 
@@ -115,7 +115,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
 
   const actionButtonHandler = () => {
     if(_post.productSlug && (!_post.productSold && !isReserved(_post.productReserved) ? true : false) )
-    router.push(`/product/${_post.productSlug}`)
+    router.push(`/tavlor/${_post.productSlug}`)
   }
   
   if(_post.title) {
