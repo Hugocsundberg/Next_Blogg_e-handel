@@ -22,13 +22,14 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
   const [query, setQuery] = useState<string | undefined>(undefined);
   const [cols, setCols] = useState<Array<Array<React.ReactNode>>>([]);
   const {result, loading, error, hasMore, setResult} = useLazyLoad<PostType>(query, incrementBy, JSON.parse(posts))
-  const lastElementRef = useRef()
+  const lastElementRef = useRef<Element | undefined>()
 
   const breakPoints = {
     S: 800,
     M: 1200,
     L: 1800
   };
+
 
   useEffect(()=>{
       if(observer.current) observer.current.disconnect()
@@ -37,9 +38,9 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
           setCurrentProduct(prevValue => prevValue + incrementBy)
         }
       });
-      if(lastElementRef.current) {
+      if(lastElementRef.current !== undefined) {
         observer.current.observe(lastElementRef.current)
-      }
+       }  
   }, [cols])
   
   useEffect(()=>{
