@@ -75,7 +75,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     return (
         <>
         {spacer ? <Spacer/> : ''}
-        <BlurDiv componentIsLoaded={componentLoaded} isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
+        <BlurDiv suppressHydrationWarning componentIsLoaded={componentLoaded} isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
             {isDesktop ? '' : getOptions(aboutMe, _route, router.asPath === `/${aboutMe[0].slug.current}`).map((option:NavOption, key:any)=>(
                 <a key={key} href={`${currentPath}${option.link}`}>
                     <OptionDiv isActive={option.isActive}>   
@@ -115,13 +115,9 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                     isDesktop ? 
                     getOptions(aboutMe, _route, router.asPath === `/${aboutMe[0].slug.current}` ).map((option:NavOption, key:any)=>(
                         <a key={key} href={`${currentPath}${option.link}`}>
-                            <OptionDiv noBorder={true} isActive={option.isActive}>   
+                            <OptionDiv  noBorder={true} isActive={option.isActive}>   
                                 {option.text === 'Kundvagn' ?
-                                <Link href="/kundvagn">
-                                    <a>
-                                        <CartIconRef cartItems={cartItems}/>
-                                    </a>
-                                </Link>
+                                    <CartIconRef cartItems={cartItems}/>
                                 :
                                 <ImageDiv>
                                     <Image

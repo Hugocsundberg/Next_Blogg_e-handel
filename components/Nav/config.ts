@@ -2,7 +2,7 @@ import { AboutMe, NavOption } from "../../generalTypes"
 import { desktopSize } from "../../styles/globalStyleVariables"
 
 export const getOptions = (aboutMe:(Array<AboutMe>), slug:string | undefined, isAboutMe?:boolean) : Array<NavOption> => {
-    let isDesktop = true
+    let isDesktop = undefined
     if(process.browser) isDesktop = window.innerWidth > desktopSize;
     const optionsArray:Array<NavOption> = [
         {isActive: slug === '' ? true : false, text: 'Blogg', image: '/postIcon.svg', link: '/'},
