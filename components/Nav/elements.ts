@@ -89,26 +89,6 @@ display: flex;
 gap: 10px
 `
 
-
-export const Cart = styled.div`
-    height: ${imageHeight}rem;
-    width: 2rem;
-    position: relative;
-    appearance: none;
-    border: none;
-    background: none;
-    --webkit-appearance: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    `
-
-export const CartP = styled.p`
-    font-size: 0.7rem;
-    transform: translate(2px, -1px);
-`
-
 export const Spacer = styled.div`
     height: ${getBottomNavHeight()}px;
 `

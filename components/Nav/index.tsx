@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import Image from 'next/image'
-import { BlurDiv, OptionText, BottomContainer, RightSideContainer, Cart, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer, CartP } from './elements'
+import { BlurDiv, OptionText, BottomContainer, RightSideContainer, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer } from './elements'
 import { getOptions } from './config'
 import { rem } from '../../styles/globalStyleVariables'
 import { Spiral as Hamburger } from 'hamburger-react'
@@ -8,8 +8,10 @@ import Link from 'next/link'
 import { AboutMe, Product as ProductType, NavOption } from '../../generalTypes';
 import { getOptionsHeight } from './functions';
 import { useRouter } from 'next/router'
+import { CartIcon } from './cartIcon';
 import { getFromStorage, isReserved, removeProductFromStorage } from '../../functions';
 
+const CartIconRef = forwardRef(CartIcon)
 
 const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boolean}) => {
     const [currentPath, setcurrentPath] = useState('');
@@ -116,15 +118,9 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                             <OptionDiv noBorder={true} isActive={option.isActive}>   
                                 {option.text === 'Kundvagn' ?
                                 <Link href="/kundvagn">
-                                    <Cart>
-                                        <CartP>{cartItems}</CartP>
-                                        <Image
-                                            src="/shop-cart.svg"
-                                            alt="hamburger"
-                                            layout="fill"
-                                            objectFit="contain"
-                                        />
-                                    </Cart>
+                                    <a>
+                                        <CartIconRef cartItems={cartItems}/>
+                                    </a>
                                 </Link>
                                 :
                                 <ImageDiv>
@@ -144,15 +140,9 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                     )) 
                     : 
                     <Link href="/kundvagn">
-                        <Cart>
-                            <CartP>{cartItems}</CartP>
-                            <Image
-                                src="/shop-cart.svg"
-                                alt="hamburger"
-                                layout="fill"
-                                objectFit="contain"
-                            />
-                        </Cart>
+                        <a>
+                            <CartIconRef cartItems={cartItems}/>
+                        </a>
                     </Link>
                     }
                 </RightSideContainer>
