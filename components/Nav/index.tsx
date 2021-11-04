@@ -10,6 +10,7 @@ import { getOptionsHeight } from './functions';
 import { useRouter } from 'next/router'
 import { CartIcon } from './cartIcon';
 import { getFromStorage, isReserved, removeProductFromStorage } from '../../functions';
+import { desktopSize } from '../../styles/globalStyleVariables';
 
 const CartIconRef = forwardRef(CartIcon)
 
@@ -21,7 +22,6 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     const [ cartItems, setcartItems ] = useState<string | number>('-')
     const router = useRouter()
     const _route = router.route.replace('/', '')
-    const desktopSize:number = 800
 
     const updateCartItems = () => {
         const cart:Array<Object> | null | undefined = getFromStorage('cart')
@@ -76,7 +76,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
         <>
         {spacer ? <Spacer/> : ''}
         <BlurDiv componentIsLoaded={componentLoaded} isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
-            {isDesktop ? '' : getOptions(aboutMe, _route, router.asPath === `/post/${aboutMe[0].slug.current}`).map((option:NavOption, key:any)=>(
+            {isDesktop ? '' : getOptions(aboutMe, _route, router.asPath === `/${aboutMe[0].slug.current}`).map((option:NavOption, key:any)=>(
                 <a key={key} href={`${currentPath}${option.link}`}>
                     <OptionDiv isActive={option.isActive}>   
                             <ImageDiv>
