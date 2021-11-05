@@ -103,7 +103,6 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
         
       ),
       block: (props:any) => {
-        console.log(props)
         if(props.node.style === 'normal') return (
           <SmallParagraph>{props.children[0]}</SmallParagraph>
         )

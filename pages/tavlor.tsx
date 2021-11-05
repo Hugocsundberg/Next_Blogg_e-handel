@@ -128,10 +128,10 @@ useEffect(() => {
   return (
     <>
         <Head>
-        <title>Products</title>
+        <title>Tavlor</title>
         </Head>
         <Nav aboutMe={_aboutMe}></Nav>
-        <Header>PRODUKTER</Header>
+        <Header>TAVLOR</Header>
         <MotionMasonry
           variants={containerVariants}
           animate={'fade'}
@@ -142,18 +142,19 @@ useEffect(() => {
           result={result}
           skeleton={skeletonArray}
           > 
-          {result.map((product:ProductType, i)=>{
-            
-            if(i + 1 >= result.length) 
-            return <Product lastElementRef={lastElementRef} sold={product.sold} lastReserved={product.lastReservedAt} key={i} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
-            
-            else 
-            return <Product sold={product.sold} lastReserved={product.lastReservedAt} key={i} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
-          })
-        }
-        {skeletonArray.map(()=>(
-        <Skeleton></Skeleton>
-        ))}
+          {[
+            ...result.map((product:ProductType, i)=>{
+              
+              if(i + 1 >= result.length) 
+              return <Product key={i} lastElementRef={lastElementRef} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
+              
+              else 
+              return <Product key={i} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
+            }),
+            ...skeletonArray.map((item, i)=>(
+            <Skeleton key={i+1000000}></Skeleton>
+            ))
+          ]}
         </MotionMasonry>
       </>
     ) 

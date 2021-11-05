@@ -78,7 +78,6 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
         cols={cols}
         breakPoints={breakPoints}
         >
-        {[]}
         { result.map((post, index)=>{
           if(index + 1 >= result.length) {
             return (

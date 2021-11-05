@@ -39,7 +39,7 @@ const OuterDiv = styled.div`
     animation-timing-function: linear;
 `
 
-const Skeleton = (props:any, ref:any) => {
+const Skeleton = (ref:any) => {
     return (
         // <Border ref={ref}>
             <WhiteMiddle>
