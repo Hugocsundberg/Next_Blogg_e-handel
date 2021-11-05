@@ -104,7 +104,7 @@ export const renderSnippet = (snippet:string) : void => {
   }
 }
 
-export const updateColCount = (setColCount: Dispatch<SetStateAction<number>>, breakPoints: breakPoints) => {
+export const updateColCount = (setColCount: Dispatch<SetStateAction<number | undefined>>, breakPoints: breakPoints) => {
   const width = window.innerWidth
   if(width < breakPoints.S) setColCount(1)  
   else if(width < breakPoints.M) setColCount(2) 
