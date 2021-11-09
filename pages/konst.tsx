@@ -38,6 +38,10 @@ useEffect(() => {
   if(error) console.log(error)
 }, [error]);
 
+// useEffect(()=>{
+//   console.log(result)
+// }, [result])
+
   const observableCallback = (update:any) => {
         let object:ProductType = update.result
         const productArray = [...result]
@@ -94,7 +98,7 @@ useEffect(() => {
   }, [hasMore]);
 
   useEffect(()=>{
-    setQuery(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[${currentProduct}...${currentProduct + incrementBy}]`)
+    setQuery(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[${currentProduct}...${currentProduct + incrementBy + 1}]`)
   }, [currentProduct])
 
   useEffect(()=>{
