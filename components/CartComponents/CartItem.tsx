@@ -100,7 +100,7 @@ const CartItem = ({ product }: {product: Product}) => {
     const removeObject = () => {
         removeProductFromStorage('cart', product)
         fetch('/api/unreserve', {
-            body: JSON.stringify(product), 
+            body: JSON.stringify(product.id), 
             method: 'post', 
             headers: {
             'Content-Type': 'application/json;charset=utf-8'

@@ -1,15 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Product } from '../../generalTypes';
 const fetch = require('node-fetch');
 require('dotenv').config()
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-    const product:Product = req.body
+    const id:string = req.body
         
           //Send unreserved state to sanity 
           const mutations = [{
             patch: {
-              id: product.id,
+              id: id,
               unset: ['lastReservedAt']
             }
           }]
@@ -23,6 +22,6 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             body: JSON.stringify({mutations})
           })
           .then((stream:any) => stream.json())
-          .then((data:any) => res.json({success: true, message: data}))
+          .then((data:any) => res.json({ message: data}))
     // })
 }
