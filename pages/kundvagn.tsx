@@ -160,10 +160,12 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
                     <CheckoutContainer className="checkout-container"/>
                 </CheckoutContainerContainer>
                 {
+                inCart.length > 0 ? 
                     KlarnaCheckout ? '' :
                     <ButtonContainer>
                         <ActionButtonCart onClick={purchaseHandler} price={totalPrice} tax={30}/>
                     </ButtonContainer>
+                : ''
                 }
             </Background>
         </>
