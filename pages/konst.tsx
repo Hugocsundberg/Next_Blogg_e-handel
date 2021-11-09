@@ -3,7 +3,7 @@ import { AboutMe, Product as ProductType } from "../generalTypes"
 // import Masonry from 'react-masonry-css'
 import Product from "../components/Product"
 import Nav from '../components/Nav'
-import { rem, screenSizes } from '../styles/globalStyleVariables'
+import { margin, rem, screenSizes } from '../styles/globalStyleVariables'
 import Head from "next/head"
 import { Header } from "../components/GlobalElements"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -121,7 +121,7 @@ useEffect(() => {
         </Head>
         <Nav aboutMe={_aboutMe}></Nav>
         {/* <Header>KONST</Header> */}
-        <Spacer height={`${2 * rem}px`}></Spacer>
+        <Spacer height={`${margin}rem`}></Spacer>
         <MotionMasonry
           cols={cols}
           setCols={setCols}

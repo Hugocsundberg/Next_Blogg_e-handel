@@ -5,12 +5,13 @@ import { useState, useEffect } from 'react';
 import { breakPoints, Post as PostType, Product as ProductType } from "../generalTypes"
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 import { updateColCount } from '../functions'
+import { margin } from '../styles/globalStyleVariables';
 
 const Cols = styled.div`
     display: flex;
-    gap: 2rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
+    gap: ${margin}rem;
+    margin-left: ${margin}rem;
+    margin-right: ${margin}rem;
     `
 
 const Col = styled.div`
