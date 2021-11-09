@@ -208,8 +208,9 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
             <BlockContainer>
               <Block1>
                 <Carousel width={'100%'} stopOnHover transitionTime={300} renderArrowPrev={renderArrowPrev} renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} interval={1000000} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
-                        {_product.images.map(image=>(
+                        {_product.images.map((image, i)=>(
                           <Image
+                          key={i}
                           src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
                           alt={image.alt || 'no alt text'}
                           width={image.imageWidth}
