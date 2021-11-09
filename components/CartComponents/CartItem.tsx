@@ -122,7 +122,7 @@ const CartItem = ({ product }: {product: Product}) => {
                 <FlexContainer>
                     <UpperContainer>
                         <H>{product.title}</H>
-                        <P>{`${product.price}KR`}</P>
+                        <P>{`${product.price} kr`}</P>
                     </UpperContainer>
                     <LowerContainer>
                         <Dot></Dot>

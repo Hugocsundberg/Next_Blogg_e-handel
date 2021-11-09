@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { handleScroll } from '../../functions'
 
-const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: {title:string, excerpt:string, imageRef:string, date: Date, imageHeight:number, imageWidth: number, url:string}, forwardedRef:any) => {
+const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url, altText }: {title:string, excerpt:string, imageRef:string, date: Date, imageHeight:number, imageWidth: number, url:string, altText?:string}, forwardedRef:any) => {
     const router = useRouter()
     const route = (e:any) => {
         e.preventDefault
@@ -13,9 +13,13 @@ const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: 
         router.push(url)
     }
 
-    const formatDate = (date:Date) => {
+    const formatDate = (date:Date) :string => {
         if(process.browser) {
             const newDate = new window.Date(date);  
+    
+            const options:Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: '2-digit' };
+            const formattedSEDate = newDate.toLocaleDateString('sv-SE', options)
+
             const then = newDate.getTime()
             const now = window.Date.now()
             const dif = now - then
@@ -25,12 +29,22 @@ const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: 
                 return 'Nyss'
             }
             else if(inHours < 24) {
-            return `${Math.round(inHours)} timmar sedan`
+                const hours = Math.round(inHours)
+                return `${hours} ${hours === 1 ? 'timme' : 'timmar'} sedan`
             } 
+            else if (inHours < 24 * 7) {
+                const days = Math.round(inHours / 24)
+                return `${days} ${days === 1 ? 'dag' : 'dagar'} sedan`
+            }
+            else if(inHours < 24 * 365) {
+                const weeks = Math.round(inHours / 24 / 7)
+                return `${Math.round(inHours / 24 / 7)} ${weeks === 1 ? 'vecka' : 'veckor'} sedan`
+            }
             else {
-                return `${Math.round(inHours / 24)} dagar sedan`
+                return formattedSEDate
             }
         }
+        return ''
     }
 
     return (
@@ -41,7 +55,7 @@ const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url }: 
                 </HorisontalFlexDiv>
                 <Image
                     src={imageRef || '/noImage.jpeg'}
-                    alt="image"
+                    alt={altText ?? "image"}
                     width={imageWidth || 1950}
                     height={imageHeight|| 1300}
                     layout="responsive"

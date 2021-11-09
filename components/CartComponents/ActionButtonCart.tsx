@@ -27,8 +27,8 @@ const ActionButtonCart = ({price, tax, onClick}: {price: number, tax: number, on
         <>
         <Background className="bottomOverlay">
             <H>Total</H>
-            <P>{`${price} SEK`}</P>
-            <Button onClick={onClick} color="white" bgcolor="rgb(245,106,141)">Checka ut med klarna</Button>
+            <P>{`${price} kr`}</P>
+            <Button onClick={onClick} color="white" bgcolor="rgb(245,106,141)">Checka ut med Klarna</Button>
         </Background>
         </>
     );

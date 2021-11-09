@@ -94,7 +94,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
         <ImageContainer>
           <Image
             src={urlFor(props.node.asset).url() || '/noImage.jpg'}
-            alt="image"
+            alt={_post.altText ?? 'image'}
             width={(_post as PostType).imageWidth || 1950}
             height={(_post as PostType).imageHeight || 1300}
             layout="responsive"
@@ -162,7 +162,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
 export async function getStaticProps({ params }: {params: any}) {
   const slug = params.slug
   let postJson
-  const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, "productSlug": product->slug.current, "productReserved": product->lastReservedAt, "productSold": product->sold, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
+  const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, "altText": body[_type match 'image'][0].altText, "productSlug": product->slug.current, "productReserved": product->lastReservedAt, "productSold": product->sold, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
   await client.fetch(query)
   .then((posts: Array<PostType>) => {
     const postData = posts[0] || []
