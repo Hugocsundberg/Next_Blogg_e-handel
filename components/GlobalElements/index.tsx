@@ -57,4 +57,5 @@ export const Spacer = styled.p<{height: string}>`
     height: ${props => props.height};
     position: relative;
     width: 100%;
+    margin: 0;
 `

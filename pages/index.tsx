@@ -8,7 +8,7 @@ import Nav from '../components/Nav'
 import { AboutMe, Post as PostType, } from '../generalTypes'
 import Masonry from '../components/Masonry'
 import useLazyLoad from '../hooks/useLazyLoad'  
-import { windowHeight } from "../styles/globalStyleVariables"
+import { rem, windowHeight } from "../styles/globalStyleVariables"
 import { Spacer } from "../components/GlobalElements"
 import { Background } from '../components/GlobalElements'
 // @ts-ignore
@@ -73,7 +73,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
       <Head>
         <title>Blogg</title>
       </Head>
-      <Header>BLOGG</Header>
+      <Spacer height={`${2 * rem}px`}></Spacer>
       <Masonry 
         result={result}
         setCols={setCols}
