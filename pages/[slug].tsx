@@ -114,7 +114,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
 
   const actionButtonHandler = () => {
     if(_post.productSlug && (!_post.productSold && !isReserved(_post.productReserved) ? true : false) )
-    router.push(`/tavlor/${_post.productSlug}`)
+    router.push(`/konst/${_post.productSlug}`)
   }
   
   if(_post.title) {
@@ -125,7 +125,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
     return (
       <>
         <Head>
-        <title>Cart</title>
+        <title>Kundvagn</title>
         </Head>
         <Background>
           <Nav aboutMe={aboutMeStatic}></Nav>

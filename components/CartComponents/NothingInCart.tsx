@@ -45,7 +45,7 @@ const NothingInCart = () => {
                     objectFit="contain"
                 />
             </ImageContainer>
-            <Link href='/tavlor'><P>Lägg till <Span>tavlor</Span> så kommer de synas här</P></Link>
+            <Link href='/konst'><P>Lägg till <Span>konst</Span> så kommer de synas här</P></Link>
         </Background>
     );
 }

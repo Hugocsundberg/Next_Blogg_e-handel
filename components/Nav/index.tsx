@@ -109,7 +109,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                 }
                 
                 <Link href="/" scroll={false}>
-                    <Logo>Marina Sundberg</Logo>
+                    <Logo>Marina Sundberg konst</Logo>
                 </Link>
                 <RightSideContainer>
                     {
