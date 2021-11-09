@@ -70,7 +70,7 @@ export const isReserved = (reserved:Product | number | null | undefined ) : (num
   else lastReservedAt = reserved.lastReservedAt;
   
   if(lastReservedAt) {
-    const reserveTime = 30
+    const reserveTime = 10
     const diff = Date.now() - lastReservedAt  
     const inMinutes = (diff / 1000 / 60)
     const minutesLeft = reserveTime - Math.round(inMinutes)
