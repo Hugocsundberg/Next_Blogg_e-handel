@@ -13,7 +13,7 @@ const useLazyLoad = <resultType>(query:string | undefined, incrementBy: number, 
             client.fetch(query)
             .then((data:Array<resultType>) => {
                 // IncrementBy is currently one bigger than the number we want so that we can check if there are more. Can probably get better by using tagged template string. 
-                if(data.length >= incrementBy) {
+                if(data.length > incrementBy) {
                     setHasMore(true)
                     // pops the last check=item
                     data.pop()

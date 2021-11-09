@@ -47,7 +47,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
   
   useEffect(()=>{
     if(currentProduct >= CURRENT_PRODUCT_INITIAL )
-    setQuery(`*[_type == "post"]{"created": _createdAt, excerpt, title, "slug": slug.current, "altText": body[_type match 'image'][0].altText, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}[${currentProduct}...${currentProduct + incrementBy + 1}]`)
+    setQuery(`*[_type == "post"] | order(_createdAt desc){"created": _createdAt, excerpt, title, "slug": slug.current, "altText": body[_type match 'image'][0].altText, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}[${currentProduct}...${currentProduct + incrementBy + 1}]`)
   }, [currentProduct])
   
   const scrollHandler = (e:any) => {
