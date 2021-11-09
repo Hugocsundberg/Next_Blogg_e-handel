@@ -45,7 +45,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
   
   useEffect(()=>{
     if(currentProduct >= CURRENT_PRODUCT_INITIAL )
-    setQuery(`*[_type == "post"]{"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}[${currentProduct}...${currentProduct + incrementBy + 1}]`)
+    setQuery(`*[_type == "post"]{"created": _createdAt, excerpt, title, "slug": slug.current, "altText": body[_type match 'image'][0].altText, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}[${currentProduct}...${currentProduct + incrementBy + 1}]`)
   }, [currentProduct])
   
   const scrollHandler = (e:any) => {
@@ -84,6 +84,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
               <PostComponentWithRef
               ref={lastElementRef}
               key={index}
+              altText={post.altText}
               excerpt={post.excerpt} 
               title={post.title} 
               imageRef={post.imageUrl || '/noImage.jpeg'} 
@@ -98,7 +99,8 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
         return (
           <PostComponentWithRef
               key={index}
-              excerpt={post.excerpt} 
+              excerpt={post.excerpt}
+              altText={post.altText} 
               title={post.title} 
               imageRef={post.imageUrl || '/noImage.jpeg'} 
               date={post.created}
@@ -117,7 +119,7 @@ export const getStaticProps:GetStaticProps = async () : Promise<any> => {
     // let postsData:Array<PostType>
     let postsJson:string = '[]'
 
-    const postsQuery = `*[_type == "post"] | order(_createdAt desc){"created": _createdAt, excerpt, body, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}[0...${CURRENT_PRODUCT_INITIAL}]`
+    const postsQuery = `*[_type == "post"] | order(_createdAt desc){"created": _createdAt, excerpt, title, "slug": slug.current, "altText": body[_type match 'image'][0].altText, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}[0...${CURRENT_PRODUCT_INITIAL}]`
 
     await client.fetch(postsQuery)
     .then((posts: Array<PostType>) => {

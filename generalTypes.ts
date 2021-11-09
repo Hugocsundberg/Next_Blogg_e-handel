@@ -6,7 +6,7 @@ excerpt: string,
 imageUrl?: string,
 imageAspectRatio?: number,
 body: Array<any>
-alt?: string,
+altText?: string,
 slug: string,
 title: string,
 productSlug?: string
