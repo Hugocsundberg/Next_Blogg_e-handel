@@ -17,8 +17,6 @@ color: ${darkGray};
 `
 
 export const CardBackground = styled.div`
-animation-duration: .7s;
-animation-name: ${fadeIn};
 background: white;
 width: 100%;
 margin-bottom: ${margin}rem;

@@ -52,3 +52,9 @@ export const SmallParagraph = styled.p`
     font-family: 'Trirong', serif;
     margin-bottom: ${margin}rem;
 `
+
+export const Spacer = styled.p<{height: string}>`
+    height: ${props => props.height};
+    position: relative;
+    width: 100%;
+`

@@ -8,6 +8,8 @@ import Nav from '../components/Nav'
 import { AboutMe, Post as PostType, } from '../generalTypes'
 import Masonry from '../components/Masonry'
 import useLazyLoad from '../hooks/useLazyLoad'  
+import { windowHeight } from "../styles/globalStyleVariables"
+import { Spacer } from "../components/GlobalElements"
 import { Background } from '../components/GlobalElements'
 // @ts-ignore
 import * as smoothScroll from 'smoothscroll'
@@ -111,6 +113,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
         )
         })}
       </Masonry>
+      {hasMore ? <Spacer suppressHydrationWarning height={`${windowHeight - 10}px`}></Spacer> : ''}
     </Background>
   )
 }

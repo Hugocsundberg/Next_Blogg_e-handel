@@ -10,14 +10,13 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import useLazyLoad from "../hooks/useLazyLoad"
 import Skeleton from "../components/Skeleton"
 import { motion } from "framer-motion"
+import { windowHeight } from "../styles/globalStyleVariables"
 import React from "react"
+import { Spacer } from "../components/GlobalElements"
 import Masonry from "../components/Masonry"
 
 const MasonryComponent = React.forwardRef(Masonry)
 const MotionMasonry = motion(MasonryComponent)
-
-// const SkeletonComponent = React.forwardRef(Skeleton)
-// const MotionSkeleton = motion(SkeletonComponent)
 
 const Products = ({ aboutMe }: { aboutMe: string}) => {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
@@ -27,6 +26,7 @@ const Products = ({ aboutMe }: { aboutMe: string}) => {
   const [skeletonArray, setSkeletonArray] = useState<Array<object>>([])
   const [currentProduct, setCurrentProduct] = useState(0);
   const [cols, setCols] = useState<Array<Array<React.ReactNode>>>([]);
+  
 
   const breakPoints = {
     S: screenSizes.S,
@@ -34,22 +34,6 @@ const Products = ({ aboutMe }: { aboutMe: string}) => {
     L: screenSizes.L
   };
   
-  const containerVariants = {
-    fade: {
-      transition: {
-          staggerChildren: 0.5
-      }
-  }, 
-  }
-  const itemVariants = {
-    fade: {
-      opacity: 0.2,
-      transition: {
-          repeat: Infinity
-      }
-  }, 
-  }
-
 useEffect(() => {
   if(error) console.log(error)
 }, [error]);
@@ -84,6 +68,9 @@ useEffect(() => {
 
   const observer = useRef<IntersectionObserver>()
   const observable = useRef(client.listen(query, {}, {includeResult: true}))
+  const options: IntersectionObserverInit = {
+    rootMargin: '200px'
+  }
 
   useEffect(() => {
     const subscription = observable.current.subscribe(observableCallback)
@@ -98,7 +85,7 @@ useEffect(() => {
         if(e[0].isIntersecting) {
             setCurrentProduct(prevValue => prevValue + incrementBy - 1)
         }
-      });
+      }, options);
       if(node) observer.current.observe(node)
   }, [])
 
@@ -123,8 +110,6 @@ useEffect(() => {
     }
   }, [loading])
   
-
-  
   return (
     <>
         <Head>
@@ -133,8 +118,6 @@ useEffect(() => {
         <Nav aboutMe={_aboutMe}></Nav>
         <Header>TAVLOR</Header>
         <MotionMasonry
-          variants={containerVariants}
-          animate={'fade'}
           cols={cols}
           setCols={setCols}
           breakPoints={breakPoints}
@@ -156,6 +139,7 @@ useEffect(() => {
             ))
           ]}
         </MotionMasonry>
+        {hasMore ? <Spacer suppressHydrationWarning height={`${windowHeight - 10}px`}></Spacer> : ''}
       </>
     ) 
   }

@@ -1,5 +1,6 @@
 import React, { JSXElementConstructor } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { breakPoints, Post as PostType, Product as ProductType } from "../generalTypes"
 import { Dispatch, SetStateAction, ReactNode } from 'react';
@@ -15,6 +16,29 @@ const Cols = styled.div`
 const Col = styled.div`
     width: 100%;
     `
+
+const container = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: .5,
+      }
+    }
+  }
+  
+  const item = {
+    hidden: { 
+        y: 300,
+     },
+    show: { 
+        y: 0,
+        transition: {
+            type: "spring",
+            stiffness: 50, 
+            mass:1
+        }
+     },
+  }
 
 const Masonry = ({ cols, setCols, children, result, skeleton, breakPoints }: {cols:Array<Array<React.ReactNode>>, setCols:Dispatch<SetStateAction<ReactNode[][]>>, children:Array<JSX.Element>, result:(Array<PostType> | Array<ProductType>), skeleton?:Array<Object>, breakPoints:breakPoints }, ref:any) => {
     const [colCount, setColCount] = useState<number | undefined>(undefined);
@@ -49,13 +73,21 @@ const Masonry = ({ cols, setCols, children, result, skeleton, breakPoints }: {co
     }, [colCount, result, skeleton]);
 
     return (
-        <Cols>
+        <Cols 
+        as={motion.div}
+        >
             {cols.map((col, i)=>(
-                <Col key={i}>
+                <Col
+                 key={i}
+                 as={motion.div}
+                 variants={container}
+                 initial="hidden"
+                 animate="show"
+                 >
                     {col.map((child, i)=>(
-                        <div key={i}>
+                        <motion.div variants={item} key={i}>
                             {child}
-                        </div>
+                        </motion.div>
                     ))}
                 </Col>
             ))}
