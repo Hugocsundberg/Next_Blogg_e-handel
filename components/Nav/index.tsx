@@ -22,6 +22,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     const [ cartItems, setcartItems ] = useState<string | number>('-')
     const router = useRouter()
     const _route = router.route.replace('/', '')
+    const isAboutMe:boolean = aboutMe[0].slug && router.asPath === `/${aboutMe[0].slug.current}`
 
     const updateCartItems = () => {
         const cart:Array<Object> | null | undefined = getFromStorage('cart')
@@ -76,7 +77,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
         <>
         {spacer ? <Spacer/> : ''}
         <BlurDiv suppressHydrationWarning componentIsLoaded={componentLoaded} isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
-            {isDesktop ? '' : getOptions(aboutMe, _route, router.asPath === `/${aboutMe[0].slug.current}`).map((option:NavOption, key:any)=>(
+            {isDesktop ? '' : getOptions(aboutMe, _route, isAboutMe).map((option:NavOption, key:any)=>(
                 <a key={key} href={`${currentPath}${option.link}`}>
                     <OptionDiv isActive={option.isActive}>   
                             <ImageDiv>
@@ -113,7 +114,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                 <RightSideContainer>
                     {
                     isDesktop ? 
-                    getOptions(aboutMe, _route, router.asPath === `/${aboutMe[0].slug.current}` ).map((option:NavOption, key:any)=>(
+                    getOptions(aboutMe, _route, isAboutMe ).map((option:NavOption, key:any)=>(
                         <a key={key} href={`${currentPath}${option.link}`}>
                             <OptionDiv  noBorder={true} isActive={option.isActive}>   
                                 {option.text === 'Kundvagn' ?

@@ -8,8 +8,7 @@ export const getOptions = (aboutMe:(Array<AboutMe>), slug:string | undefined, is
         {isActive: slug === '' ? true : false, text: 'Blogg', image: '/postIcon.svg', link: '/'},
         {isActive: slug === 'tavlor' ? true : false, text: 'Tavlor', image: '/imageIcon.svg', link: '/tavlor'},
     ]
-
-    if(aboutMe[0]) optionsArray.splice(2, 0, {isActive: isAboutMe ? true : false, text: 'Om mig', image: '/personIcon.svg', link: `/${aboutMe[0].slug.current}`})  
+    if(aboutMe[0].slug) optionsArray.splice(2, 0, {isActive: isAboutMe ? true : false, text: 'Om mig', image: '/personIcon.svg', link: `/${aboutMe[0].slug.current}`})  
     if(isDesktop) optionsArray.push({isActive: slug === 'kundvagn' ? true : false, text: 'Kundvagn', image: '/shop-cart.svg', link: '/kundvagn'})
 
     return optionsArray
