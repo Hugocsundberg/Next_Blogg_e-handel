@@ -32,6 +32,7 @@ export const OptionDiv = styled.button<{noBorder?:boolean, isActive?:boolean}>`
     padding: ${optionDivPadding}rem ${margin}rem;
     transition: 0.6s;
     transition-timing-function: ${animationTiming};
+    border-radius: 0;
     &:hover{
         background-color: ${darken};
     }
@@ -78,7 +79,7 @@ export const Logo = styled.p`
     font-family: 'Open Sans', sans-serif;
     font-size: 1.5rem;
     cursor: pointer;
-    width: 7rem;
+    width: fit-content;
     text-align: center;
     margin: ${marginLogo}rem;
     line-height: ${lineHeightLogo}rem;

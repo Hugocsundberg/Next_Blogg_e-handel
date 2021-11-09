@@ -15,4 +15,4 @@ export const getOptionsHeight = (aboutMe:Array<AboutMe>):number => {
     return height;
 }
 
-export const getBottomNavHeight = ():number => (lineHeightLogo * 2) * rem + (marginLogo * 2) * rem
+export const getBottomNavHeight = ():number => (imageHeight) * rem + rem * 2
