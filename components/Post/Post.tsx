@@ -1,14 +1,27 @@
 import React from 'react';
 //@ts-ignore
 import { Header, Date, CardBackground, Excerpt, HorisontalFlexDiv } from './elements'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { handleScroll } from '../../functions'
+import imageUrlBuilder from '@sanity/image-url'
+import client from '../../client';
+import styled from 'styled-components';
+import { breakPoints } from '../../generalTypes';
 
-const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url, altText }: {title:string, excerpt:string, imageRef:string, date: Date, imageHeight:number, imageWidth: number, url:string, altText?:string}, forwardedRef:any) => {
+const builder = imageUrlBuilder(client)
+
+const Img = styled.img`
+    width: 100%;
+`
+
+const urlFor = (source: string) => {
+    return builder.image(source)
+  }
+
+const Post = ({ title, excerpt, imageRef, date, breakPoints, url, altText }: {title:string, excerpt:string, imageRef:string, date: Date, breakPoints:breakPoints, url:string, altText?:string}, forwardedRef:any) => {
     const router = useRouter()
     const route = (e:any) => {
-        e.preventDefault
+        e.preventDefault    
         window.removeEventListener('scroll', handleScroll)
         router.push(url)
     }
@@ -53,14 +66,12 @@ const Post = ({ title, excerpt, imageRef, date, imageHeight, imageWidth, url, al
                     <Header>{title}</Header>
                     <Date>{formatDate(date)}</Date>
                 </HorisontalFlexDiv>
-                <Image
-                    src={imageRef || '/noImage.jpeg'}
-                    alt={altText ?? "image"}
-                    width={imageWidth || 1950}
-                    height={imageHeight|| 1300}
-                    layout="responsive"
-                    className='postImage'
-                />
+                <picture>
+                    <source media={`(min-width:${breakPoints.L}px)`} srcSet={urlFor(imageRef).width(700).url() || undefined}/>
+                    <source media={`(min-width:${breakPoints.M}px)`} srcSet={urlFor(imageRef).width(560).url() || undefined}/>
+                    <source media={`(min-width:${breakPoints.S}px)`} srcSet={urlFor(imageRef).width(560).url() || undefined}/>
+                    <Img src={urlFor(imageRef).width(740).url() || undefined}/>
+                </picture>
                 <Excerpt>{excerpt}</Excerpt>
             </CardBackground>
     );

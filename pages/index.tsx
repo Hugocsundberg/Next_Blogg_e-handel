@@ -15,6 +15,12 @@ import { Background } from '../components/GlobalElements'
 import * as smoothScroll from 'smoothscroll'
 const CURRENT_PRODUCT_INITIAL = 6;
 
+const breakPoints = {
+  S: 800,
+  M: 1200,
+  L: 1800
+};
+
 export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string}) {
   const incrementBy = 4
   const [currentProduct, setCurrentProduct] = useState(CURRENT_PRODUCT_INITIAL - incrementBy)
@@ -26,11 +32,6 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
   const {result, loading, error, hasMore, setResult} = useLazyLoad<PostType>(query, incrementBy, JSON.parse(posts))
   const lastElementRef = useRef<Element | undefined>()
 
-  const breakPoints = {
-    S: 800,
-    M: 1200,
-    L: 1800
-  };
 
 
   useEffect(()=>{
@@ -84,6 +85,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
           if(index + 1 >= result.length) {
             return (
               <PostComponentWithRef
+              breakPoints={breakPoints}
               ref={lastElementRef}
               key={index}
               altText={post.altText}
@@ -91,8 +93,6 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
               title={post.title} 
               imageRef={post.imageUrl || '/noImage.jpeg'} 
               date={post.created}
-              imageHeight={post.imageHeight || 1300}
-              imageWidth={post.imageWidth || 1950}
               url={`/${post.slug}`}
               />
             )
@@ -100,14 +100,13 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
         else 
         return (
           <PostComponentWithRef
+              breakPoints={breakPoints}
               key={index}
               excerpt={post.excerpt}
               altText={post.altText} 
               title={post.title} 
               imageRef={post.imageUrl || '/noImage.jpeg'} 
               date={post.created}
-              imageHeight={post.imageHeight || 1300}
-              imageWidth={post.imageWidth || 1950}
               url={`/${post.slug}`}
               />
         )
