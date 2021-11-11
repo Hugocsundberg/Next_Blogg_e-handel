@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import client from "../client";
+import { Post, Product } from "../generalTypes";
 
-const useLazyLoad = <resultType>(query:string | undefined, incrementBy: number, initialResult?: Array<resultType>) => {
-    const [result, setResult] = useState<Array<resultType>>(initialResult ?? []);
+const useLazyLoad = (query:string | undefined, incrementBy: number, initialResult?:(Array<Product> | Array<Post>)) => {
+    const [result, setResult] = useState<Array<Product | Post>>(initialResult ?? []);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error>();
     const [hasMore, setHasMore] = useState(true);
-    
+
     useEffect(()=>{
         if(hasMore && query) {
             setLoading(true)
             client.fetch(query)
-            .then((data:Array<resultType>) => {
+            .then((data:Array<Product> | Array<Post>) => {
                 // IncrementBy is currently one bigger than the number we want so that we can check if there are more. Can probably get better by using tagged template string. 
                 if(data.length > incrementBy) {
                     setHasMore(true)
