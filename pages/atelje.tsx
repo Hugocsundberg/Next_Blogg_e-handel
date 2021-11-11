@@ -1,11 +1,9 @@
 import client from "../client"
 import { AboutMe, Product as ProductType } from "../generalTypes"
-// import Masonry from 'react-masonry-css'
 import Product from "../components/Product"
 import Nav from '../components/Nav'
 import { margin, rem, screenSizes } from '../styles/globalStyleVariables'
 import Head from "next/head"
-import { Header } from "../components/GlobalElements"
 import { useCallback, useEffect, useRef, useState } from "react"
 import useLazyLoad from "../hooks/useLazyLoad"
 import Skeleton from "../components/Skeleton"
@@ -18,6 +16,12 @@ import Masonry from "../components/Masonry"
 const MasonryComponent = React.forwardRef(Masonry)
 const MotionMasonry = motion(MasonryComponent)
 
+export const breakPoints = {
+  S: screenSizes.S,
+  M: screenSizes.M,
+  L: screenSizes.L
+};
+
 const Products = ({ aboutMe }: { aboutMe: string}) => {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const incrementBy = 4
@@ -27,20 +31,9 @@ const Products = ({ aboutMe }: { aboutMe: string}) => {
   const [currentProduct, setCurrentProduct] = useState(0);
   const [cols, setCols] = useState<Array<Array<React.ReactNode>>>([]);
   
-
-  const breakPoints = {
-    S: screenSizes.S,
-    M: screenSizes.M,
-    L: screenSizes.L
-  };
-  
 useEffect(() => {
   if(error) console.log(error)
 }, [error]);
-
-// useEffect(()=>{
-//   console.log(result)
-// }, [result])
 
   const observableCallback = (update:any) => {
         let object:ProductType = update.result
@@ -77,6 +70,7 @@ useEffect(() => {
   }
 
   useEffect(() => {
+    console.log({result})
     const subscription = observable.current.subscribe(observableCallback)
     return () => {
       subscription.unsubscribe()
@@ -98,7 +92,7 @@ useEffect(() => {
   }, [hasMore]);
 
   useEffect(()=>{
-    setQuery(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[${currentProduct}...${currentProduct + incrementBy + 1}]`)
+    setQuery(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title}[${currentProduct}...${currentProduct + incrementBy + 1}]`)
   }, [currentProduct])
 
   useEffect(()=>{
@@ -113,20 +107,18 @@ useEffect(() => {
       setSkeletonArray([])
     }
   }, [loading])
-  
+
   return (
     <>
         <Head>
-        <title>Konst</title>
+        <title>Ateljé</title>
         </Head>
         <Nav aboutMe={_aboutMe}></Nav>
-        {/* <Header>KONST</Header> */}
         <Spacer height={`${margin}rem`}></Spacer>
         <MotionMasonry
           cols={cols}
           setCols={setCols}
           breakPoints={breakPoints}
-
           result={result}
           skeleton={skeletonArray}
           > 
@@ -134,10 +126,10 @@ useEffect(() => {
             ...result.map((product:ProductType, i)=>{
               
               if(i + 1 >= result.length) 
-              return <Product key={i} lastElementRef={lastElementRef} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
+              return <Product imageHeight={product.images[0].imageHeight} imageWidth={product.images[0].imageWidth} key={i} lastElementRef={lastElementRef} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
               
               else 
-              return <Product key={i} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
+              return <Product imageHeight={product.images[0].imageHeight} imageWidth={product.images[0].imageWidth} key={i} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
             }),
             ...skeletonArray.map((item, i)=>(
             <Skeleton key={i+1000000}></Skeleton>
