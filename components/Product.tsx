@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/dist/client/image';
 import imageUrlBuilder from '@sanity/image-url'
 import client from '../client'
 import { ImageHW } from '../generalTypes'
@@ -9,6 +8,7 @@ import { margin, animationTiming } from '../styles/globalStyleVariables';
 import { isReserved } from '../functions';
 import { useEffect, useState } from 'react';
 import { keyframes } from 'styled-components'
+import { breakPoints } from '../pages/atelje';
 
 const builder = imageUrlBuilder(client)
 const fromGray = keyframes`
@@ -22,9 +22,14 @@ const GrayOverlay = styled.div`
     width: 100%;
 `
 
+const Img = styled.img`
+    width: 100%;
+`
+
 const Border = styled.div<{hasShadow:boolean, removeMargin: boolean, pointer:boolean}>`
     background: black;
     padding: 2%;
+    padding-bottom: calc(3% - 8px);
     position: relative;
     margin-bottom: ${props => props.removeMargin ? '0px' : `${margin}rem`};
     cursor: ${props=>props.pointer ? 'pointer' : 'auto'};
@@ -86,7 +91,9 @@ const Dot = styled.div<{color: 'red' | 'yellow' | 'transparent', sold:boolean, r
     z-index: 20;
 `
 
-const Container = styled.div`
+const Image = styled.img<{aspectRatio: number}>`
+    width: 100%;
+    aspect-ratio: ${props=>props.aspectRatio};
     position: relative;
     transition-timing-function: ${animationTiming};
     transition-duration: 1s;
@@ -95,11 +102,17 @@ const Container = styled.div`
     }
 `
 
+// const Container = styled.div<{aspectRatio: number}>`
+//     
+//     background: green;
+
+// `
+
 const urlFor = (source: string) => {
   return builder.image(source)
 }
 
-export const Product = ({lastElementRef, alt, images, slug, removeMargin = false, hasShadow = true, sold, lastReserved}:{lastElementRef?:any, alt:string, images: Array<ImageHW>, slug:string, removeMargin?: boolean, hasShadow?:boolean, sold?:boolean, lastReserved?: number | null}) => {
+export const Product = ({lastElementRef, alt, images, slug, imageHeight, imageWidth, removeMargin = false, hasShadow = true, sold, lastReserved}:{lastElementRef?:any, alt:string, images: Array<ImageHW>, slug:string, imageHeight: number, imageWidth:number, removeMargin?: boolean, hasShadow?:boolean, sold?:boolean, lastReserved?: number | null}) => {
     const [_isReserved, set_isReserved] = useState(isReserved(lastReserved));
 
     //update reserved time left once every minute for minute countdown.
@@ -121,22 +134,19 @@ export const Product = ({lastElementRef, alt, images, slug, removeMargin = false
 
     return (
         <div ref={lastElementRef || null}>
-            <Link scroll={(sold || _isReserved) ? false : true} href={(sold || _isReserved) ? '' :`/konst/${slug}`}>
+            <Link scroll={(sold || _isReserved) ? false : true} href={(sold || _isReserved) ? '' :`/atelje/${slug}`}>
                 <GrayOverlay>
                     <Border pointer={(!sold && !_isReserved)} hasShadow={hasShadow} removeMargin={removeMargin}>
                         <Dot sold={sold ? true : false} reserved={_isReserved} color={dotColor}></Dot>
                         <Overlay active={(_isReserved || sold) ? true : false}>
                             <OverlayText>{sold ? 'Såld' : `Reserverad av någon i ${_isReserved ? _isReserved : 'false'} ${_isReserved === 1 ? 'minut' : 'minuter'} till.`}</OverlayText>
                         </Overlay>
-                        <Container> 
-                            <Image
-                                src={urlFor(images[0].asset._ref).url() || '/noImage.jpg'}
-                                alt={alt}
-                                width={images[0].imageWidth}
-                                height={images[0].imageHeight}
-                                layout="responsive"
-                            />
-                        </Container>
+                            <picture>
+                                <source media={`(min-width:${breakPoints.L}px)`} srcSet={urlFor(images[0].asset._ref).width(700).url() || undefined}/>
+                                <source media={`(min-width:${breakPoints.M}px)`} srcSet={urlFor(images[0].asset._ref).width(560).url() || undefined}/>
+                                <source media={`(min-width:${breakPoints.S}px)`} srcSet={urlFor(images[0].asset._ref).width(560).url() || undefined}/>
+                                <Image aspectRatio={imageWidth / imageHeight} src={urlFor(images[0].asset._ref).width(740).url() || undefined}/> 
+                            </picture>
                     </Border>
                 </GrayOverlay>
             </Link>
