@@ -25,7 +25,7 @@ export const breakPoints = {
 const Products = ({ aboutMe }: { aboutMe: string}) => {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const incrementBy = 4
-  const [query, setQuery] = useState(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[0...${incrementBy}]`);
+  const [query, setQuery] = useState(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[0...0]`);
   const {result, loading, error, hasMore, setResult} = useLazyLoad<ProductType>(query, incrementBy)
   const [skeletonArray, setSkeletonArray] = useState<Array<object>>([])
   const [currentProduct, setCurrentProduct] = useState(0);
@@ -81,7 +81,7 @@ useEffect(() => {
       if(observer.current) observer.current.disconnect()
       observer.current = new IntersectionObserver((e)=>{
         if(e[0].isIntersecting) {
-            setCurrentProduct(prevValue => prevValue + incrementBy - 1)
+            setCurrentProduct(prevValue => prevValue + incrementBy)
         }
       }, options);
       if(node) observer.current.observe(node)
