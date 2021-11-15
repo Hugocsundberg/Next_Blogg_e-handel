@@ -70,7 +70,7 @@ const Post = ({ title, excerpt, imageRef, date, breakPoints, url, altText, aspec
     }
 
     return (
-            <CardBackground ref={forwardedRef} onClick={route}>
+            <CardBackground aspectRatio={aspectRatio} ref={forwardedRef} onClick={route}>
                 <HorisontalFlexDiv>
                     <Header>{title}</Header>
                     <Date>{formatDate(date)}</Date>

@@ -16,8 +16,9 @@ export const Date = styled.p`
 color: ${darkGray};
 `
 
-export const CardBackground = styled.div`
+export const CardBackground = styled.div<{aspectRatio: number}>`
 background: white;
+aspect-ratio: ${props=>props.aspectRatio};
 width: 100%;
 margin-bottom: ${margin}rem;
 cursor: pointer;
