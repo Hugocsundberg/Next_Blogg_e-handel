@@ -72,7 +72,7 @@ export const HamburgerContainer = styled.button`
     border: none;
     background: none;
     --webkit-appearance: none;
-    margin-left: ${1 - margin}rem;
+    margin-left: -0.9rem;
 `
 
 export const Logo = styled.p`

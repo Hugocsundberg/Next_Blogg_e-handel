@@ -23,6 +23,10 @@ a {
   appearance: none;
 }
 
+button {
+  color: initial;
+}
+
 * {
   box-sizing: border-box;
 }
