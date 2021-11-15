@@ -13,7 +13,8 @@ export const lighten:string = 'rgba(255, 255, 255, 0.8)';
 export const screenSizes:ScreenSizes = {
     S: 500,
     M: 700,
-    L: 1000
+    L: 1000,
+    XL: 2000
 }
 export const navHeight:number = 5.375
 export const buttonBorderRadius:number = 5

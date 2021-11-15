@@ -142,10 +142,11 @@ export const Product = ({lastElementRef, alt, images, slug, imageHeight, imageWi
                             <OverlayText>{sold ? 'Såld' : `Reserverad av någon i ${_isReserved ? _isReserved : 'false'} ${_isReserved === 1 ? 'minut' : 'minuter'} till.`}</OverlayText>
                         </Overlay>
                             <picture>
-                                <source media={`(min-width:${breakPoints.L}px)`} srcSet={urlFor(images[0].asset._ref).width(700).url() || undefined}/>
-                                <source media={`(min-width:${breakPoints.M}px)`} srcSet={urlFor(images[0].asset._ref).width(560).url() || undefined}/>
-                                <source media={`(min-width:${breakPoints.S}px)`} srcSet={urlFor(images[0].asset._ref).width(560).url() || undefined}/>
-                                <Image aspectRatio={imageWidth / imageHeight} src={urlFor(images[0].asset._ref).width(740).url() || undefined}/> 
+                                <source media={`(min-width:${breakPoints.XL}px)`} srcSet={urlFor(images[0].asset._ref).width(1200).url() || undefined}/>
+                                <source media={`(min-width:${breakPoints.L}px)`} srcSet={urlFor(images[0].asset._ref).width(500).url() || undefined}/>
+                                <source media={`(min-width:${breakPoints.M}px)`} srcSet={urlFor(images[0].asset._ref).width(310).url() || undefined}/>
+                                <source media={`(min-width:${breakPoints.S}px)`} srcSet={urlFor(images[0].asset._ref).width(320).url() || undefined}/>
+                                <Image aspectRatio={imageWidth / imageHeight} src={urlFor(images[0].asset._ref).width(500).url() || undefined}/> 
                             </picture>
                     </Border>
                 </GrayOverlay>

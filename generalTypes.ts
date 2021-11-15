@@ -99,6 +99,7 @@ export interface ScreenSizes {
     S: number
     M: number
     L: number
+    XL: number
 }
 
 export interface KlarnaCheckoutSnippetResponse {

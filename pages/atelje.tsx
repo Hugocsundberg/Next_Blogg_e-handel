@@ -20,7 +20,8 @@ const MotionMasonry = motion(MasonryComponent)
 export const breakPoints = {
   S: screenSizes.S,
   M: screenSizes.M,
-  L: screenSizes.L
+  L: screenSizes.L,
+  XL: screenSizes.XL
 };
 
 const Products = ({ aboutMe }: { aboutMe: string}) => {

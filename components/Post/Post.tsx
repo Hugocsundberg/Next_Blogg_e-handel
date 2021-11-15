@@ -7,18 +7,27 @@ import imageUrlBuilder from '@sanity/image-url'
 import client from '../../client';
 import styled from 'styled-components';
 import { breakPoints } from '../../generalTypes';
+import { animationTiming, boxShadowBigElement } from '../../styles/globalStyleVariables';
 
 const builder = imageUrlBuilder(client)
 
-const Img = styled.img`
+const Image = styled.img<{aspectRatio: number}>`
     width: 100%;
+    aspect-ratio: ${props=>props.aspectRatio};
+    position: relative;
+    transition-timing-function: ${animationTiming};
+    transition-duration: 1s;
+    &:hover {
+        transform: scale(1.04);
+        box-shadow: ${boxShadowBigElement};
+    }
 `
 
 const urlFor = (source: string) => {
     return builder.image(source)
   }
 
-const Post = ({ title, excerpt, imageRef, date, breakPoints, url, altText }: {title:string, excerpt:string, imageRef:string, date: Date, breakPoints:breakPoints, url:string, altText?:string}, forwardedRef:any) => {
+const Post = ({ title, excerpt, imageRef, date, breakPoints, url, altText, aspectRatio }: {title:string, excerpt:string, imageRef:string, date: Date, breakPoints:breakPoints, url:string, altText?:string, aspectRatio: number}, forwardedRef:any) => {
     const router = useRouter()
     const route = (e:any) => {
         e.preventDefault    
@@ -70,7 +79,7 @@ const Post = ({ title, excerpt, imageRef, date, breakPoints, url, altText }: {ti
                     <source media={`(min-width:${breakPoints.L}px)`} srcSet={urlFor(imageRef).width(700).url() || undefined}/>
                     <source media={`(min-width:${breakPoints.M}px)`} srcSet={urlFor(imageRef).width(560).url() || undefined}/>
                     <source media={`(min-width:${breakPoints.S}px)`} srcSet={urlFor(imageRef).width(560).url() || undefined}/>
-                    <Img src={urlFor(imageRef).width(740).url() || undefined}/>
+                    <Image aspectRatio={aspectRatio} src={urlFor(imageRef).width(740).url() || undefined}/>
                 </picture>
                 <Excerpt>{excerpt}</Excerpt>
             </CardBackground>
