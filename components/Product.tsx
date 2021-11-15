@@ -4,7 +4,7 @@ import client from '../client'
 import { ImageHW } from '../generalTypes'
 import styled from 'styled-components';
 import Link from 'next/link'
-import { margin, animationTiming } from '../styles/globalStyleVariables';
+import { margin, animationTiming, boxShadowBigElement } from '../styles/globalStyleVariables';
 import { isReserved } from '../functions';
 import { useEffect, useState } from 'react';
 import { keyframes } from 'styled-components'
@@ -19,10 +19,6 @@ const fromGray = keyframes`
 const GrayOverlay = styled.div`
     background: gray;
     height: 100%;
-    width: 100%;
-`
-
-const Img = styled.img`
     width: 100%;
 `
 
@@ -99,6 +95,7 @@ const Image = styled.img<{aspectRatio: number}>`
     transition-duration: 1s;
     &:hover {
         transform: scale(1.1);
+        box-shadow: ${boxShadowBigElement};
     }
 `
 
