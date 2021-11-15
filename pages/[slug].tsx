@@ -1,10 +1,9 @@
 import { useRouter } from 'next/router'
 import client from '../client'
-import { AboutMe, aboutMeSetting, Post as PostType } from '../generalTypes'
+import { AboutMe, aboutMeSetting, PostFull } from '../generalTypes'
 // @ts-ignore
 import PortableText from '@sanity/block-content-to-react'
 import imageUrlBuilder from '@sanity/image-url'
-import Image from 'next/image'
 import { FlexCenterCenter, SmallParagraph } from '../components/GlobalElements'
 import Nav from '../components/Nav'
 import ActionButton from '../components/ActionButton'
@@ -45,6 +44,11 @@ const ImageContainer = styled.div`
   overflow: hidden;
 `
 
+const Image = styled.img<{aspectRatio: number}>`
+    aspect-ratio: ${props=>props.aspectRatio};
+    position: relative;
+`
+
 const builder = imageUrlBuilder(client)
 
 const urlFor = (source: string) => {
@@ -62,7 +66,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
   }
   const aboutMeStatic:Array<AboutMe> = JSON.parse(aboutMe)
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
-  const _post: PostType = JSON.parse(post)
+  const _post: PostFull = JSON.parse(post)
   const [isReservedState, setIsReserevedState] = useState<number | false>(isReserved(_post.productReserved))
   const router = useRouter()
 
@@ -92,13 +96,10 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
     types: {
       image: (props:any) => (
         <ImageContainer>
-          <Image
-            src={urlFor(props.node.asset).url() || '/noImage.jpg'}
-            alt={_post.altText ?? 'image'}
-            width={(_post as PostType).imageWidth || 1950}
-            height={(_post as PostType).imageHeight || 1300}
-            layout="responsive"
-          />
+          <picture>
+              <source media={`(min-width:400px)`} srcSet={urlFor(props.node.asset).width(452).url() || undefined}/>
+              <Image alt={_post.altText ?? 'image'} aspectRatio={_post.imageWidth / _post.imageHeight} src={urlFor(props.node.asset).width(305).url() || undefined}/>
+          </picture>
         </ImageContainer>
         
       ),
@@ -132,7 +133,7 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
           <CenterContent hasProduct={_post.productSlug ? true : false}>
             <ContentContainer hasProduct={_post.productSlug ? true : false}>
               <PortableText
-                blocks={(_post as PostType).body}
+                blocks={_post.body}
                 serializers={serializers}
                 projectId="9r33i0al"
                 dataset="production"
@@ -164,7 +165,7 @@ export async function getStaticProps({ params }: {params: any}) {
   let postJson
   const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, "altText": body[_type match 'image'][0].altText, "productSlug": product->slug.current, "productReserved": product->lastReservedAt, "productSold": product->sold, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`
   await client.fetch(query)
-  .then((posts: Array<PostType>) => {
+  .then((posts: Array<PostFull>) => {
     const postData = posts[0] || []
     postJson = JSON.stringify(postData)
   })
@@ -187,7 +188,7 @@ export async function getStaticProps({ params }: {params: any}) {
 export async function getStaticPaths() {
 
   // Get 20 first posts except aboutme post. Then add about me post to make sure it is always prerendered even if older than 20.
-  const data:Array<PostType> = []
+  const data:Array<PostFull> = []
 
   // Get 'aboutme' post slug
   const aboutMePostQuery = `*[_type == "settings"]{aboutme->{slug}}`
@@ -196,15 +197,15 @@ export async function getStaticPaths() {
 
   // Get all posts except 'aboutme' post
   const postsQueryWithoutAboutMe = `*[_type == "post" && slug.current != "${aboutMePostSlug}"]{"slug": slug.current}[0...20]`
-  const postsWithoutAboutMe:Array<PostType> =  await client.fetch(postsQueryWithoutAboutMe)
+  const postsWithoutAboutMe:Array<PostFull> =  await client.fetch(postsQueryWithoutAboutMe)
 
   // Get about me post
-  const aboutMePosts:Array<PostType> = await client.fetch(`*[_type == "post" && slug.current == "${aboutMePostSlug}"]{"slug": slug.current}`)
+  const aboutMePosts:Array<PostFull> = await client.fetch(`*[_type == "post" && slug.current == "${aboutMePostSlug}"]{"slug": slug.current}`)
 
   data.push(...postsWithoutAboutMe, ...aboutMePosts)
 
   return {
-    paths: data.map((post:PostType)=> {
+    paths: data.map((post:PostFull)=> {
       return {params: {slug: post.slug}}
     })
     ,
