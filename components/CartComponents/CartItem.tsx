@@ -113,6 +113,8 @@ const CartItem = ({ product }: {product: Product}) => {
             <FlexLeft>
                 <ImageContainer>
                     <ProductComponent 
+                        imageHeight={product.imageHeight}
+                        imageWidth={product.imageWidth}
                         alt={product.alt || 'no alt text'}
                         images={product.images}
                         slug={product.slug.current}
