@@ -1,17 +1,22 @@
 import document from "next/document";
+import Product from "./components/Product";
+import Post from "./pages/[slug]";
 
-export interface Post extends Content {
-created: Date,
-excerpt: string,
-imageUrl?: string,
-imageAspectRatio?: number,
+export interface PostFull extends PostLight {
 body: Array<any>
-altText?: string,
-slug: string,
-title: string,
 productSlug?: string
 productReserved?: number
 productSold?: boolean
+}
+
+export interface PostLight extends Content {
+created: Date,
+excerpt: string,
+imageUrl?: string,
+aspectRatio: number,
+altText?: string,
+slug: string,
+title: string,
 }
 
 export interface ScrollPositionObjectType {

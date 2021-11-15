@@ -2,7 +2,7 @@ import React, { JSXElementConstructor } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { breakPoints, Post as PostType, Product as ProductType } from "../generalTypes"
+import { breakPoints, PostLight, Product as ProductType } from "../generalTypes"
 import { Dispatch, SetStateAction, ReactNode } from 'react';
 import { updateColCount } from '../functions'
 import { margin } from '../styles/globalStyleVariables';
@@ -41,7 +41,7 @@ const container = {
      },
   }
 
-const Masonry = ({ cols, setCols, children, result, skeleton, breakPoints }: {cols:Array<Array<React.ReactNode>>, setCols:Dispatch<SetStateAction<ReactNode[][]>>, children:Array<JSX.Element>, result:(Array<PostType> | Array<ProductType>), skeleton?:Array<Object>, breakPoints:breakPoints }, ref:any) => {
+const Masonry = ({ cols, setCols, children, result, skeleton, breakPoints }: {cols:Array<Array<React.ReactNode>>, setCols:Dispatch<SetStateAction<ReactNode[][]>>, children:Array<JSX.Element>, result:(Array<PostLight> | Array<ProductType>), skeleton?:Array<Object>, breakPoints:breakPoints }, ref:any) => {
     const [colCount, setColCount] = useState<number | undefined>(undefined);
 
     const _updateColCount = () => {

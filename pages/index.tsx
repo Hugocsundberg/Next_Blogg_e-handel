@@ -5,7 +5,7 @@ import { forwardRef, useEffect, useCallback, useRef, useState } from 'react'
 import PostComponent from '../components/Post/Post'
 import { Header } from '../components/GlobalElements'
 import Nav from '../components/Nav'
-import { AboutMe, Post as PostType, } from '../generalTypes'
+import { AboutMe, PostLight } from '../generalTypes'
 import Masonry from '../components/Masonry'
 import useLazyLoad from '../hooks/useLazyLoad'  
 import { margin, rem, windowHeight } from "../styles/globalStyleVariables"
@@ -29,7 +29,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const [query, setQuery] = useState<string | undefined>(undefined);
   const [cols, setCols] = useState<Array<Array<React.ReactNode>>>([]);
-  const {result, loading, error, hasMore, setResult} = useLazyLoad<PostType>(query, incrementBy, JSON.parse(posts))
+  const {result, loading, errors, hasMore, setResult} = useLazyLoad(query, incrementBy, JSON.parse(posts))
   const lastElementRef = useRef<Element | undefined>()
 
 
@@ -41,10 +41,16 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
           setCurrentProduct(prevValue => prevValue + incrementBy)
         }
       });
-      if(lastElementRef.current !== undefined) {
+      if(lastElementRef.current != undefined) {
+        console.log(lastElementRef.current)
         observer.current.observe(lastElementRef.current)
        }  
   }, [cols])
+
+  useEffect(()=>{
+    if(errors.length > 0)
+      console.log(errors)
+  }, [errors])
   
   useEffect(()=>{
     if(currentProduct >= CURRENT_PRODUCT_INITIAL )
@@ -81,10 +87,11 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
         cols={cols}
         breakPoints={breakPoints}
         >
-        { result.map((post, index)=>{
+        { (result as Array<PostLight>).map((post, index)=>{
           if(index + 1 >= result.length) {
             return (
               <PostComponentWithRef
+              aspectRatio={post.aspectRatio}
               breakPoints={breakPoints}
               ref={lastElementRef}
               key={index}
@@ -100,6 +107,7 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
         else 
         return (
           <PostComponentWithRef
+              aspectRatio={post.aspectRatio}
               breakPoints={breakPoints}
               key={index}
               excerpt={post.excerpt}
@@ -118,13 +126,13 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
 }
 
 export const getStaticProps:GetStaticProps = async () : Promise<any> => {
-    // let postsData:Array<PostType>
+    // let postsData:Array<PostLight>
     let postsJson:string = '[]'
 
     const postsQuery = `*[_type == "post"] | order(_createdAt desc){"created": _createdAt, excerpt, title, "slug": slug.current, "altText": body[_type match 'image'][0].altText, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}[0...${CURRENT_PRODUCT_INITIAL}]`
 
     await client.fetch(postsQuery)
-    .then((posts: Array<PostType>) => {
+    .then((posts: Array<PostLight>) => {
       postsJson = JSON.stringify(posts)
     })
 

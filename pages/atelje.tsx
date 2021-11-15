@@ -12,6 +12,7 @@ import { windowHeight } from "../styles/globalStyleVariables"
 import React from "react"
 import { Spacer } from "../components/GlobalElements"
 import Masonry from "../components/Masonry"
+import { PostLight } from "../generalTypes"
 
 const MasonryComponent = React.forwardRef(Masonry)
 const MotionMasonry = motion(MasonryComponent)
@@ -26,14 +27,14 @@ const Products = ({ aboutMe }: { aboutMe: string}) => {
   const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
   const incrementBy = 4
   const [query, setQuery] = useState(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[0...0]`);
-  const {result, loading, error, hasMore, setResult} = useLazyLoad<ProductType>(query, incrementBy)
+  const {result, loading, errors, hasMore, setResult} = useLazyLoad(query, incrementBy)
   const [skeletonArray, setSkeletonArray] = useState<Array<object>>([])
   const [currentProduct, setCurrentProduct] = useState(0);
   const [cols, setCols] = useState<Array<Array<React.ReactNode>>>([]);
   
 useEffect(() => {
-  if(error) console.log(error)
-}, [error]);
+  if(errors) console.log(errors)
+}, [errors]);
 
   const observableCallback = (update:any) => {
         let object:ProductType = update.result
@@ -42,7 +43,7 @@ useEffect(() => {
         let updatePosition:number = 0;
         
         for(let i:number = 0; i < productArray.length; i++) {
-          if(productArray[i].slug.current === object.slug.current) {
+          if((productArray[i] as ProductType).slug.current === object.slug.current) {
             updatePosition = i
             break
           }
@@ -52,7 +53,7 @@ useEffect(() => {
           client.fetch(`*[_type == 'product' && slug.current == '${object.slug.current}']{_createdAt, lastReservedAt, productHeight, productWidth, productDept, sold, pending, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`)
           .then((data:Array<ProductType>)=>{
               object = data[0]
-              const productArray = [...result]
+              const productArray:Array<ProductType> | Array<PostLight> | [] = [...result]
               productArray.splice(updatePosition, 1, object)
               setResult(productArray)
           })
@@ -123,7 +124,7 @@ useEffect(() => {
           skeleton={skeletonArray}
           > 
           {[
-            ...result.map((product:ProductType, i)=>{
+            ...(result as Array<ProductType>).map((product:ProductType, i)=>{
               
               if(i + 1 >= result.length) 
               return <Product imageHeight={product.images[0].imageHeight} imageWidth={product.images[0].imageWidth} key={i} lastElementRef={lastElementRef} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
