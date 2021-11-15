@@ -16,12 +16,6 @@ const fromGray = keyframes`
     to {opacity: 1}
 `
 
-const GrayOverlay = styled.div`
-    background: gray;
-    height: 100%;
-    width: 100%;
-`
-
 const Border = styled.div<{hasShadow:boolean, removeMargin: boolean, pointer:boolean}>`
     background: black;
     padding: 2%;
@@ -132,7 +126,6 @@ export const Product = ({lastElementRef, alt, images, slug, imageHeight, imageWi
     return (
         <div ref={lastElementRef || null}>
             <Link scroll={(sold || _isReserved) ? false : true} href={(sold || _isReserved) ? '' :`/atelje/${slug}`}>
-                <GrayOverlay>
                     <Border pointer={(!sold && !_isReserved)} hasShadow={hasShadow} removeMargin={removeMargin}>
                         <Dot sold={sold ? true : false} reserved={_isReserved} color={dotColor}></Dot>
                         <Overlay active={(_isReserved || sold) ? true : false}>
@@ -146,7 +139,6 @@ export const Product = ({lastElementRef, alt, images, slug, imageHeight, imageWi
                                 <Image aspectRatio={imageWidth / imageHeight} src={urlFor(images[0].asset._ref).width(500).url() || undefined}/> 
                             </picture>
                     </Border>
-                </GrayOverlay>
             </Link>
         </div>
     );
