@@ -102,6 +102,11 @@ export interface ScreenSizes {
     XL: number
 }
 
+export interface KlarnaAPIClientRequest {
+    inCart: Array<Product>
+    delivery: boolean
+}
+
 export interface KlarnaCheckoutSnippetResponse {
     htmlSnippet: string
 }

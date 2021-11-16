@@ -15,6 +15,7 @@ import { ButtonContainer } from '../components/GlobalElements/ActionButtonElemen
 import { Background } from '../components/GlobalElements';
 import { renderSnippet } from '../functions';
 
+const deliveryPrice = 50
 
 const CartContainer = styled.div<{ topOverlayHeight: number }>`
     width: 100%;
@@ -26,7 +27,7 @@ const CartContainer = styled.div<{ topOverlayHeight: number }>`
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
-    @media (min-width: ${screenSizes.M}px) {
+    @media (min-width: ${screenSizes.L}px) {
         padding-bottom: 6rem;
     }
     `
@@ -88,10 +89,19 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
     const [KlarnaCheckout, setKlarnaCheckout] = useState<KlarnaCheckoutSnippetResponse>();
     const [topOverlayHeight, settopOverlayHeight] = useState(0);
     const [totalPrice, settotalPrice] = useState(0);
+    const [delivery, setDelivery] = useState(0)
 
     const updateCart = () => {
         const inCart:Array<Object> = getFromStorage('cart')
         setinCart(inCart) 
+    }
+
+    const deliveryActivate = () => {
+        setDelivery(deliveryPrice * getFromStorage('cart').length)
+    }
+
+    const deliveryDeactivate = () => {
+        setDelivery(0)
     }
 
     const purchaseHandler = () => {
@@ -101,7 +111,7 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
                 headers: {
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(inCart)
+                body: JSON.stringify({inCart, delivery})
               })
             .then(stream => stream.json()) 
             .then((data) => setKlarnaCheckout(data))
@@ -122,12 +132,18 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
     }, []);
 
     useEffect(() => {
+        deliveryActivate()
+    }, [inCart]);
+    
+    useEffect(() => {
         let totalPrice:number = 0
         inCart.forEach((product) => {
             totalPrice += (product as Product).price
         })
-        settotalPrice(totalPrice)
-    }, [inCart]);
+        settotalPrice(totalPrice + delivery)
+    }, [delivery]);
+
+
 
     useEffect(()=>{
         if(KlarnaCheckout)
@@ -163,7 +179,7 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
                 inCart.length > 0 ? 
                     KlarnaCheckout ? '' :
                     <ButtonContainer>
-                        <ActionButtonCart onClick={purchaseHandler} price={totalPrice} tax={30}/>
+                        <ActionButtonCart deliveryPrice={deliveryPrice} deliveryActivate={deliveryActivate} deliveryDeactivate={deliveryDeactivate} delivery={delivery} setDelivery={setDelivery} onClick={purchaseHandler} price={totalPrice} tax={30}/>
                     </ButtonContainer>
                 : ''
                 }

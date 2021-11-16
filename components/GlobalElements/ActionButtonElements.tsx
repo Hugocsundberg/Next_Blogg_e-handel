@@ -10,8 +10,9 @@ export const Background = styled.div`
     justify-content: center;
     align-items: center;
     box-shadow: ${boxShadowBigElement};
-    @media (min-width: ${screenSizes.M}px) {
+    @media (min-width: ${screenSizes.L}px) {
         flex-direction: row;
+        gap: 1rem;
     }
     `
 export const ButtonContainer = styled.div<{ doubleMargin?:boolean }>`
