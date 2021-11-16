@@ -38,6 +38,7 @@ useEffect(() => {
 }, [errors]);
 
   const observableCallback = (update:any) => {
+      console.log('Hello')
         let object:ProductType = update.result
         const productArray = [...result]
 
@@ -66,7 +67,7 @@ useEffect(() => {
   }
 
   const observer = useRef<IntersectionObserver>()
-  const observable = useRef(client.listen(query, {}, {includeResult: true}))
+  const observable = useRef(client.listen("*[_type == 'product']", {}, {includeResult: true}))
   const options: IntersectionObserverInit = {
     rootMargin: '200px'
   }
