@@ -73,7 +73,6 @@ useEffect(() => {
   }
 
   useEffect(() => {
-    console.log({result})
     const subscription = observable.current.subscribe(observableCallback)
     return () => {
       subscription.unsubscribe()
