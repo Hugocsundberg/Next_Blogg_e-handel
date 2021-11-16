@@ -115,25 +115,27 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
                     {
                     isDesktop ? 
                     getOptions(aboutMe, _route, isAboutMe ).map((option:NavOption, key:any)=>(
-                        <a key={key} href={`${currentPath}${option.link}`}>
-                            <OptionDiv  noBorder={true} isActive={option.isActive}>   
-                                {option.text === 'Kundvagn' ?
-                                    <CartIconRef cartItems={cartItems}/>
-                                :
-                                <ImageDiv>
-                                    <Image
-                                        src={option.image}
-                                        alt={option.text}
-                                        layout="fill"
-                                        objectFit="contain"
-                                    />
-                                </ImageDiv>
-                                }  
-                                    <OptionText>
-                                        {option.text}
-                                    </OptionText>
-                                </OptionDiv>
-                        </a>
+                        <Link key={key} href={`${currentPath}${option.link}`}>
+                            <a>
+                                <OptionDiv  noBorder={true} isActive={option.isActive}>   
+                                    {option.text === 'Kundvagn' ?
+                                        <CartIconRef cartItems={cartItems}/>
+                                    :
+                                    <ImageDiv>
+                                        <Image
+                                            src={option.image}
+                                            alt={option.text}
+                                            layout="fill"
+                                            objectFit="contain"
+                                        />
+                                    </ImageDiv>
+                                    }  
+                                        <OptionText>
+                                            {option.text}
+                                        </OptionText>
+                                    </OptionDiv>
+                                </a>
+                        </Link>
                     )) 
                     : 
                     <Link href="/kundvagn">
