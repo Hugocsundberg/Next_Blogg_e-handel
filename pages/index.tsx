@@ -83,7 +83,7 @@ export default function Home({ posts, settings }: {posts: string, settings: stri
         <title>Blogg</title>
       </Head>
       <Spacer height={`${margin}rem`}></Spacer>
-      {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
+      {_settings.message ? <Message left={true} imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
       <Masonry 
         result={result}
         setCols={setCols}

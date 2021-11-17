@@ -120,7 +120,7 @@ useEffect(() => {
         <Background>
             <Nav aboutMe={_settings.aboutMe}></Nav>
             <Spacer height={`${margin}rem`}></Spacer>
-            {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
+            {_settings.message ? <Message left={true} imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
             <MotionMasonry
               cols={cols}
               setCols={setCols}
