@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             'Content-Type': 'application/json',
             'Authorization': `Basic ${btoa(process.env.KLARNA_AUTH)}`
           },
-      })
+      }) 
     .then((stream:any)=>stream.json())
     .then((data:KlarnaOrder)=>{
         products = data.order_lines
@@ -46,5 +46,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               .then((data:any) => console.log(data))
               res.json({success: true})
     })
+    .catch((error:any)=>console.log(error))
 
 }

@@ -1,12 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import { AboutMe } from '../generalTypes';
+import { AboutMe, settings } from '../generalTypes';
 import Head from "next/head"
 import client from '../client';
 import Nav from '../components/Nav';
 import { useEffect, useState } from 'react';
-import { getTopOverlayHeight, removeProductFromStorage } from '../functions';
+import { getTopOverlayHeight, removeProductFromStorage, urlFor } from '../functions';
+import { Message } from '../components/Message';
+import { Spacer } from '../components/GlobalElements';
+import { margin } from '../styles/globalStyleVariables';
 
 const OuterFlex = styled.div<{topOverlayHeight:number}>`
     display: flex;
@@ -38,8 +41,8 @@ const P = styled.p`
     text-align: center;
 `
 
-const confirmation = ({ aboutMe }: {aboutMe: string}) => {
-    const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
+const confirmation = ({ settings }: {settings: string}) => {
+    const _settings:settings = JSON.parse(settings)
     const [topOverlayHeight, settopOverlayHeight] = useState(0);
     const router = useRouter()
 
@@ -50,6 +53,7 @@ const confirmation = ({ aboutMe }: {aboutMe: string}) => {
         }
         if(process.browser && router.isReady) {
             window.fetch('/api/sold', {method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json' }})
+            .catch((error)=>console.error(error))
         }
     }, [router.isReady]);
 
@@ -74,7 +78,9 @@ const confirmation = ({ aboutMe }: {aboutMe: string}) => {
             <Head>
                 <title>Confirmation</title>
             </Head>
-                <Nav aboutMe={_aboutMe}></Nav>
+                <Nav aboutMe={_settings.aboutMe}></Nav>
+                <Spacer height={`${margin}rem`}></Spacer>
+                {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
                 <OuterFlex topOverlayHeight={topOverlayHeight}>
                     <img src="/success.svg" alt="success check mark icon" />
                     <RightFlex>
@@ -88,14 +94,14 @@ const confirmation = ({ aboutMe }: {aboutMe: string}) => {
 
 export async function getStaticProps() {
     let settingsData
-    const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
+    const settingsquery = '*[_type == "settings"][0]{"aboutMe": aboutme->{title, slug}, "message": messageConfirmation, "messageImage": messageImage.asset}'
     await client.fetch(settingsquery)
-    .then((settings: Array<AboutMe>) => settingsData = settings)
+    .then((settings: settings) => settingsData = settings)
     const settingsJson = JSON.stringify(settingsData)
   
     return {
       props: {
-        aboutMe: settingsJson
+        settings: settingsJson
       },
       revalidate: 60
     }
