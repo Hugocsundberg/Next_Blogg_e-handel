@@ -14,7 +14,7 @@ import { desktopSize } from '../../styles/globalStyleVariables';
 
 const CartIconRef = forwardRef(CartIcon)
 
-const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boolean}) => {
+const Nav = ({ aboutMe, spacer = true }: {aboutMe?: AboutMe, spacer?:boolean}) => {
     const [currentPath, setcurrentPath] = useState('');
     const [componentLoaded, setcomponentLoaded] = useState(false);
     const [isDesktop, setisDesktop] = useState(false);
@@ -22,7 +22,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe: Array<AboutMe>, spacer?:boole
     const [ cartItems, setcartItems ] = useState<string | number>('-')
     const router = useRouter()
     const _route = router.route.replace('/', '')
-    const isAboutMe:boolean = aboutMe[0].slug && router.asPath === `/${aboutMe[0].slug.current}`
+    const isAboutMe:boolean = (aboutMe?.slug && router.asPath === `/${aboutMe.slug.current}`) ?? false
 
     const updateCartItems = () => {
         const cart:Array<Object> | null | undefined = getFromStorage('cart')

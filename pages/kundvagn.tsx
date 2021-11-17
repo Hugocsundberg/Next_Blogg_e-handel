@@ -3,32 +3,34 @@ import NothingInCart from '../components/CartComponents/NothingInCart';
 import ActionButtonCart from '../components/CartComponents/ActionButtonCart';
 import Head from "next/head"
 import client from '../client';
-import { AboutMe, KlarnaCheckoutSnippetResponse, Product } from "../generalTypes"
+import { AboutMe, KlarnaCheckoutSnippetResponse, Product, settings } from "../generalTypes"
 import { Header } from "../components/GlobalElements"
 import Nav from '../components/Nav'
 import CartItem from '../components/CartComponents/CartItem';
 import { useState, useEffect } from 'react';
-import { getFromStorage, getTopOverlayHeight } from '../functions';
+import { getFromStorage, getTopOverlayHeight, urlFor } from '../functions';
 import styled from 'styled-components';
 import { blurColor, blurPx, boxShadowBigElement, darkGray, margin, rem, screenSizes } from '../styles/globalStyleVariables';
 import { ButtonContainer } from '../components/GlobalElements/ActionButtonElements';
 import { Background } from '../components/GlobalElements';
 import { renderSnippet } from '../functions';
+import { Message } from '../components/Message';
+import { Spacer } from '../components/GlobalElements';
 
 const deliveryPrice = 50
 
-const CartContainer = styled.div<{ topOverlayHeight: number }>`
+const CartContainer = styled.div<{ stuffInCart:boolean, topOverlayHeight: number, settings:settings }>`
     width: 100%;
-    min-height: calc(100vh - ${props=>props.topOverlayHeight}px);
+    min-height: ${props=>props.settings.message ? 'initial' : "calc(100vh - ${props=>props.topOverlayHeight}px)"};
     padding: ${margin}rem;
     padding-top: 0;
-    padding-bottom: 14rem;
+    padding-bottom: ${props=>props.stuffInCart ? '14rem' : '2rem'};
     max-width: 800px;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     @media (min-width: ${screenSizes.L}px) {
-        padding-bottom: 6rem;
+        padding-bottom: ${props=>props.stuffInCart ? '6rem' : '2rem'};
     }
     `
 
@@ -83,8 +85,8 @@ const CheckoutContainer = styled.div`
     }
 `
 
-const index = ({ aboutMe }: {aboutMe: string}) => {
-    const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
+const index = ({ settings }: {settings: string}) => {
+    const _settings:settings = JSON.parse(settings)
     const [inCart, setinCart] = useState<Array<Object>>([]);
     const [KlarnaCheckout, setKlarnaCheckout] = useState<KlarnaCheckoutSnippetResponse>();
     const [topOverlayHeight, settopOverlayHeight] = useState(0);
@@ -156,8 +158,10 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
             <title>Kundvagn</title>
             </Head>
             <Background>
-                <Nav aboutMe={_aboutMe}></Nav>
-                <CartContainer topOverlayHeight={topOverlayHeight}>
+                <Nav aboutMe={_settings.aboutMe}></Nav>
+                <Spacer height={`${margin}rem`}></Spacer>
+                {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
+                <CartContainer stuffInCart={inCart.length > 0} settings={_settings} topOverlayHeight={topOverlayHeight}>
                     <Header noLeftMargin={true}>KUNDVAGN</Header>
                     {inCart.length > 0 ? inCart.map((product: Object) => {
                         const _product = (product as Product);
@@ -190,14 +194,14 @@ const index = ({ aboutMe }: {aboutMe: string}) => {
 
 export async function getStaticProps() {
     let settingsData
-    const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
+    const settingsquery = '*[_type == "settings"][0]{"aboutMe": aboutme->{title, slug}, "message": messageCart, "messageImage": messageImage.asset}'
     await client.fetch(settingsquery)
-    .then((settings: Array<AboutMe>) => settingsData = settings)
+    .then((settings: settings) => settingsData = settings)
     const settingsJson = JSON.stringify(settingsData)
   
     return {
       props: {
-        aboutMe: settingsJson
+        settings: settingsJson
       },
       revalidate: 60
     }

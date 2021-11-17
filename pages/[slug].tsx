@@ -64,8 +64,9 @@ const Post = ({ post, aboutMe }: {post: string, aboutMe: string}) => {
       </FlexCenterCenter>
     )
   }
-  const aboutMeStatic:Array<AboutMe> = JSON.parse(aboutMe)
-  const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
+  const aboutMeStatic:AboutMe = JSON.parse(aboutMe).aboutme
+  const _aboutMe:Array<AboutMe> = []
+  _aboutMe.push(JSON.parse(aboutMe).aboutme) 
   const _post: PostFull = JSON.parse(post)
   const [isReservedState, setIsReserevedState] = useState<number | false>(isReserved(_post.productReserved))
   const router = useRouter()
@@ -171,9 +172,9 @@ export async function getStaticProps({ params }: {params: any}) {
   })
 
    let settingsJson
-   const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
+   const settingsquery = '*[_type == "settings"][0]{aboutme->{title, slug}}'
    await client.fetch(settingsquery)
-   .then((settings: Array<AboutMe>) => {
+   .then((settings: AboutMe) => {
     settingsJson = JSON.stringify(settings)
    })
 
@@ -212,5 +213,4 @@ export async function getStaticPaths() {
     fallback: true
   };
 }
-
 export default Post

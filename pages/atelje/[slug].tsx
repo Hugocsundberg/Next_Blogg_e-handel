@@ -111,7 +111,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
       </FlexCenterCenter>
     )
   }
-  const _aboutMe: Array<AboutMe> = JSON.parse(aboutMe)
+  const _aboutMe: AboutMe = JSON.parse(aboutMe).aboutme
   const _product: ProductType = JSON.parse(product)
   const [isDesktop, setisDesktop] = useState(false);
   const [navoverlayHeight, setnavoverlayHeight] = useState(0);
@@ -259,9 +259,9 @@ export async function getStaticProps({ params }: {params: any}) {
    productData ? postJson = JSON.stringify(productData) : postJson = '{"undefined":"true"}'
 
    let settingsData
-   const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
+   const settingsquery = '*[_type == "settings"][0]{aboutme->{title, slug}}'
    await client.fetch(settingsquery)
-   .then((settings: Array<AboutMe>) => settingsData = settings)
+   .then((settings: AboutMe) => settingsData = settings)
    const settingsJson = JSON.stringify(settingsData)
 
   return {

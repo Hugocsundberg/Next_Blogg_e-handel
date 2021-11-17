@@ -1,5 +1,5 @@
 import client from "../client"
-import { AboutMe, Product as ProductType } from "../generalTypes"
+import { AboutMe, Product as ProductType, settings } from "../generalTypes"
 import Product from "../components/Product"
 import Nav from '../components/Nav'
 import { margin, rem, screenSizes } from '../styles/globalStyleVariables'
@@ -13,6 +13,8 @@ import React from "react"
 import { Spacer } from "../components/GlobalElements"
 import Masonry from "../components/Masonry"
 import { PostLight } from "../generalTypes"
+import { Message } from "../components/Message"
+import { urlFor } from '../functions'
 
 const MasonryComponent = React.forwardRef(Masonry)
 const MotionMasonry = motion(MasonryComponent)
@@ -24,8 +26,8 @@ export const breakPoints = {
   XL: screenSizes.XL
 };
 
-const Products = ({ aboutMe }: { aboutMe: string}) => {
-  const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
+const Products = ({ settings }: { settings: string}) => {
+  const _settings:settings = JSON.parse(settings)
   const incrementBy = 4
   const [query, setQuery] = useState(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[0...0]`);
   const {result, loading, errors, hasMore, setResult} = useLazyLoad(query, incrementBy)
@@ -115,8 +117,9 @@ useEffect(() => {
         <Head>
         <title>Ateljé</title>
         </Head>
-        <Nav aboutMe={_aboutMe}></Nav>
+        <Nav aboutMe={_settings.aboutMe}></Nav>
         <Spacer height={`${margin}rem`}></Spacer>
+        {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
         <MotionMasonry
           cols={cols}
           setCols={setCols}
@@ -146,15 +149,15 @@ useEffect(() => {
   export async function getStaticProps() {
     
     let settingsData
-    const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
+    const settingsquery = '*[_type == "settings"][0]{"aboutMe": aboutme->{title, slug}, "message": messageProducts, "messageImage": messageImage.asset}'
     await client.fetch(settingsquery)
-    .then((settings: Array<AboutMe>) => settingsData = settings)
+    .then((settings: settings) => settingsData = settings)
     const settingsJson = JSON.stringify(settingsData)
     
     return {
       props: {
         // products: productJson,
-        aboutMe: settingsJson
+        settings: settingsJson
       },
       revalidate: 10
     }

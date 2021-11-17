@@ -5,7 +5,7 @@ import { AboutMe } from '../../generalTypes';
 import { useRouter } from 'next/router';
 
 //Can probably be simplified
-export const getOptionsHeight = (aboutMe:Array<AboutMe>):number => {
+export const getOptionsHeight = (aboutMe:(AboutMe | undefined)):number => {
     const router = useRouter()
     const _route = router.route.replace('/', '')
     let height = 0;

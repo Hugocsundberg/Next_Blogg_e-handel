@@ -31,6 +31,12 @@ export interface AboutMe {
     }
 }
 
+export interface settings { 
+    aboutMe?: AboutMe,
+    message?: string,
+    messageImage: Image
+}
+
 export interface ScrollEvent extends Event {
     path: [
         document: HTMLDocument,

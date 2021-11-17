@@ -5,7 +5,7 @@ import { forwardRef, useEffect, useCallback, useRef, useState } from 'react'
 import PostComponent from '../components/Post/Post'
 import { Header } from '../components/GlobalElements'
 import Nav from '../components/Nav'
-import { AboutMe, PostLight } from '../generalTypes'
+import { AboutMe, PostLight, settings } from '../generalTypes'
 import Masonry from '../components/Masonry'
 import useLazyLoad from '../hooks/useLazyLoad'  
 import { margin, rem, windowHeight } from "../styles/globalStyleVariables"
@@ -13,6 +13,8 @@ import { Spacer } from "../components/GlobalElements"
 import { Background } from '../components/GlobalElements'
 // @ts-ignore
 import * as smoothScroll from 'smoothscroll'
+import { Message } from '../components/Message'
+import { urlFor } from '../functions'
 const CURRENT_PRODUCT_INITIAL = 6;
 
 const breakPoints = {
@@ -21,12 +23,12 @@ const breakPoints = {
   L: 1800
 };
 
-export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string}) {
+export default function Home({ posts, settings }: {posts: string, settings: string}) {
   const incrementBy = 4
   const [currentProduct, setCurrentProduct] = useState(CURRENT_PRODUCT_INITIAL - incrementBy)
   const observer = useRef<IntersectionObserver>()
   const PostComponentWithRef = forwardRef(PostComponent)
-  const _aboutMe:Array<AboutMe> = JSON.parse(aboutMe)
+  const _settings:settings = JSON.parse(settings)
   const [query, setQuery] = useState<string | undefined>(undefined);
   const [cols, setCols] = useState<Array<Array<React.ReactNode>>>([]);
   const {result, loading, errors, hasMore, setResult} = useLazyLoad(query, incrementBy, JSON.parse(posts))
@@ -76,11 +78,12 @@ export default function Home({ posts, aboutMe }: {posts: string, aboutMe: string
   
   return (
     <Background>
-      <Nav aboutMe={_aboutMe}></Nav>
+      <Nav aboutMe={_settings.aboutMe}></Nav>
       <Head>
         <title>Blogg</title>
       </Head>
       <Spacer height={`${margin}rem`}></Spacer>
+      {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
       <Masonry 
         result={result}
         setCols={setCols}
@@ -137,15 +140,15 @@ export const getStaticProps:GetStaticProps = async () : Promise<any> => {
     })
 
     let settingsData
-    const settingsquery = '*[_type == "settings"]{"slug": aboutme->slug,"title": aboutme->title}'
+    const settingsquery = '*[_type == "settings"][0]{"aboutMe": aboutme->{title, slug}, "message": messageBlog, "messageImage": messageImage.asset}'
     await client.fetch(settingsquery)
-    .then((settings: Array<AboutMe>) => settingsData = settings)
+    .then((settings: settings) => settingsData = settings)
     const settingsJson = JSON.stringify(settingsData)
 
   return {
     props: {
       posts: postsJson,
-      aboutMe: settingsJson
+      settings: settingsJson
     },
   }
 }
