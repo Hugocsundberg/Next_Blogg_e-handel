@@ -1,6 +1,14 @@
 import { breakPoints, cols, Product } from "./generalTypes"
 import { screenSizes } from "./styles/globalStyleVariables"
 import { Dispatch, SetStateAction } from "react"
+import imageUrlBuilder from '@sanity/image-url'
+import client from "./client"
+
+const builder = imageUrlBuilder(client)
+
+export const urlFor = (source: string) => {
+  return builder.image(source)
+}
 
 export const handleScroll = () => {
     window.sessionStorage.setItem('scrollPosition', window.pageYOffset.toString())
