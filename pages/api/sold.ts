@@ -19,8 +19,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .then((data:KlarnaOrder)=>{
         products = data.order_lines
 
+         //Filter out shipping / non-products
+        const filteredProducts = products.filter(product => 'merchant_data' in product)
+        
         //Update products on sanity 
-        const mutations = products.map((product)=>{
+        const mutations = filteredProducts.map((product)=>{
              return {
                 patch: {
                   id: JSON.parse(product.merchant_data).id,
