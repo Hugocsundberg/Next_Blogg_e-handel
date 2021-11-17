@@ -17,7 +17,7 @@ color: ${darkGray};
 `
 
 export const CardBackground = styled.div<{aspectRatio: number}>`
-background: white;
+background: white; 
 aspect-ratio: ${props=>props.aspectRatio};
 width: 100%;
 margin-bottom: ${margin}rem;
