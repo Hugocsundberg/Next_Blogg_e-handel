@@ -17,6 +17,9 @@ const OuterFlex = styled.div<{topOverlayHeight:number}>`
     align-items: center;
     height: calc(100vh - ${props=>props.topOverlayHeight}px);
     overflow: hidden;
+    top: calc(50% + 55px);
+    transform: translate(0, -50%);
+    position: absolute;
     width: 100vw;
     flex-direction: column;
     gap: 2rem;
@@ -81,7 +84,7 @@ const confirmation = ({ settings }: {settings: string}) => {
                 <Nav aboutMe={_settings.aboutMe}></Nav>
                 <Spacer height={`${margin}rem`}></Spacer>
                 {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
-                <OuterFlex topOverlayHeight={topOverlayHeight}>
+                <OuterFlex  topOverlayHeight={topOverlayHeight}>
                     <img src="/success.svg" alt="success check mark icon" />
                     <RightFlex>
                         <H1>Din order har mottagits</H1>
