@@ -10,7 +10,7 @@ import Skeleton from "../components/Skeleton"
 import { motion } from "framer-motion"
 import { windowHeight } from "../styles/globalStyleVariables"
 import React from "react"
-import { Spacer } from "../components/GlobalElements"
+import { Background, Spacer } from "../components/GlobalElements"
 import Masonry from "../components/Masonry"
 import { PostLight } from "../generalTypes"
 import { Message } from "../components/Message"
@@ -117,31 +117,33 @@ useEffect(() => {
         <Head>
         <title>Ateljé</title>
         </Head>
-        <Nav aboutMe={_settings.aboutMe}></Nav>
-        <Spacer height={`${margin}rem`}></Spacer>
-        {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
-        <MotionMasonry
-          cols={cols}
-          setCols={setCols}
-          breakPoints={breakPoints}
-          result={result}
-          skeleton={skeletonArray}
-          > 
-          {[
-            ...(result as Array<ProductType>).map((product:ProductType, i)=>{
-              
-              if(i + 1 >= result.length) 
-              return <Product imageHeight={product.images[0].imageHeight} imageWidth={product.images[0].imageWidth} key={i} lastElementRef={lastElementRef} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
-              
-              else 
-              return <Product imageHeight={product.images[0].imageHeight} imageWidth={product.images[0].imageWidth} key={i} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
-            }),
-            ...skeletonArray.map((item, i)=>(
-            <Skeleton key={i+1000000}></Skeleton>
-            ))
-          ]}
-        </MotionMasonry>
-        {hasMore ? <Spacer suppressHydrationWarning height={`${windowHeight - 10}px`}></Spacer> : ''}
+        <Background>
+            <Nav aboutMe={_settings.aboutMe}></Nav>
+            <Spacer height={`${margin}rem`}></Spacer>
+            {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
+            <MotionMasonry
+              cols={cols}
+              setCols={setCols}
+              breakPoints={breakPoints}
+              result={result}
+              skeleton={skeletonArray}
+              > 
+              {[
+                ...(result as Array<ProductType>).map((product:ProductType, i)=>{
+                  
+                  if(i + 1 >= result.length) 
+                  return <Product imageHeight={product.images[0].imageHeight} imageWidth={product.images[0].imageWidth} key={i} lastElementRef={lastElementRef} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
+                  
+                  else 
+                  return <Product imageHeight={product.images[0].imageHeight} imageWidth={product.images[0].imageWidth} key={i} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
+                }),
+                ...skeletonArray.map((item, i)=>(
+                <Skeleton key={i+1000000}></Skeleton>
+                ))
+              ]}
+            </MotionMasonry>
+            {hasMore ? <Spacer suppressHydrationWarning height={`${windowHeight - 10}px`}></Spacer> : ''}
+        </Background>
       </>
     ) 
   }
