@@ -109,7 +109,7 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe?: AboutMe, spacer?:boolean}) =
                 }
                 
                 <Link href="/" scroll={false}>
-                    <Logo>Marina Sundberg konst</Logo>
+                    <Logo>Marinas Ateljé</Logo>
                 </Link>
                 <RightSideContainer>
                     {
