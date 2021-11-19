@@ -119,3 +119,12 @@ export const updateColCount = (setColCount: Dispatch<SetStateAction<number | und
   else if(width < breakPoints.L) setColCount(3)  
   else setColCount(4) 
 }
+
+export const isInCart = (product:Product) => {
+  let isInCart:Boolean = false;
+  (getFromStorage('cart') as Array<Product>).forEach((item:Product)=>{
+    if(item.slug.current === product.slug.current) isInCart = true
+  })
+  console.log({isInCart})
+  return isInCart
+}
