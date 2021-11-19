@@ -14,7 +14,7 @@ import { SmallParagraph } from '../../components/GlobalElements'
 import { margin } from '../../styles/globalStyleVariables'
 import Arrow from '../../components/Arrow'
 import ActionButton from '../../components/ActionButton'
-import { addObjectToStorage, getFromStorage, getTopOverlayHeight } from '../../functions'
+import { addObjectToStorage, getFromStorage, getTopOverlayHeight, isInCart } from '../../functions'
 import { screenSizes } from '../../styles/globalStyleVariables'
 import { useEffect, useState } from 'react'
 import { ButtonContainer } from '../../components/GlobalElements/ActionButtonElements'
@@ -115,6 +115,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
   const _product: ProductType = JSON.parse(product)
   const [isDesktop, setisDesktop] = useState(false);
   const [navoverlayHeight, setnavoverlayHeight] = useState(0);
+  const [alreadyInCart, setAlreadyInCart] = useState(false)
   const router = useRouter()
   
   const resizeHandler = () => {
@@ -124,7 +125,16 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
         setisDesktop(false)
   }
 
+  const checkIfInCart = () => {
+    if(isInCart(_product)) {
+      setAlreadyInCart(true)
+    } else {
+      setAlreadyInCart(false)
+    }
+  }
+
   useEffect(() => {
+    checkIfInCart()
     resizeHandler()
     window.addEventListener('resize', resizeHandler)
     const topOverlayHeight:number = getTopOverlayHeight()
@@ -186,6 +196,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     window.fetch('/api/reserve', {method: 'POST', body: product, headers: {'Content-Type': 'application/json' }})
     .then((stream)=>stream.json())
     .then((data)=>console.log(data))
+    checkIfInCart()
   }
   
   if (router.isFallback) {
@@ -234,7 +245,7 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
           </CenterContent>
         </ContentContainer>
         <ButtonContainer>
-          <ActionButton onClick={handleAddToCart} text='Lägg till i kundvagn'></ActionButton>
+          <ActionButton disabled={alreadyInCart} onClick={handleAddToCart} text='Lägg till i kundvagn'></ActionButton>
         </ButtonContainer>
       </>
     )
