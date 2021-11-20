@@ -162,7 +162,6 @@ const index = ({ settings }: {settings: string}) => {
                 <Spacer height={`${margin}rem`}></Spacer>
                 {_settings.message ? <Message imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
                 <CartContainer stuffInCart={inCart.length > 0} settings={_settings} topOverlayHeight={topOverlayHeight}>
-                    <Header noLeftMargin={true}>KUNDVAGN</Header>
                     {inCart.length > 0 ? inCart.map((product: Object) => {
                         const _product = (product as Product);
                         return <CartItem product={_product}/>

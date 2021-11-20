@@ -16,6 +16,7 @@ const Background = styled.div`
 `
 
 const H1 = styled.h1`
+text-align: center;
 `
 
 const P = styled.p`
@@ -36,7 +37,7 @@ const ImageContainer = styled.div`
 const NothingInCart = () => {
     return (
         <Background>
-            <H1>Här var det tomt</H1>
+            <H1>Kundvagnen är tom</H1>
             <ImageContainer>
                 <Image
                     src="/sadCart.svg"
