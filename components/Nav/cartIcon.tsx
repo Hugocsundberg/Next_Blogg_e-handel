@@ -4,7 +4,6 @@ import Image from "next/dist/client/image";
 import { imageHeight } from "../../styles/globalStyleVariables";
 import {  motion } from "framer-motion";
 
-
 const Cart = styled.div`
     height: ${imageHeight}rem;
     width: 2rem;
@@ -22,7 +21,17 @@ const Cart = styled.div`
 const CartP = styled.p`
     font-size: 0.7rem;
     transform: translate(2px, -1px);
-    `
+`
+
+const RedDot = styled.div`
+    height: 10px;
+    width: 10px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+    left: 1px;
+    top: 4px;
+`
 
 export const CartIcon = ({cartItems}: {cartItems: number | string}, ref:any) => {
     const [animation, setAnimation] = useState(false)
@@ -57,7 +66,8 @@ export const CartIcon = ({cartItems}: {cartItems: number | string}, ref:any) => 
                 alt="hamburger"
                 layout="fill"
                 objectFit="contain"
-                />
+            />
+            {cartItems > 0 ? <RedDot></RedDot> : ''}
         </Cart>
     )
 }
