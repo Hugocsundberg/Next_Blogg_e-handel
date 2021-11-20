@@ -9,7 +9,6 @@ const BackGround = styled.div<{left?:boolean}>`
     margin-right: ${margin}rem;
     margin-left: ${margin}rem;
     margin-bottom: 1rem;
-    display: flex;
     max-width: 800px;
     position: relative;
     left: 0;
@@ -18,10 +17,6 @@ const BackGround = styled.div<{left?:boolean}>`
     padding: .7rem;
     gap: 0rem;
     transition: .7s;
-    @media (min-width: ${screenSizes.S}px) {
-        gap: 1rem;
-        flex-direction: row;
-    }
     @media (min-width: 854px) {
         left: ${props=>props.left ? 0 : '50%'};
         transform: ${props=>props.left ? 'translate(0)' : 'translate(-50%)'};
@@ -31,15 +26,19 @@ const BackGround = styled.div<{left?:boolean}>`
 `
 
 const Image = styled.img`
+    position: relative;
     border-radius: 25px;
     height: 4rem;
     min-width: 4rem;
     max-width: 4rem;
     object-fit: cover;
+    margin-right: .7rem;
+    float: left;
 `
 
 const P = styled.p`
-
+    position: relative;
+    margin: 5px;
 `
 
 export const Message = ({left, imageLink, message}: {left?:boolean, imageLink:string, message:string}) => {
@@ -47,7 +46,7 @@ export const Message = ({left, imageLink, message}: {left?:boolean, imageLink:st
     return (
         <BackGround left={left}>
             <Image src={imageLink}/>
-            <p>{message}</p>
+            <P>{message}</P>
         </BackGround>   
     )
 }
