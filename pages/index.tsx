@@ -80,7 +80,7 @@ export default function Home({ posts, settings }: {posts: string, settings: stri
     <Background>
       <Nav aboutMe={_settings.aboutMe}></Nav>
       <Head>
-        <title>Blogg</title>
+        <title>Marinas Ateljé</title>
       </Head>
       <Spacer height={`${margin}rem`}></Spacer>
       {_settings.message ? <Message left={true} imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
