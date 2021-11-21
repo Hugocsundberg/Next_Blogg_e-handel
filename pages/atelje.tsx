@@ -14,9 +14,16 @@ import Masonry from "../components/Masonry"
 import { PostLight } from "../generalTypes"
 import { Message } from "../components/Message"
 import { urlFor } from '../functions'
+import styled, { keyframes } from "styled-components"
+import SquareLoader from "react-spinners/SquareLoader";
 
 const MasonryComponent = React.forwardRef(Masonry)
 const MotionMasonry = motion(MasonryComponent)
+
+const fadeIn = keyframes`
+    from {opacity: 0}
+    to {opacity: 1}
+`
 
 export const breakPoints = {
   S: screenSizes.S,
@@ -24,6 +31,17 @@ export const breakPoints = {
   L: screenSizes.L,
   XL: screenSizes.XL
 };
+
+const LoadingIconContainer = styled.div`
+  width: 100%;
+  position: fixed;
+  bottom: ${margin}rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation-duration: .7s;
+  animation-name: ${fadeIn};
+`
 
 const Products = ({ settings }: { settings: string}) => {
   const _settings:settings = JSON.parse(settings)
@@ -104,6 +122,13 @@ useEffect(() => {
         </Head>
         <Background>
             <Nav aboutMe={_settings.aboutMe}></Nav>
+            {
+              loading ? 
+                <LoadingIconContainer>
+                  <SquareLoader></SquareLoader>
+                </LoadingIconContainer>
+            : ''
+            }
             <Spacer height={`${margin}rem`}></Spacer>
             {_settings.message ? <Message left={true} imageLink={urlFor(_settings.messageImage._ref).width(128).url() || 'noImage.jpeg'} message={_settings.message} /> : ''}
             <MotionMasonry
