@@ -81,6 +81,13 @@ const Dot = styled.div<{color: 'red' | 'yellow' | 'transparent', sold:boolean, r
     z-index: 20;
 `
 
+const GrayBackground = styled.div`
+    position: absolute;
+    background: #dbdbdb;
+    height: calc(97% - 5px);
+    width: 96%;
+`
+
 const Image = styled.img<{aspectRatio: number, fadeIn: boolean}>`
     width: 100%;
     aspect-ratio: ${props=>props.aspectRatio};
@@ -124,17 +131,18 @@ export const Product = ({lastElementRef, alt, images, slug, imageHeight, imageWi
         <div ref={lastElementRef || null}>
             <Link scroll={(sold || _isReserved) ? false : true} href={(sold || _isReserved) ? '' :`/atelje/${slug}`}>
                     <Border pointer={(!sold && !_isReserved)} hasShadow={hasShadow} removeMargin={removeMargin}>
+                        <GrayBackground></GrayBackground>
                         <Dot sold={sold ? true : false} reserved={_isReserved} color={dotColor}></Dot>
                         <Overlay active={(_isReserved || sold) ? true : false}>
                             <OverlayText>{sold ? 'Såld' : `Reserverad av någon i ${_isReserved ? _isReserved : 'false'} ${_isReserved === 1 ? 'minut' : 'minuter'} till.`}</OverlayText>
                         </Overlay>
-                            <picture>
-                                <source media={`(min-width:${breakPoints.XL}px)`} srcSet={urlFor(images[0].asset._ref).width(1200).url() || undefined}/>
-                                <source media={`(min-width:${breakPoints.L}px)`} srcSet={urlFor(images[0].asset._ref).width(500).url() || undefined}/>
-                                <source media={`(min-width:${breakPoints.M}px)`} srcSet={urlFor(images[0].asset._ref).width(310).url() || undefined}/>
-                                <source media={`(min-width:${breakPoints.S}px)`} srcSet={urlFor(images[0].asset._ref).width(320).url() || undefined}/>
-                                <Image fadeIn={fadeIn} onLoad={()=>setFadeIn(true)} aspectRatio={imageWidth / imageHeight} src={urlFor(images[0].asset._ref).width(500).url() || undefined}/> 
-                            </picture>
+                        <picture>
+                            <source media={`(min-width:${breakPoints.XL}px)`} srcSet={urlFor(images[0].asset._ref).width(1200).url() || undefined}/>
+                            <source media={`(min-width:${breakPoints.L}px)`} srcSet={urlFor(images[0].asset._ref).width(500).url() || undefined}/>
+                            <source media={`(min-width:${breakPoints.M}px)`} srcSet={urlFor(images[0].asset._ref).width(310).url() || undefined}/>
+                            <source media={`(min-width:${breakPoints.S}px)`} srcSet={urlFor(images[0].asset._ref).width(320).url() || undefined}/>
+                            <Image fadeIn={fadeIn} onLoad={()=>setFadeIn(true)} aspectRatio={imageWidth / imageHeight} src={urlFor(images[0].asset._ref).width(500).url() || undefined}/> 
+                        </picture>
                     </Border>
             </Link>
         </div>
