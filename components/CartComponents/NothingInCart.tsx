@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/dist/client/image';
 import { boxShadowBigElement } from '../../styles/globalStyleVariables';
@@ -28,18 +28,25 @@ const Span = styled.span`
     cursor: pointer;
 `
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<{fadeIn:boolean}>`
     height: 200px;
     width: 100%;
     position: relative;
+    transition: .7s;
+    opacity: ${(props)=>props.fadeIn ? 1 : 0};
 `
 
 const NothingInCart = () => {
+    const [fadeIn, setFadeIn] = useState(false)
+
     return (
         <Background>
             <H1>Kundvagnen är tom</H1>
-            <ImageContainer>
-                <Image
+            <ImageContainer
+                fadeIn={fadeIn}
+            >
+                <Image 
+                    onLoad={()=>setFadeIn(true)}
                     src="/sadCart.svg"
                     alt="hamburger"
                     layout="fill"
