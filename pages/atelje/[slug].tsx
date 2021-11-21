@@ -4,7 +4,7 @@ import { AboutMe, Product as ProductType } from '../../generalTypes'
 // @ts-ignore
 import imageUrlBuilder from '@sanity/image-url'
 import Image from 'next/image'
-import { FlexCenterCenter } from '../../components/GlobalElements'
+import { Background, FlexCenterCenter } from '../../components/GlobalElements'
 import Nav from '../../components/Nav'
 import { Paragraph } from '../../components/GlobalElements'
 import styled from 'styled-components'
@@ -213,37 +213,39 @@ const Product = ({ product, aboutMe }: {product: string, aboutMe: string}) => {
     return (
       <>
         <Nav aboutMe={_aboutMe}></Nav>
-        <ContentContainer overlayHeight={navoverlayHeight}>
-          <CenterContent>
-            {!isDesktop ? <Header>{_product.title}</Header> : ''} 
-            <BlockContainer>
-              <Block1>
-                <Carousel width={'100%'} stopOnHover transitionTime={300} renderArrowPrev={renderArrowPrev} renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} interval={1000000} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
-                        {_product.images.map((image, i)=>(
-                          <Image
-                          key={i}
-                          src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
-                          alt={image.alt || 'no alt text'}
-                          width={image.imageWidth}
-                          height={image.imageHeight}
-                          layout="responsive"
-                          className="image-border"
-                          />
-                          ))}
-                </Carousel>
-              </Block1>
-              <Block2>
-              {isDesktop ? <Header>{_product.title}</Header> : ''}
-                <H3>Beskrivning</H3>
-                <SmallParagraph>{_product.desc}</SmallParagraph>
-                <H3>Storlek</H3>
-                <SmallParagraph>{`${_product.productWidth} x ${_product.productHeight}${_product.productDept ? ` x ${_product.productDept}` : ''}`} cm</SmallParagraph>
-                <H3>Pris</H3>
-                <SmallParagraph>{_product.price} kr</SmallParagraph>
-              </Block2>
-            </BlockContainer>
-          </CenterContent>
-        </ContentContainer>
+        <Background>
+          <ContentContainer overlayHeight={navoverlayHeight}>
+            <CenterContent>
+              {!isDesktop ? <Header>{_product.title}</Header> : ''} 
+              <BlockContainer>
+                <Block1>
+                  <Carousel width={'100%'} stopOnHover transitionTime={300} renderArrowPrev={renderArrowPrev} renderArrowNext={renderArrowNext} showIndicators={false} thumbWidth={60} autoPlay={false} interval={1000000} renderThumbs={renderThumbs} showThumbs useKeyboardArrows emulateTouch={true} dynamicHeight={true} autoFocus={true} showArrows={true}>
+                          {_product.images.map((image, i)=>(
+                            <Image
+                            key={i}
+                            src={urlFor(image.asset._ref).url() || '/noImage.jpg'}
+                            alt={image.alt || 'no alt text'}
+                            width={image.imageWidth}
+                            height={image.imageHeight}
+                            layout="responsive"
+                            className="image-border"
+                            />
+                            ))}
+                  </Carousel>
+                </Block1>
+                <Block2>
+                {isDesktop ? <Header>{_product.title}</Header> : ''}
+                  <H3>Beskrivning</H3>
+                  <SmallParagraph>{_product.desc}</SmallParagraph>
+                  <H3>Storlek</H3>
+                  <SmallParagraph>{`${_product.productWidth} x ${_product.productHeight}${_product.productDept ? ` x ${_product.productDept}` : ''}`} cm</SmallParagraph>
+                  <H3>Pris</H3>
+                  <SmallParagraph>{_product.price} kr</SmallParagraph>
+                </Block2>
+              </BlockContainer>
+            </CenterContent>
+          </ContentContainer>
+        </Background>
         <ButtonContainer>
           <ActionButton disabled={alreadyInCart} onClick={handleAddToCart} text='Lägg till i kundvagn'></ActionButton>
         </ButtonContainer>
