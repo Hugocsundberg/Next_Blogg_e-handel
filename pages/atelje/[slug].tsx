@@ -286,7 +286,7 @@ export async function getStaticProps({ params }: {params: any}) {
 }
 
 export async function getStaticPaths() {
-  const query = `*[_type == "product"]{"slug": slug.current}[0...10]`
+  const query = `*[_type == "product"]{"slug": slug.current}[0...20]`
   let data:Array<any> = []
   await client.fetch(query)
   .then((products: Array<any>) => data = products)
