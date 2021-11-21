@@ -81,23 +81,19 @@ const Dot = styled.div<{color: 'red' | 'yellow' | 'transparent', sold:boolean, r
     z-index: 20;
 `
 
-const Image = styled.img<{aspectRatio: number}>`
+const Image = styled.img<{aspectRatio: number, fadeIn: boolean}>`
     width: 100%;
     aspect-ratio: ${props=>props.aspectRatio};
     position: relative;
     transition-timing-function: ${animationTiming};
     transition-duration: 1s;
+    background: lightgray;
+    opacity: ${(props)=>props.fadeIn ? 1 : 0};
     &:hover {
         transform: scale(1.1);
         box-shadow: ${boxShadowBigElement};
     }
 `
-
-// const Container = styled.div<{aspectRatio: number}>`
-//     
-//     background: green;
-
-// `
 
 const urlFor = (source: string) => {
   return builder.image(source)
@@ -105,6 +101,7 @@ const urlFor = (source: string) => {
 
 export const Product = ({lastElementRef, alt, images, slug, imageHeight, imageWidth, removeMargin = false, hasShadow = true, sold, lastReserved}:{lastElementRef?:any, alt:string, images: Array<ImageHW>, slug:string, imageHeight: number, imageWidth:number, removeMargin?: boolean, hasShadow?:boolean, sold?:boolean, lastReserved?: number | null}) => {
     const [_isReserved, set_isReserved] = useState(isReserved(lastReserved));
+    const [fadeIn, setFadeIn] = useState(false)
 
     //update reserved time left once every minute for minute countdown.
     useEffect(()=>{
@@ -136,7 +133,7 @@ export const Product = ({lastElementRef, alt, images, slug, imageHeight, imageWi
                                 <source media={`(min-width:${breakPoints.L}px)`} srcSet={urlFor(images[0].asset._ref).width(500).url() || undefined}/>
                                 <source media={`(min-width:${breakPoints.M}px)`} srcSet={urlFor(images[0].asset._ref).width(310).url() || undefined}/>
                                 <source media={`(min-width:${breakPoints.S}px)`} srcSet={urlFor(images[0].asset._ref).width(320).url() || undefined}/>
-                                <Image aspectRatio={imageWidth / imageHeight} src={urlFor(images[0].asset._ref).width(500).url() || undefined}/> 
+                                <Image fadeIn={fadeIn} onLoad={()=>setFadeIn(true)} aspectRatio={imageWidth / imageHeight} src={urlFor(images[0].asset._ref).width(500).url() || undefined}/> 
                             </picture>
                     </Border>
             </Link>
