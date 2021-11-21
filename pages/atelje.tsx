@@ -41,7 +41,7 @@ const LoadingIconContainer = styled.div`
   align-items: center;
   animation-duration: .7s;
   animation-name: ${fadeIn};
-  z-index: 1000;
+  z-index: 15;
 `
 
 const Products = ({ settings }: { settings: string}) => {

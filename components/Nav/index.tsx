@@ -1,6 +1,6 @@
 import React, { useState, useEffect, forwardRef } from 'react';
 import Image from 'next/image'
-import { BlurDiv, OptionText, BottomContainer, RightSideContainer, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer } from './elements'
+import { BlurDiv, OptionText, BottomContainer, RightSideContainer, HamburgerContainer, ImageDiv, Logo, OptionDiv, Spacer, UnExpandArea } from './elements'
 import { getOptions } from './config'
 import { rem } from '../../styles/globalStyleVariables'
 import { Spiral as Hamburger } from 'hamburger-react'
@@ -30,6 +30,15 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe?: AboutMe, spacer?:boolean}) =
             setcartItems((cart as Array<ProductType>).length)
         }
     }
+
+    const keyDownHandler = (e:KeyboardEvent) => {
+        if(e.key == "Escape") setIsExpanded(false)
+    }
+
+    useEffect(()=>{
+        isExpanded ? window.addEventListener('keydown', keyDownHandler) : window.removeEventListener('keydown', keyDownHandler)
+        return ()=>{window.removeEventListener('keydown', keyDownHandler)}
+    }, [isExpanded])
     
     const resizeHandlerIsDesktop = (): void => {
         if(window.innerWidth > desktopSize) setisDesktop(true)
@@ -75,78 +84,79 @@ const Nav = ({ aboutMe, spacer = true }: {aboutMe?: AboutMe, spacer?:boolean}) =
 
     return (
         <>
+        <UnExpandArea isExpanded={isExpanded} onClick={()=>{setIsExpanded(false)}}></UnExpandArea>
         {spacer ? <Spacer/> : ''}
-        <BlurDiv suppressHydrationWarning componentIsLoaded={componentLoaded} isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
-            {isDesktop ? '' : getOptions(aboutMe, _route, isAboutMe).map((option:NavOption, key:any)=>(
-                <a key={key} href={`${currentPath}${option.link}`}>
-                    <OptionDiv isActive={option.isActive}>   
-                            <ImageDiv>
-                                <Image
-                                    src={option.image}
-                                    alt={option.text}
-                                    layout="fill"
-                                    objectFit="contain"
-                                />
-                            </ImageDiv>
-                            <OptionText>
-                                {option.text}
-                            </OptionText>
-                        </OptionDiv>
-                </a>
-            ))}
-            <BottomContainer className="topOverlay">
-                {
-                isDesktop ? '' :
-                <HamburgerContainer>
-                    <Hamburger
-                    size={rem * 1.8}    
-                    toggled={isExpanded} 
-                    toggle={setIsExpanded}
-                    easing="cubic-bezier(0.165, 0.84, 0.44, 1)"
-                    duration={0.6}
-                    />
-                </HamburgerContainer>
-                }
-                
-                <Link href="/" scroll={false}>
-                    <Logo>Marinas Ateljé</Logo>
-                </Link>
-                <RightSideContainer>
+            <BlurDiv suppressHydrationWarning componentIsLoaded={componentLoaded} isExpanded={isExpanded} optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}>
+                {isDesktop ? '' : getOptions(aboutMe, _route, isAboutMe).map((option:NavOption, key:any)=>(
+                    <a key={key} href={`${currentPath}${option.link}`}>
+                        <OptionDiv isActive={option.isActive}>   
+                                <ImageDiv>
+                                    <Image
+                                        src={option.image}
+                                        alt={option.text}
+                                        layout="fill"
+                                        objectFit="contain"
+                                    />
+                                </ImageDiv>
+                                <OptionText>
+                                    {option.text}
+                                </OptionText>
+                            </OptionDiv>
+                    </a>
+                ))}
+                <BottomContainer className="topOverlay">
                     {
-                    isDesktop ? 
-                    getOptions(aboutMe, _route, isAboutMe ).map((option:NavOption, key:any)=>(
-                        <Link key={key} href={`${currentPath}${option.link}`}>
-                            <a>
-                                <OptionDiv  noBorder={true} isActive={option.isActive}>   
-                                    {option.text === 'Kundvagn' ?
-                                        <CartIconRef cartItems={cartItems}/>
-                                    :
-                                    <ImageDiv>
-                                        <Image
-                                            src={option.image}
-                                            alt={option.text}
-                                            layout="fill"
-                                            objectFit="contain"
-                                        />
-                                    </ImageDiv>
-                                    }  
-                                        <OptionText>
-                                            {option.text}
-                                        </OptionText>
-                                    </OptionDiv>
-                                </a>
-                        </Link>
-                    )) 
-                    : 
-                    <Link href="/kundvagn">
-                        <a>
-                            <CartIconRef cartItems={cartItems}/>
-                        </a>
-                    </Link>
+                    isDesktop ? '' :
+                    <HamburgerContainer>
+                        <Hamburger
+                        size={rem * 1.8}    
+                        toggled={isExpanded} 
+                        toggle={setIsExpanded}
+                        easing="cubic-bezier(0.165, 0.84, 0.44, 1)"
+                        duration={0.6}
+                        />
+                    </HamburgerContainer>
                     }
-                </RightSideContainer>
-            </BottomContainer>
-        </BlurDiv>
+                    
+                    <Link href="/" scroll={false}>
+                        <Logo>Marinas Ateljé</Logo>
+                    </Link>
+                    <RightSideContainer>
+                        {
+                        isDesktop ? 
+                        getOptions(aboutMe, _route, isAboutMe ).map((option:NavOption, key:any)=>(
+                            <Link key={key} href={`${currentPath}${option.link}`}>
+                                <a>
+                                    <OptionDiv  noBorder={true} isActive={option.isActive}>   
+                                        {option.text === 'Kundvagn' ?
+                                            <CartIconRef cartItems={cartItems}/>
+                                        :
+                                        <ImageDiv>
+                                            <Image
+                                                src={option.image}
+                                                alt={option.text}
+                                                layout="fill"
+                                                objectFit="contain"
+                                            />
+                                        </ImageDiv>
+                                        }  
+                                            <OptionText>
+                                                {option.text}
+                                            </OptionText>
+                                        </OptionDiv>
+                                    </a>
+                            </Link>
+                        )) 
+                        : 
+                        <Link href="/kundvagn">
+                            <a>
+                                <CartIconRef cartItems={cartItems}/>
+                            </a>
+                        </Link>
+                        }
+                    </RightSideContainer>
+                </BottomContainer>
+            </BlurDiv>
         </>
     );
 }

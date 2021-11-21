@@ -16,6 +16,19 @@ export const BlurDiv = styled.div<{isExpanded: boolean, optionsHeight: number, c
     transition-timing-function: ${animationTiming};
 `
 
+export const UnExpandArea = styled.div<{isExpanded: boolean}>`
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    background: rgb(0, 0, 0);
+    transition: .7s;
+    pointer-events: ${props=>props.isExpanded ? 'initial' : 'none'};
+    opacity: ${props=>props.isExpanded ? .3 : 0};
+`
+
 export const OptionDiv = styled.button<{noBorder?:boolean, isActive?:boolean}>`
     width: 100%;
     border: none;
