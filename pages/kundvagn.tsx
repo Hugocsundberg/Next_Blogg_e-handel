@@ -17,7 +17,7 @@ import { renderSnippet } from '../functions';
 import { Message } from '../components/Message';
 import { Spacer } from '../components/GlobalElements';
 
-const deliveryPrice = 50
+const DELIVERY_PRICE = 50
 
 const CartContainer = styled.div<{ stuffInCart:boolean, topOverlayHeight: number, settings:settings }>`
     width: 100%;
@@ -91,7 +91,8 @@ const index = ({ settings }: {settings: string}) => {
     const [KlarnaCheckout, setKlarnaCheckout] = useState<KlarnaCheckoutSnippetResponse>();
     const [topOverlayHeight, settopOverlayHeight] = useState(0);
     const [totalPrice, settotalPrice] = useState(0);
-    const [delivery, setDelivery] = useState(0)
+    const [delivery, setDelivery] = useState(false)
+    const [deliveryPrice, setDeliveryPrice] = useState(0)
 
     const updateCart = () => {
         const inCart:Array<Object> = getFromStorage('cart')
@@ -99,11 +100,15 @@ const index = ({ settings }: {settings: string}) => {
     }
 
     const deliveryActivate = () => {
-        setDelivery(deliveryPrice * getFromStorage('cart').length)
+        setDelivery(true)
     }
 
     const deliveryDeactivate = () => {
-        setDelivery(0)
+        setDelivery(false)
+    }
+
+    const updateDeliveryPrice = () => {
+        setDeliveryPrice(DELIVERY_PRICE * getFromStorage('cart').length)
     }
 
     const purchaseHandler = () => {
@@ -134,18 +139,16 @@ const index = ({ settings }: {settings: string}) => {
     }, []);
 
     useEffect(() => {
-        deliveryActivate()
+        updateDeliveryPrice()
     }, [inCart]);
-    
+
     useEffect(() => {
         let totalPrice:number = 0
         inCart.forEach((product) => {
             totalPrice += (product as Product).price
         })
-        settotalPrice(totalPrice + delivery)
-    }, [delivery]);
-
-
+        settotalPrice(totalPrice + (delivery ? deliveryPrice : 0))
+    }, [deliveryPrice, delivery]);
 
     useEffect(()=>{
         if(KlarnaCheckout)
@@ -182,7 +185,7 @@ const index = ({ settings }: {settings: string}) => {
                 inCart.length > 0 ? 
                     KlarnaCheckout ? '' :
                     <ButtonContainer>
-                        <ActionButtonCart deliveryPrice={deliveryPrice} deliveryActivate={deliveryActivate} deliveryDeactivate={deliveryDeactivate} delivery={delivery} setDelivery={setDelivery} onClick={purchaseHandler} price={totalPrice} tax={30}/>
+                        <ActionButtonCart deliveryPrice={DELIVERY_PRICE} totaldeliveryPrice={deliveryPrice} deliveryActivate={deliveryActivate} deliveryDeactivate={deliveryDeactivate} delivery={delivery} setDelivery={setDelivery} onClick={purchaseHandler} price={totalPrice} tax={30}/>
                     </ButtonContainer>
                 : ''
                 }

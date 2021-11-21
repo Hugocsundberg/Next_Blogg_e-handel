@@ -46,7 +46,7 @@ const FlexColDiv = styled.div`
 `
 
 
-const ActionButtonCart = ({price, deliveryActivate, deliveryDeactivate, delivery, deliveryPrice, onClick}: {deliveryPrice:number, deliveryDeactivate:()=>void, deliveryActivate:()=>void, price: number,  delivery:number, setDelivery:React.Dispatch<React.SetStateAction<number>>, tax: number, onClick:()=>void}) => {
+const ActionButtonCart = ({price, totaldeliveryPrice, deliveryActivate, deliveryDeactivate, delivery, deliveryPrice, onClick}: {deliveryPrice:number, totaldeliveryPrice:number, deliveryDeactivate:()=>void, deliveryActivate:()=>void, price: number,  delivery:boolean, setDelivery:React.Dispatch<React.SetStateAction<boolean>>, tax: number, onClick:()=>void}) => {
     
     return (
         <>
@@ -54,11 +54,11 @@ const ActionButtonCart = ({price, deliveryActivate, deliveryDeactivate, delivery
             <FlexColDiv>
                 <FlexDiv>
                     <p><b>Hämta upp</b> <i>Gratis</i></p>
-                    <Input checked={!delivery ? true : false} type='radio' name="delivery" onChange={deliveryDeactivate}/>
+                    <Input checked={!delivery} type='radio' name="delivery" onChange={deliveryDeactivate}/>
                 </FlexDiv>
                 <FlexDiv>
                     <p><b>Skicka med posten</b> <i>{`${deliveryPrice * getFromStorage('cart').length} kr`}</i></p>
-                    <Input checked={delivery ? true : false} type='radio' name="delivery" onChange={deliveryActivate}/>
+                    <Input checked={delivery} type='radio' name="delivery" onChange={deliveryActivate}/>
                 </FlexDiv>
             </FlexColDiv>
             <P>{`Total ${price} kr`}</P>

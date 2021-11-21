@@ -25,7 +25,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             {
               id: 2,
               name: 'Skickas med posten',
-              price: 5000,
+              price: 5000 * request.inCart.length,
               tax_amount: 0,
               tax_rate: 0,
               preselected: request.delivery ? true : false
