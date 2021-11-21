@@ -6,7 +6,6 @@ import { margin, rem, screenSizes } from '../styles/globalStyleVariables'
 import Head from "next/head"
 import { useCallback, useEffect, useRef, useState } from "react"
 import useLazyLoad from "../hooks/useLazyLoad"
-import Skeleton from "../components/Skeleton"
 import { motion } from "framer-motion"
 import { windowHeight } from "../styles/globalStyleVariables"
 import React from "react"
@@ -31,7 +30,6 @@ const Products = ({ settings }: { settings: string}) => {
   const incrementBy = 4
   const [query, setQuery] = useState(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[0...0]`);
   const {result, loading, errors, hasMore, setResult} = useLazyLoad(query, incrementBy)
-  const [skeletonArray, setSkeletonArray] = useState<Array<object>>([])
   const [currentProduct, setCurrentProduct] = useState(0);
   const [cols, setCols] = useState<Array<Array<React.ReactNode>>>([]);
   
@@ -99,19 +97,6 @@ useEffect(() => {
     setQuery(`*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title}[${currentProduct}...${currentProduct + incrementBy + 1}]`)
   }, [currentProduct])
 
-  useEffect(()=>{
-    if(loading && hasMore) {
-      let _skeletonArray = [];
-      for(let i = 0; i < incrementBy - 1; i++) {
-        _skeletonArray.push({})
-      }
-      setSkeletonArray(_skeletonArray)
-    }
-    if(!loading) {
-      setSkeletonArray([])
-    }
-  }, [loading])
-
   return (
     <>
         <Head>
@@ -126,7 +111,6 @@ useEffect(() => {
               setCols={setCols}
               breakPoints={breakPoints}
               result={result}
-              skeleton={skeletonArray}
               > 
               {[
                 ...(result as Array<ProductType>).map((product:ProductType, i)=>{
@@ -136,10 +120,7 @@ useEffect(() => {
                   
                   else 
                   return <Product imageHeight={product.images[0].imageHeight} imageWidth={product.images[0].imageWidth} key={i} sold={product.sold} lastReserved={product.lastReservedAt} alt={product.alt || 'no alt text'} images={product.images} slug={product.slug.current} hasShadow={true}></Product>
-                }),
-                ...skeletonArray.map((item, i)=>(
-                <Skeleton key={i+1000000}></Skeleton>
-                ))
+                })
               ]}
             </MotionMasonry>
             {hasMore ? <Spacer suppressHydrationWarning height={`${windowHeight - 10}px`}></Spacer> : ''}
