@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import client from "../client";
 import { PostLight, Product } from "../generalTypes";
 
-const useLazyLoad = <T>(
+const useLazyLoad = (
   query: string | undefined,
   incrementBy: number,
   initialResult?: Array<Product> | Array<PostLight>
@@ -20,17 +20,17 @@ const useLazyLoad = <T>(
       client
         .fetch(query)
         .then((data: Array<Product> | Array<PostLight>) => {
-          // IncrementBy is currently one bigger than the number we want so that we can check if there are more. Can probably get better by using tagged template string.
+          // IncrementBy is currently one bigger than the number we want so that we can check if there are more. Function could be made cleaner by using tagged template strings for query increments.
           if (data.length > incrementBy) {
             setHasMore(true);
-            // pops the last check=item
+            // pops the last item if more items available.
             data.pop();
           } else {
             setHasMore(false);
           }
 
           setResult((prevData): Array<Product> | Array<PostLight> => {
-            console.log({ prevData, data });
+            // Make sure arrays are of the same type
             if (prevData.length === 0 || data.length === 0) {
               return [...prevData, ...data] as Array<any>;
             }
@@ -46,7 +46,6 @@ const useLazyLoad = <T>(
             ) {
               return [...prevData, ...data] as Array<PostLight>;
             }
-            console.log("error");
             const ErrorArray: Array<Error> = [...errors];
             ErrorArray.push(new Error("Multiple types in Array"));
             setErrors(ErrorArray);
@@ -56,7 +55,7 @@ const useLazyLoad = <T>(
         })
         .catch((e: Error) => {
           const ErrorArray: Array<Error> = [...errors];
-          ErrorArray.push(new Error("Multiple types in Array"));
+          ErrorArray.push(e);
           setErrors(ErrorArray);
         });
     }
@@ -66,7 +65,7 @@ const useLazyLoad = <T>(
     if (errors.length > 0) console.error(errors);
   }, [errors]);
 
-  return { result, loading, errors, hasMore, setResult };
+  return { result, loading, hasMore, setResult };
 };
 
 export default useLazyLoad;
