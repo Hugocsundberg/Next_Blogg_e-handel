@@ -63,8 +63,5 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     .then((stream: any) => stream.json())
     .then((data: any) => {
       res.json({ htmlSnippet: data.html_snippet });
-      console.log(data);
-      console.log("request.delivery");
-      console.log(request.delivery);
     });
 };
