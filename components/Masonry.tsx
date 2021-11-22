@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor } from "react";
+import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -45,30 +45,29 @@ const item = {
   },
 };
 
-const Masonry = (
-  {
-    cols,
-    setCols,
-    children,
-    result,
-    skeleton,
-    breakPoints,
-  }: {
-    cols: Array<Array<React.ReactNode>>;
-    setCols: Dispatch<SetStateAction<ReactNode[][]>>;
-    children: Array<JSX.Element>;
-    result: Array<PostLight> | Array<ProductType>;
-    skeleton?: Array<Object>;
-    breakPoints: breakPoints;
-  },
-  ref: any
-) => {
+const Masonry = ({
+  cols,
+  setCols,
+  children,
+  result,
+  skeleton,
+  breakPoints,
+}: {
+  cols: Array<Array<React.ReactNode>>;
+  setCols: Dispatch<SetStateAction<ReactNode[][]>>;
+  children: Array<JSX.Element>;
+  result: Array<PostLight> | Array<ProductType>;
+  skeleton?: Array<Object>;
+  breakPoints: breakPoints;
+}) => {
   const [colCount, setColCount] = useState<number | undefined>(undefined);
 
+  // Sets colcount based on window width
   const _updateColCount = () => {
     updateColCount(setColCount, breakPoints);
   };
 
+  // Sets colcount based on window width
   useEffect(() => {
     _updateColCount();
     window.addEventListener("resize", _updateColCount);
@@ -77,9 +76,8 @@ const Masonry = (
     };
   }, []);
 
-  // Set columns whenever new chilfren are added or colcount changes.
+  // Populate columns whenever new chilfren are added or colcount changes.
   useEffect(() => {
-    // Local '_children variable used to merge child arrays into single array'
     if (colCount) {
       const _cols: Array<Array<React.ReactNode>> = [];
       // Add new columns
@@ -92,7 +90,7 @@ const Masonry = (
       }
       setCols(_cols);
     }
-  }, [colCount, result, skeleton]);
+  }, [colCount, result]);
 
   return (
     <Cols as={motion.div}>
