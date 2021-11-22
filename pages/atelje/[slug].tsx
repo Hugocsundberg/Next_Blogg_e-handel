@@ -4,6 +4,7 @@ import { AboutMe, Product as ProductType } from "../../generalTypes";
 // @ts-ignore
 import imageUrlBuilder from "@sanity/image-url";
 import Image from "next/image";
+import React from "react";
 import { Background, FlexCenterCenter } from "../../components/GlobalElements";
 import Nav from "../../components/Nav";
 import { Paragraph } from "../../components/GlobalElements";
@@ -151,8 +152,8 @@ const Product = ({
   }, []);
 
   const renderThumbs = () => {
-    return _product.images.map((image) => (
-      <ThumbContainer>
+    return _product.images.map((image, i) => (
+      <ThumbContainer key={i}>
         <Image
           src={urlFor(image.asset._ref).url() || "/noImage.jpg"}
           alt={image.alt || "no alt text"}
