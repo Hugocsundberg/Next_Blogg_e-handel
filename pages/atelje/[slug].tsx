@@ -25,6 +25,7 @@ import { screenSizes } from "../../styles/globalStyleVariables";
 import { useEffect, useState } from "react";
 import { ButtonContainer } from "../../components/GlobalElements/ActionButtonElements";
 import SquareLoader from "react-spinners/SquareLoader";
+import Loading from "../../components/Loading";
 
 const builder = imageUrlBuilder(client);
 
@@ -34,12 +35,6 @@ const urlFor = (source: string) => {
 
 const Header = styled.h1`
   margin-bottom: 0;
-`;
-
-const P = styled.p`
-  margin-top: 0.5rem;
-  margin-bottom: 2rem;
-  font-weight: light;
 `;
 
 const ThumbContainer = styled.div`
@@ -112,12 +107,7 @@ const Product = ({
   aboutMe: string;
 }) => {
   if (!product) {
-    return (
-      <FlexCenterCenter height="100vh">
-        <h1>418</h1>
-        <Paragraph>Problem 🫖</Paragraph>
-      </FlexCenterCenter>
-    );
+    return <Loading />;
   }
   const _aboutMe: AboutMe = JSON.parse(aboutMe).aboutme;
   const _product: ProductType = JSON.parse(product);
@@ -151,6 +141,7 @@ const Product = ({
     };
   }, []);
 
+  // render elements for carousel
   const renderThumbs = () => {
     return _product.images.map((image, i) => (
       <ThumbContainer key={i}>
@@ -163,7 +154,7 @@ const Product = ({
       </ThumbContainer>
     ));
   };
-
+  // render elements for carousel
   const renderArrowNext = (clickHandler: any, another: boolean) => {
     return another ? (
       <ArrowContainer onClick={clickHandler}>
@@ -175,6 +166,7 @@ const Product = ({
       </ArrowContainer>
     );
   };
+  // render elements for carousel
   const renderArrowPrev = (clickHandler: any, another: boolean) => {
     return another ? (
       <ArrowContainer onClick={clickHandler}>
@@ -214,13 +206,7 @@ const Product = ({
   };
 
   if (router.isFallback) {
-    return (
-      <>
-        <FlexCenterCenter height="100vh">
-          <SquareLoader />
-        </FlexCenterCenter>
-      </>
-    );
+    return <Loading></Loading>;
   }
 
   if (_product.title) {
@@ -242,7 +228,6 @@ const Product = ({
                     showIndicators={false}
                     thumbWidth={60}
                     autoPlay={false}
-                    interval={1000000}
                     renderThumbs={renderThumbs}
                     showThumbs
                     useKeyboardArrows
@@ -304,21 +289,16 @@ const Product = ({
 export async function getStaticProps({ params }: { params: any }) {
   const slug = params.slug;
   const query = `*[_type == 'product' && slug.current == '${slug}']{_createdAt, sold, lastReservedAt, "id": _id, productHeight, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`;
-  let productData;
-  await client
-    .fetch(query)
-    .then((products: Array<ProductType>) => (productData = products[0]));
+  const products: Array<ProductType> = await client.fetch(query);
+  const productData = products[0];
   let postJson: string;
   productData
     ? (postJson = JSON.stringify(productData))
     : (postJson = '{"undefined":"true"}');
 
-  let settingsData;
   const settingsquery = '*[_type == "settings"][0]{aboutme->{title, slug}}';
-  await client
-    .fetch(settingsquery)
-    .then((settings: AboutMe) => (settingsData = settings));
-  const settingsJson = JSON.stringify(settingsData);
+  const settings: AboutMe = await client.fetch(settingsquery);
+  const settingsJson = JSON.stringify(settings);
 
   return {
     props: {
@@ -330,11 +310,10 @@ export async function getStaticProps({ params }: { params: any }) {
 
 export async function getStaticPaths() {
   const query = `*[_type == "product"]{"slug": slug.current}[0...20]`;
-  let data: Array<any> = [];
-  await client.fetch(query).then((products: Array<any>) => (data = products));
+  const products: Array<ProductType> = await client.fetch(query);
 
   return {
-    paths: data.map((product: any) => {
+    paths: products.map((product: ProductType) => {
       return { params: { slug: product.slug } };
     }),
     fallback: true,
