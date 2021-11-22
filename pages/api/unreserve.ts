@@ -25,5 +25,4 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
   })
     .then((stream: any) => stream.json())
     .then((data: any) => res.json({ message: data }));
-  // })
 };
