@@ -1,5 +1,4 @@
 import {
-  navHeight,
   blurColor,
   blurPx,
   margin,

@@ -10,7 +10,7 @@ import {
   lighten,
 } from "../../styles/globalStyleVariables";
 import { optionDivPadding, marginLogo, lineHeightLogo } from "./styleVariables";
-import { getOptionsHeight, getBottomNavHeight } from "./functions";
+import { getBottomNavHeight } from "./functions";
 
 export const BlurDiv = styled.div<{
   isExpanded: boolean;

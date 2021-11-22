@@ -4,14 +4,6 @@ import { darkGray, screenSizes } from "../../styles/globalStyleVariables";
 import styled from "styled-components";
 import { getFromStorage } from "../../functions";
 
-const H = styled.p`
-  margin: 0.5rem 1rem;
-  font-size: 1.8rem;
-  color: ${darkGray};
-  @media (min-width: ${screenSizes.L}px) {
-    margin: 1rem;
-  }
-`;
 const P = styled.p`
   margin: 0.5rem 1rem;
   margin-top: 0rem;
@@ -47,7 +39,6 @@ const FlexColDiv = styled.div`
 
 const ActionButtonCart = ({
   price,
-  totaldeliveryPrice,
   deliveryActivate,
   deliveryDeactivate,
   delivery,
