@@ -4,7 +4,6 @@ import ActionButtonCart from "../components/CartComponents/ActionButtonCart";
 import Head from "next/head";
 import client from "../client";
 import {
-  AboutMe,
   KlarnaCheckoutSnippetResponse,
   Product,
   settings,
@@ -16,10 +15,7 @@ import { useState, useEffect } from "react";
 import { getFromStorage, getTopOverlayHeight, urlFor } from "../functions";
 import styled from "styled-components";
 import {
-  blurColor,
-  blurPx,
   boxShadowBigElement,
-  darkGray,
   margin,
   rem,
   screenSizes,
@@ -29,8 +25,7 @@ import { Background } from "../components/GlobalElements";
 import { renderSnippet } from "../functions";
 import { Message } from "../components/Message";
 import { Spacer } from "../components/GlobalElements";
-
-const DELIVERY_PRICE = 50;
+import { DELIVERY_PRICE } from "../globalValues";
 
 const CartContainer = styled.div<{
   stuffInCart: boolean;
@@ -250,19 +245,16 @@ const index = ({ settings }: { settings: string }) => {
 };
 
 export async function getStaticProps() {
-  let settingsData;
   const settingsquery =
     '*[_type == "settings"][0]{"aboutMe": aboutme->{title, slug}, "message": messageCart, "messageImage": messageImage.asset}';
-  await client
-    .fetch(settingsquery)
-    .then((settings: settings) => (settingsData = settings));
-  const settingsJson = JSON.stringify(settingsData);
+  const settings: settings = await client.fetch(settingsquery);
+  const settingsJson = JSON.stringify(settings);
 
   return {
     props: {
       settings: settingsJson,
     },
-    revalidate: 60,
+    revalidate: 60 * 5,
   };
 }
 

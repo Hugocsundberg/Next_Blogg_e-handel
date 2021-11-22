@@ -1,8 +1,7 @@
-import { link } from "fs";
-import { request } from "http";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Product } from "../../generalTypes";
 import { KlarnaAPIClientRequest } from "../../generalTypes";
+import { DELIVERY_PRICE } from "../../globalValues";
 const fetch = require("node-fetch");
 const btoa = require("btoa");
 require("dotenv").config();
@@ -25,7 +24,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       {
         id: 2,
         name: "Skickas med posten",
-        price: 5000 * request.inCart.length,
+        price: DELIVERY_PRICE * 100 * request.inCart.length,
         tax_amount: 0,
         tax_rate: 0,
         preselected: request.delivery ? true : false,
