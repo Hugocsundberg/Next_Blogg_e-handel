@@ -149,6 +149,19 @@ const index = ({ settings }: { settings: string }) => {
     setKlarnaCheckout(undefined);
   };
 
+  const keyDownHandler = (e: KeyboardEvent) => {
+    if (e.key == "Escape") exitKlarnaHandler();
+  };
+
+  useEffect(() => {
+    KlarnaCheckout
+      ? window.addEventListener("keydown", keyDownHandler)
+      : window.removeEventListener("keydown", keyDownHandler);
+    return () => {
+      window.removeEventListener("keydown", keyDownHandler);
+    };
+  }, [KlarnaCheckout]);
+
   useEffect(() => {
     //Update cart
     if (process.browser) {
@@ -208,6 +221,7 @@ const index = ({ settings }: { settings: string }) => {
           )}
         </CartContainer>
         <CheckoutContainerContainer
+          onClick={exitKlarnaHandler}
           isVisible={KlarnaCheckout ? true : false}
           topOverlayHeight={topOverlayHeight}
         >
