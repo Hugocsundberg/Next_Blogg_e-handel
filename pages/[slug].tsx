@@ -11,6 +11,7 @@ import styled from "styled-components";
 import { boxShadowBigElement, margin } from "../styles/globalStyleVariables";
 import { ButtonContainer } from "../components/GlobalElements/ActionButtonElements";
 import { Background } from "../components/GlobalElements";
+import React from "react";
 import Head from "next/head";
 import SquareLoader from "react-spinners/SquareLoader";
 import { isReserved } from "../functions";
