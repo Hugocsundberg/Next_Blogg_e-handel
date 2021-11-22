@@ -93,6 +93,7 @@ const CartItem = ({ product }: { product: Product }) => {
     isReserved(product.lastReservedAt)
   );
 
+  //   Update reserved time remaining
   useEffect(() => {
     const interval = setInterval(() => {
       settimeRemaining(isReserved(product));
