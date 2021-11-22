@@ -1,6 +1,4 @@
 import React from "react";
-import imageUrlBuilder from "@sanity/image-url";
-import client from "../client";
 import { ImageHW } from "../generalTypes";
 import styled from "styled-components";
 import Link from "next/link";
@@ -13,8 +11,8 @@ import { isReserved } from "../functions";
 import { useEffect, useState } from "react";
 import { keyframes } from "styled-components";
 import { breakPoints } from "../pages/atelje";
+import { urlFor } from "../functions";
 
-const builder = imageUrlBuilder(client);
 const fromGray = keyframes`
     from {opacity: 0}
     to {opacity: 1}
@@ -113,13 +111,8 @@ const Image = styled.img<{ aspectRatio: number; fadeIn: boolean }>`
   }
 `;
 
-const urlFor = (source: string) => {
-  return builder.image(source);
-};
-
 export const Product = ({
   lastElementRef,
-  alt,
   images,
   slug,
   imageHeight,
