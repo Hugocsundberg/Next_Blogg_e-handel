@@ -16,7 +16,7 @@ const Background = styled.div<{ right: boolean; fadeOut: boolean }>`
   box-shadow: 0 0 15px -5px #585858d7;
   backdrop-filter: blur(5px);
   transform: rotate(${(props) => (props.right ? -90 : 90)}deg)
-    translate(${(props) => (props.right ? "-" : "+")}50%, 0);
+    translate(${(props) => (props.right ? "-" : "+")}50% 0);
   z-index: 1000;
   right: ${(props) => (props.right ? "3rem" : `calc(100% - 4.5rem - 1.3rem)`)};
   bottom: 50%;
