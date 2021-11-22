@@ -1,5 +1,5 @@
 import { lineWidth, imageHeight, rem } from "../../styles/globalStyleVariables";
-import { optionDivPadding, marginLogo, lineHeightLogo } from "./styleVariables";
+import { optionDivPadding } from "./styleVariables";
 import { getOptions } from "./config";
 import { AboutMe } from "../../generalTypes";
 import { useRouter } from "next/router";
