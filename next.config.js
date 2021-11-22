@@ -1,8 +1,5 @@
 module.exports = {
-    images: {
-      domains: [
-        'upload.wikimedia.org',
-        'cdn.sanity.io'
-      ],
-    },
-  }
+  images: {
+    domains: ["upload.wikimedia.org", "cdn.sanity.io"],
+  },
+};

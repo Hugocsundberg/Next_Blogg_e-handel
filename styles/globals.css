@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Trirong:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Trirong:wght@400;600;700&display=swap");
 
-html,body {
+html,
+body {
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   background: white;
 }
 
@@ -44,7 +45,7 @@ button {
 }
 
 .carousel-status {
-  margin-right:3rem;
+  margin-right: 3rem;
   margin-top: 10%;
   text-shadow: none !important;
   font-size: medium !important;
@@ -61,31 +62,31 @@ button {
   transform: translate(-6%);
 }
 
-.postImage:hover { 
+.postImage:hover {
   transform: scale(1.1);
 }
 
 .postImage {
-  transition: .7s;
+  transition: 0.7s;
 }
 
 @media screen and (min-width: 400px) {
   .image-border {
     border: 6px solid black !important;
-  } 
+  }
 }
 @media screen and (min-width: 500px) {
   .image-border {
     border: 7px solid black !important;
-  } 
+  }
 }
 @media screen and (min-width: 600px) {
   .image-border {
     border: 8px solid black !important;
-  } 
+  }
 }
 @media screen and (min-width: 800px) {
   .image-border {
     border: 9px solid black !important;
-  } 
+  }
 }

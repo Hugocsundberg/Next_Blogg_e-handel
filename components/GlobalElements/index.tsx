@@ -1,61 +1,62 @@
 import styled from "styled-components";
-import { darkGray, margin } from '../../styles/globalStyleVariables'
+import { darkGray, margin } from "../../styles/globalStyleVariables";
 
 export const Background = styled.div`
-    position: relative;
-    height: 100%;
-    min-height: 100vh;
-    background: #f7f7f7;
-`
+  position: relative;
+  height: 100%;
+  min-height: 100vh;
+  background: #f7f7f7;
+`;
 
 export const FlexCenter = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 interface Props {
-    height: string,
+  height: string;
 }
 
 export const FlexCenterCenter = styled.div<Props>`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: ${(props:Props) : string => props.height};
-`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: ${(props: Props): string => props.height};
+`;
 
-export const Header = styled.h1<{noLeftMargin?: boolean}>`
-    color: ${darkGray};
-    font-weight: bold;
-    font-size: 2.3rem;
-    display: flex;
-    justify-content: start;
-    padding: ${props => props.noLeftMargin ? `${margin}rem 0rem` : `${margin}rem ${margin}rem`};
-    margin: 0;
-    align-items: center;
-`
+export const Header = styled.h1<{ noLeftMargin?: boolean }>`
+  color: ${darkGray};
+  font-weight: bold;
+  font-size: 2.3rem;
+  display: flex;
+  justify-content: start;
+  padding: ${(props) =>
+    props.noLeftMargin ? `${margin}rem 0rem` : `${margin}rem ${margin}rem`};
+  margin: 0;
+  align-items: center;
+`;
 
 export const Paragraph = styled.p`
-    color: ${darkGray};
-    font-weight: normal;
-    font-size: 2.3rem;
-    display: flex;
-    justify-content: start;
-    padding: ${margin}rem ${margin}rem;
-    margin: 0;
-    align-items: center;
-    `
+  color: ${darkGray};
+  font-weight: normal;
+  font-size: 2.3rem;
+  display: flex;
+  justify-content: start;
+  padding: ${margin}rem ${margin}rem;
+  margin: 0;
+  align-items: center;
+`;
 
 export const SmallParagraph = styled.p`
-    font-family: 'Trirong', serif;
-    margin-bottom: ${margin}rem;
-`
+  font-family: "Trirong", serif;
+  margin-bottom: ${margin}rem;
+`;
 
-export const Spacer = styled.p<{height: string}>`
-    height: ${props => props.height};
-    position: relative;
-    width: 100%;
-    margin: 0;
-`
+export const Spacer = styled.p<{ height: string }>`
+  height: ${(props) => props.height};
+  position: relative;
+  width: 100%;
+  margin: 0;
+`;
