@@ -72,11 +72,6 @@ const Nav = ({
   };
 
   useEffect(() => {
-    //set component loaded
-    setTimeout(() => {
-      setcomponentLoaded(true);
-    }, 1);
-
     if (process.browser) {
       //Set path
       let path = window.location.origin;
@@ -90,6 +85,7 @@ const Nav = ({
       resizeHandlerIsDesktop();
       window.addEventListener("resize", resizeHandlerIsDesktop);
 
+      // Remove item from cart if not resrved anymore
       const interval = setInterval(() => {
         const cart = getFromStorage("cart");
         cart.forEach((cartItem) => {
@@ -118,6 +114,9 @@ const Nav = ({
       {spacer ? <Spacer /> : ""}
       <BlurDiv
         suppressHydrationWarning
+        onLoad={() => {
+          setcomponentLoaded(true);
+        }}
         componentIsLoaded={componentLoaded}
         isExpanded={isExpanded}
         optionsHeight={isDesktop ? 0 : getOptionsHeight(aboutMe)}
