@@ -3,7 +3,6 @@ import client from "../client";
 import { AboutMe, aboutMeSetting, PostFull } from "../generalTypes";
 // @ts-ignore
 import PortableText from "@sanity/block-content-to-react";
-import imageUrlBuilder from "@sanity/image-url";
 import { FlexCenterCenter, SmallParagraph } from "../components/GlobalElements";
 import Nav from "../components/Nav";
 import ActionButton from "../components/ActionButton";
@@ -15,7 +14,9 @@ import React from "react";
 import Head from "next/head";
 import SquareLoader from "react-spinners/SquareLoader";
 import { isReserved } from "../functions";
+import { urlFor } from "../functions";
 import { useEffect, useState } from "react";
+import Loading from "../components/Loading";
 const BlockContent = require("@sanity/block-content-to-react");
 
 const CenterContent = styled.div<{ hasProduct: boolean }>`
@@ -49,30 +50,18 @@ const Image = styled.img<{ aspectRatio: number }>`
   position: relative;
 `;
 
-const builder = imageUrlBuilder(client);
-
-const urlFor = (source: string) => {
-  return builder.image(source);
-};
-
 const Post = ({ post, aboutMe }: { post: string; aboutMe: string }) => {
   if (!post) {
-    return (
-      <FlexCenterCenter height="100vh">
-        <h1>418</h1>
-        <SmallParagraph>Problem 🫖</SmallParagraph>
-      </FlexCenterCenter>
-    );
+    return <Loading></Loading>;
   }
-  const aboutMeStatic: AboutMe = JSON.parse(aboutMe).aboutme;
-  const _aboutMe: Array<AboutMe> = [];
-  _aboutMe.push(JSON.parse(aboutMe).aboutme);
+  const _aboutMe: AboutMe = JSON.parse(aboutMe).aboutme;
   const _post: PostFull = JSON.parse(post);
   const [isReservedState, setIsReserevedState] = useState<number | false>(
     isReserved(_post.productReserved)
   );
   const router = useRouter();
 
+  // Update time reserved by someone every minute.
   useEffect(() => {
     const interval = setInterval(() => {
       setIsReserevedState(isReserved(_post.productReserved));
@@ -81,20 +70,11 @@ const Post = ({ post, aboutMe }: { post: string; aboutMe: string }) => {
     return () => clearInterval(interval);
   });
 
-  if (_aboutMe[0].slug.current === _post.slug) {
-    _aboutMe.pop();
-  }
-
   if (router.isFallback) {
-    return (
-      <>
-        <FlexCenterCenter height="100vh">
-          <SquareLoader />
-        </FlexCenterCenter>
-      </>
-    );
+    return <Loading></Loading>;
   }
 
+  // serializers for sanity portable text
   const serializers = {
     types: {
       image: (props: any) => (
@@ -140,7 +120,7 @@ const Post = ({ post, aboutMe }: { post: string; aboutMe: string }) => {
           <title>Kundvagn</title>
         </Head>
         <Background>
-          <Nav aboutMe={aboutMeStatic}></Nav>
+          <Nav aboutMe={_aboutMe}></Nav>
           <CenterContent hasProduct={_post.productSlug ? true : false}>
             <ContentContainer hasProduct={_post.productSlug ? true : false}>
               <PortableText
@@ -175,20 +155,16 @@ const Post = ({ post, aboutMe }: { post: string; aboutMe: string }) => {
   }
 };
 
-export async function getStaticProps({ params }: { params: any }) {
+export async function getStaticProps({ params }: { params: { slug: string } }) {
   const slug = params.slug;
-  let postJson;
   const query = `*[_type == 'post' && slug.current == '${slug}']{"created": _createdAt, excerpt, body, "altText": body[_type match 'image'][0].altText, "productSlug": product->slug.current, "productReserved": product->lastReservedAt, "productSold": product->sold, title, "slug": slug.current, "imageUrl": body[_type == "image"][0].asset->url, "imageHeight": body[_type == "image"][0].asset->metadata.dimensions.height, "imageWidth": body[_type == "image"][0].asset->metadata.dimensions.width, "aspectRatio": body[_type == "image"][0].asset->metadata.dimensions.aspectRatio}`;
-  await client.fetch(query).then((posts: Array<PostFull>) => {
-    const postData = posts[0] || [];
-    postJson = JSON.stringify(postData);
-  });
+  const posts: Array<PostFull> = await client.fetch(query);
+  const postData = posts[0] || [];
+  const postJson = JSON.stringify(postData);
 
-  let settingsJson;
   const settingsquery = '*[_type == "settings"][0]{aboutme->{title, slug}}';
-  await client.fetch(settingsquery).then((settings: AboutMe) => {
-    settingsJson = JSON.stringify(settings);
-  });
+  const settings: AboutMe = await client.fetch(settingsquery);
+  const settingsJson = JSON.stringify(settings);
 
   return {
     props: {
