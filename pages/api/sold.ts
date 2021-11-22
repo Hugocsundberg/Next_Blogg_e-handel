@@ -1,17 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  KlarnaOrder,
-  KlarnaResponseProduct,
-  Product,
-} from "../../generalTypes";
+import { KlarnaOrder, KlarnaResponseProduct } from "../../generalTypes";
 require("dotenv").config();
 const fetch = require("node-fetch");
 const btoa = require("btoa");
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default (req: NextApiRequest, res: NextApiResponse) => {
   const orderId = req.body.orderId;
   let products: Array<KlarnaResponseProduct>;
 
+  // Get products from order
   fetch(`https://api.playground.klarna.com/checkout/v3/orders/${orderId}`, {
     method: "GET",
     headers: {
@@ -40,6 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         };
       });
 
+      // Mutate products
       fetch(
         `https://9r33i0al.api.sanity.io/v2021-06-13/data/mutate/production`,
         {
@@ -53,7 +51,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       )
         .then((stream: any) => stream.json())
         .then((data: any) => console.log(data));
-      res.json({ success: true });
     })
     .catch((error: any) => console.log(error));
 };
