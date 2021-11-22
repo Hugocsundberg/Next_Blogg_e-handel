@@ -1,8 +1,8 @@
 import client from "../client";
-import { AboutMe, Product as ProductType, settings } from "../generalTypes";
+import { Product as ProductType, settings } from "../generalTypes";
 import Product from "../components/Product";
 import Nav from "../components/Nav";
-import { margin, rem, screenSizes } from "../styles/globalStyleVariables";
+import { margin, screenSizes } from "../styles/globalStyleVariables";
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useLazyLoad from "../hooks/useLazyLoad";
@@ -50,19 +50,17 @@ const Products = ({ settings }: { settings: string }) => {
   const [query, setQuery] = useState(
     `*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}[0...0]`
   );
-  const { result, loading, errors, hasMore, setResult } = useLazyLoad(
+
+  // Takes in query with current product interval. useLazyLoad fetches and adds new items to result.
+  const { result, loading, hasMore, setResult } = useLazyLoad(
     query,
     incrementBy
   );
   const [currentProduct, setCurrentProduct] = useState(0);
   const [cols, setCols] = useState<Array<Array<React.ReactNode>>>([]);
 
-  useEffect(() => {
-    if (errors) console.log(errors);
-  }, [errors]);
-
+  //  Callback for RXJS observable. Takes updated product and adds it into result.
   const observableCallback = (update: any) => {
-    console.log("Hello");
     let object: ProductType = update.result;
     const productArray = [...result];
 
@@ -76,21 +74,18 @@ const Products = ({ settings }: { settings: string }) => {
         break;
       }
     }
-
-    setTimeout(() => {
-      client
-        .fetch(
-          `*[_type == 'product' && slug.current == '${object.slug.current}']{_createdAt, lastReservedAt, productHeight, productWidth, productDept, sold, pending, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
-        )
-        .then((data: Array<ProductType>) => {
-          object = data[0];
-          const productArray: Array<ProductType> | Array<PostLight> | [] = [
-            ...result,
-          ];
-          productArray.splice(updatePosition, 1, object);
-          setResult(productArray);
-        });
-    }, 2500);
+    // Sad use of timeout. Product is not ready to fetch instantly for some reason. Could not find what to wait for to solve this at the time of writing.
+    setTimeout(async () => {
+      const data = await client.fetch(
+        `*[_type == 'product' && slug.current == '${object.slug.current}']{_createdAt, lastReservedAt, productHeight, productWidth, productDept, sold, pending, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title, "imageHeight": metadata.dimensions.height, "imageWidth": image.asset->metadata.dimensions.width}`
+      );
+      object = data[0];
+      const productArray: Array<ProductType> | Array<PostLight> | [] = [
+        ...result,
+      ];
+      productArray.splice(updatePosition, 1, object);
+      setResult(productArray);
+    }, 2000);
 
     return () => {
       observable.current.unsubscribe();
@@ -105,6 +100,7 @@ const Products = ({ settings }: { settings: string }) => {
     rootMargin: "200px",
   };
 
+  // Update observable on result update
   useEffect(() => {
     const subscription = observable.current.subscribe(observableCallback);
     return () => {
@@ -112,9 +108,11 @@ const Products = ({ settings }: { settings: string }) => {
     };
   }, [result]);
 
+  // Set ref and execute callback on node update
   const lastElementRef = useCallback((node) => {
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver((e) => {
+      // Increment currentProduct on intersection with last elemet.
       if (e[0].isIntersecting) {
         setCurrentProduct((prevValue) => prevValue + incrementBy);
       }
@@ -126,9 +124,12 @@ const Products = ({ settings }: { settings: string }) => {
     if (!hasMore) observer.current?.disconnect();
   }, [hasMore]);
 
+  // Update query on currentProduct change.
   useEffect(() => {
+    // Query is being consumed by 'useLazyLoad' hook.
     setQuery(
       `*[_type == 'product'] | order(_createdAt desc){_createdAt, productHeight, "id": _id, lastReservedAt, sold, productWidth, productDept, _updatedAt, slug, "alt":image.alt, "images": images[]{asset, alt, 'Asset':asset->, "imageHeight": asset->metadata.dimensions.height, "imageWidth": asset->metadata.dimensions.width}, price, desc, title}[${currentProduct}...${
+        // One extra item is fetched to check if there are more items to be fetched. useLazyLoad removes extra items.
         currentProduct + incrementBy + 1
       }]`
     );
@@ -167,39 +168,23 @@ const Products = ({ settings }: { settings: string }) => {
           breakPoints={breakPoints}
           result={result}
         >
-          {[
-            ...(result as Array<ProductType>).map((product: ProductType, i) => {
-              if (i + 1 >= result.length)
-                return (
-                  <Product
-                    imageHeight={product.images[0].imageHeight}
-                    imageWidth={product.images[0].imageWidth}
-                    key={i}
-                    lastElementRef={lastElementRef}
-                    sold={product.sold}
-                    lastReserved={product.lastReservedAt}
-                    alt={product.alt || "no alt text"}
-                    images={product.images}
-                    slug={product.slug.current}
-                    hasShadow={true}
-                  ></Product>
-                );
-              else
-                return (
-                  <Product
-                    imageHeight={product.images[0].imageHeight}
-                    imageWidth={product.images[0].imageWidth}
-                    key={i}
-                    sold={product.sold}
-                    lastReserved={product.lastReservedAt}
-                    alt={product.alt || "no alt text"}
-                    images={product.images}
-                    slug={product.slug.current}
-                    hasShadow={true}
-                  ></Product>
-                );
-            }),
-          ]}
+          {(result as Array<ProductType>).map((product: ProductType, i) => {
+            return (
+              <Product
+                imageHeight={product.images[0].imageHeight}
+                imageWidth={product.images[0].imageWidth}
+                key={i}
+                // Set ref to last element
+                lastElementRef={i + 1 >= result.length ? lastElementRef : null}
+                sold={product.sold}
+                lastReserved={product.lastReservedAt}
+                alt={product.alt || "no alt text"}
+                images={product.images}
+                slug={product.slug.current}
+                hasShadow={true}
+              ></Product>
+            );
+          })}
         </MotionMasonry>
         {hasMore ? (
           <Spacer
@@ -215,20 +200,16 @@ const Products = ({ settings }: { settings: string }) => {
 };
 
 export async function getStaticProps() {
-  let settingsData;
   const settingsquery =
     '*[_type == "settings"][0]{"aboutMe": aboutme->{title, slug}, "message": messageProducts, "messageImage": messageImage.asset}';
-  await client
-    .fetch(settingsquery)
-    .then((settings: settings) => (settingsData = settings));
-  const settingsJson = JSON.stringify(settingsData);
+  const settings: settings = await client.fetch(settingsquery);
+  const settingsJson = JSON.stringify(settings);
 
   return {
     props: {
-      // products: productJson,
       settings: settingsJson,
     },
-    revalidate: 10,
+    revalidate: 5 * 60,
   };
 }
 
