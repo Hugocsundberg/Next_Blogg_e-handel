@@ -1,11 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  boxShadowBigElement,
-  margin,
-  rem,
-  screenSizes,
-} from "../styles/globalStyleVariables";
+import { boxShadowBigElement, margin } from "../styles/globalStyleVariables";
 
 const BackGround = styled.div<{ left?: boolean }>`
   min-height: 5.4rem;
