@@ -1,11 +1,5 @@
 import styled from "styled-components";
 import { darkGray, margin } from "../../styles/globalStyleVariables";
-import { keyframes } from "styled-components";
-
-const fadeIn = keyframes`
-    from {opacity: 0}
-    to {opacity: 1}
-`;
 
 export const Header = styled.h2`
   color: ${darkGray};
