@@ -40,6 +40,7 @@ const Image = styled.img`
 const P = styled.p`
   position: relative;
   margin: 5px;
+  font-family: "Trirong", serif;
 `;
 
 export const Message = ({

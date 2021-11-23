@@ -30,6 +30,7 @@ export const HorisontalFlexDiv = styled.div`
 
 export const Excerpt = styled.p`
   padding: ${margin}rem;
+  font-family: "Trirong", serif;
   margin: 0;
   text-align: center;
   color: ${darkGray};
