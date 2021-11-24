@@ -49,6 +49,8 @@ export const OptionDiv = styled.button<{
   noBorder?: boolean;
   isActive?: boolean;
 }>`
+  margin-bottom: 0;
+  margin-top: 0;
   width: 100%;
   border: none;
   background: ${(props) => (props.isActive ? `${darken}` : "none")};
