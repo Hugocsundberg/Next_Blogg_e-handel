@@ -22,12 +22,15 @@ const ItemBackground = styled.div`
   margin-bottom: 10px;
   border-radius: 10px;
   box-shadow: ${boxShadowBigElement};
+  @media (max-width: 600px) {
+    padding-bottom: 1rem;
+  }
 `;
 
 const FlexLeft = styled.div`
   position: relative;
   display: flex;
-  width: 70%;
+  width: 85%;
 `;
 
 const ImageContainer = styled.div`
@@ -53,6 +56,9 @@ const H = styled.p`
   margin: 0;
   margin-bottom: 0.25rem;
   color: ${darkGray};
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
 `;
 
 const P = styled.p`
@@ -74,10 +80,16 @@ const LowerContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  @media (max-width: 600px) {
+    align-items: baseline;
+  }
 `;
 
 const ReservedText = styled.p`
   font-size: 0.8rem;
+  @media (max-width: 600px) {
+    font-size: 0.6rem;
+  }
 `;
 
 const Dot = styled.div`
@@ -92,9 +104,18 @@ const CartItem = ({ product }: { product: Product }) => {
   const [timeRemaining, settimeRemaining] = useState(
     isReserved(product.lastReservedAt)
   );
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  const checkIfDesktop = () => {
+    if (window.innerWidth > 600) setIsDesktop(true);
+    else setIsDesktop(false);
+  };
 
   //   Update reserved time remaining
   useEffect(() => {
+    checkIfDesktop();
+    window.addEventListener("resize", checkIfDesktop);
+
     const interval = setInterval(() => {
       settimeRemaining(isReserved(product));
     }, 60 * 1000);
@@ -137,12 +158,14 @@ const CartItem = ({ product }: { product: Product }) => {
             <ReservedText>
               {timeRemaining <= 1
                 ? "Produkten kommer snart att tas bort från kundkorgen"
-                : `Produkten är reserverad i ${timeRemaining} minuter till`}
+                : isDesktop
+                ? `Produkten är reserverad i ${timeRemaining} minuter till`
+                : `Reserverad i ${timeRemaining} minuter`}
             </ReservedText>
           </LowerContainer>
         </FlexContainer>
       </FlexLeft>
-      <Button onClick={removeObject}>Ta bort</Button>
+      <Button onClick={removeObject}>{isDesktop ? "Ta bort" : "X"}</Button>
     </ItemBackground>
   );
 };
