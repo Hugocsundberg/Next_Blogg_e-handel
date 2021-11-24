@@ -246,15 +246,22 @@ const Product = ({
                     showArrows={true}
                   >
                     {_product.images.map((image, i) => (
-                      <Image
-                        key={i}
-                        src={urlFor(image.asset._ref).url() || "/noImage.jpg"}
-                        alt={image.alt || "no alt text"}
-                        width={image.imageWidth}
-                        height={image.imageHeight}
-                        layout="responsive"
-                        className="image-border"
-                      />
+                      <picture key={i}>
+                        <source
+                          media={`(min-width:700px)`}
+                          srcSet={
+                            urlFor(image.asset._ref).width(808).url() ||
+                            undefined
+                          }
+                        />
+                        <img
+                          className="image-border"
+                          src={
+                            urlFor(image.asset._ref).width(1260).url() ||
+                            undefined
+                          }
+                        ></img>
+                      </picture>
                     ))}
                   </Carousel>
                 </Block1>
