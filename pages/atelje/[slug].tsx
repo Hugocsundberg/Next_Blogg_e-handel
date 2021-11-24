@@ -20,12 +20,14 @@ import {
   getFromStorage,
   getTopOverlayHeight,
   isInCart,
+  removeProductFromStorage,
 } from "../../functions";
 import { screenSizes } from "../../styles/globalStyleVariables";
 import { useEffect, useState } from "react";
 import { ButtonContainer } from "../../components/GlobalElements/ActionButtonElements";
 import SquareLoader from "react-spinners/SquareLoader";
 import Loading from "../../components/Loading";
+import Alert from "../../components/Alert";
 
 const builder = imageUrlBuilder(client);
 
@@ -113,6 +115,7 @@ const Product = ({
   const _product: ProductType = JSON.parse(product);
   const [isDesktop, setisDesktop] = useState(false);
   const [navoverlayHeight, setnavoverlayHeight] = useState(0);
+  const [message, setMessage] = useState("");
   const [alreadyInCart, setAlreadyInCart] = useState(false);
   const router = useRouter();
 
@@ -191,7 +194,7 @@ const Product = ({
       )
     )
       addObjectToStorage("cart", __product);
-    else alert("Product already added to cart");
+    else setMessage("Product already added to cart");
     //Send pending request
     if (process.browser)
       window
@@ -201,7 +204,12 @@ const Product = ({
           headers: { "Content-Type": "application/json" },
         })
         .then((stream) => stream.json())
-        .then((data) => console.log(data));
+        .then((data) => {
+          if (data.success === false) {
+            removeProductFromStorage("cart", __product);
+            setMessage(data.message);
+          }
+        });
     checkIfInCart();
   };
 
@@ -213,6 +221,7 @@ const Product = ({
     return (
       <>
         <Nav aboutMe={_aboutMe}></Nav>
+        <Alert message={message}></Alert>
         <Background>
           <ContentContainer overlayHeight={navoverlayHeight}>
             <CenterContent>
@@ -271,7 +280,7 @@ const Product = ({
           <ActionButton
             disabled={alreadyInCart}
             onClick={handleAddToCart}
-            text="Lägg till i kundvagn"
+            text={message.length > 0 ? message : "Lägg till i kundvagn"}
           ></ActionButton>
         </ButtonContainer>
       </>

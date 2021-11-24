@@ -13,10 +13,12 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
 
   client.fetch(query).then((data: any) => {
     newProduct = data[0];
-
     if (newProduct.sold || isReserved(newProduct)) {
       // If sold or pending
-      res.json({ success: false, message: "already sold or reserved" });
+      res.json({
+        success: false,
+        message: "Produkten är redan såld eller reserverad av någon.",
+      });
     } else {
       //Send reserved state to sanity
       const mutations = [
