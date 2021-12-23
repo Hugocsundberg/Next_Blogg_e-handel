@@ -79,6 +79,19 @@ export interface NavOption {
   link: string;
 }
 
+export interface productSanityReturn {
+  title: string;
+  slug: {
+    current: string;
+    _type: string;
+  };
+  purchaseDescription: string;
+  swishImage: {
+    _type: string;
+    asset: Image;
+  };
+}
+
 export interface ImageHW {
   asset: Image;
   imageHeight: number;
