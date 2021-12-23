@@ -29,7 +29,6 @@ import {
 import { screenSizes } from "../../styles/globalStyleVariables";
 import { useEffect, useState } from "react";
 import { ButtonContainer } from "../../components/GlobalElements/ActionButtonElements";
-import SquareLoader from "react-spinners/SquareLoader";
 import Loading from "../../components/Loading";
 import Alert from "../../components/Alert";
 
