@@ -1,3 +1,5 @@
+// @ts-ignore
+import * as smoothScroll from "smoothscroll";
 import client from "../client";
 import { Product as ProductType, settings } from "../generalTypes";
 import Product from "../components/Product";
@@ -13,7 +15,7 @@ import { Background, Spacer } from "../components/GlobalElements";
 import Masonry from "../components/Masonry";
 import { PostLight } from "../generalTypes";
 import { Message } from "../components/Message";
-import { urlFor } from "../functions";
+import { scrollToPosition, urlFor } from "../functions";
 import styled, { keyframes } from "styled-components";
 import SquareLoader from "react-spinners/SquareLoader";
 
@@ -123,6 +125,24 @@ const Products = ({ settings }: { settings: string }) => {
   useEffect(() => {
     if (!hasMore) observer.current?.disconnect();
   }, [hasMore]);
+
+  // scrollmemory
+  useEffect(() => {
+    const scrollYPosition = parseInt(
+      localStorage.getItem("productsScrollMemory") || "0"
+    );
+    if (scrollYPosition > 0) {
+      smoothScroll(scrollYPosition);
+    }
+    window.addEventListener("scroll", () => {
+      const scrollYPosition = window.scrollY;
+      if (scrollYPosition !== 0)
+        window.localStorage.setItem(
+          "productsScrollMemory",
+          window.scrollY.toString()
+        );
+    });
+  }, []);
 
   // Update query on currentProduct change.
   useEffect(() => {
