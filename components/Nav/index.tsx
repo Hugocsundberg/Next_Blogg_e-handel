@@ -159,37 +159,37 @@ const Nav = ({
             <Logo>Marinas Ateljé</Logo>
           </Link>
           <RightSideContainer>
-            {isDesktop ? (
-              getOptions(aboutMe, _route, isAboutMe).map(
-                (option: NavOption, key: any) => (
-                  <Link key={key} href={`${currentPath}${option.link}`}>
-                    <a>
-                      <OptionDiv noBorder={true} isActive={option.isActive}>
-                        {option.text === "Kundvagn" ? (
-                          <CartIconRef cartItems={cartItems} />
-                        ) : (
-                          <ImageDiv>
-                            <Image
-                              src={option.image}
-                              alt={option.text}
-                              layout="fill"
-                              objectFit="contain"
-                            />
-                          </ImageDiv>
-                        )}
-                        <OptionText>{option.text}</OptionText>
-                      </OptionDiv>
-                    </a>
-                  </Link>
+            {isDesktop
+              ? getOptions(aboutMe, _route, isAboutMe).map(
+                  (option: NavOption, key: any) => (
+                    <Link key={key} href={`${currentPath}${option.link}`}>
+                      <a>
+                        <OptionDiv noBorder={true} isActive={option.isActive}>
+                          {option.text === "Kundvagn" ? (
+                            <CartIconRef cartItems={cartItems} />
+                          ) : (
+                            <ImageDiv>
+                              <Image
+                                src={option.image}
+                                alt={option.text}
+                                layout="fill"
+                                objectFit="contain"
+                              />
+                            </ImageDiv>
+                          )}
+                          <OptionText>{option.text}</OptionText>
+                        </OptionDiv>
+                      </a>
+                    </Link>
+                  )
                 )
-              )
-            ) : (
-              <Link href="/kundvagn">
-                <a>
-                  <CartIconRef cartItems={cartItems} />
-                </a>
-              </Link>
-            )}
+              : ""
+                // <Link href="/kundvagn">
+                //   <a>
+                //     <CartIconRef cartItems={cartItems} />
+                //   </a>
+                // </Link>
+            }
           </RightSideContainer>
         </BottomContainer>
       </BlurDiv>

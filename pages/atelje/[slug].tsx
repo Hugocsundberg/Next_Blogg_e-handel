@@ -291,7 +291,10 @@ const Product = ({
                   <SmallParagraph>
                     <p>
                       Kontakta mig gärna på{" "}
-                      <A href="mailto:marina.k.sundberg@gmail.com">
+                      <A
+                        target="_blank"
+                        href={`mailto:marina.k.sundberg@gmail.com?subject=Tavla: ${_product.title}`}
+                      >
                         marina.k.sundberg@gmail.com
                       </A>{" "}
                       ifall du är intresserad av att köpa konstverket eller har
