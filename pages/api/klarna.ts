@@ -63,5 +63,9 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     .then((stream: any) => stream.json())
     .then((data: any) => {
       res.json({ htmlSnippet: data.html_snippet });
+      console.log(JSON.stringify("RESPONSE DATA"));
+      console.log(JSON.stringify(data));
+      console.log(JSON.stringify("OPTIONS"));
+      console.log(JSON.stringify(klarnaOptions));
     });
 };
