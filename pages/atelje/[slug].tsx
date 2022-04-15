@@ -309,7 +309,9 @@ const Product = ({
                     cm
                   </SmallParagraph>
                   <H3>Pris</H3>
-                  <SmallParagraph>{_product.price} kr</SmallParagraph>
+                  <SmallParagraph>
+                    {_product.price} kr (ev. porto tillkommer)
+                  </SmallParagraph>
                   {/* <ImageContainerDiv>
                     <Image
                       src={
