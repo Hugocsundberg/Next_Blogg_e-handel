@@ -18,6 +18,7 @@ import { Message } from "../components/Message";
 import { scrollToPosition, urlFor } from "../functions";
 import styled, { keyframes } from "styled-components";
 import SquareLoader from "react-spinners/SquareLoader";
+import FilterButtons from "../components/Nav/FilterButtons";
 
 const MasonryComponent = React.forwardRef(Masonry);
 const MotionMasonry = motion(MasonryComponent);
@@ -182,6 +183,7 @@ const Products = ({ settings }: { settings: string }) => {
         ) : (
           ""
         )}
+        <FilterButtons></FilterButtons>
         <MotionMasonry
           cols={cols}
           setCols={setCols}
