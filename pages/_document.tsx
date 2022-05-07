@@ -1,4 +1,4 @@
-import Document from "next/document";
+import Document, { Head } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 import React from "react";
 
@@ -19,6 +19,17 @@ export default class MyDocument extends Document {
         ...initialProps,
         styles: (
           <>
+            <Head>
+              <script
+                async
+                src="https://www.googletagmanager.com/gtag/js?id=G-PMZJ3N9JGY"
+              ></script>
+              <script>
+                window.dataLayer = window.dataLayer || []; function gtag()
+                {dataLayer.push(arguments)}
+                gtag('js', new Date()); gtag('config', 'G-PMZJ3N9JGY');
+              </script>
+            </Head>
             {initialProps.styles}
             {sheet.getStyleElement()}
           </>
