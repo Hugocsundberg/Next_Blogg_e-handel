@@ -3,11 +3,18 @@ import { darkGray, margin } from "../../styles/globalStyleVariables";
 
 export const Header = styled.h2`
   color: ${darkGray};
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+  @media (max-width: 450px) {
+    font-size: 12px;
+  }
 `;
 
 export const Date = styled.p`
+  font-size: 0.9rem;
   color: ${darkGray};
+  @media (max-width: 450px) {
+    font-size: 12px;
+  }
 `;
 
 export const CardBackground = styled.div<{ aspectRatio: number }>`
@@ -34,4 +41,7 @@ export const Excerpt = styled.p`
   margin: 0;
   text-align: center;
   color: ${darkGray};
+  @media (max-width: 450px) {
+    font-size: 12px;
+  }
 `;

@@ -29,13 +29,13 @@ export const getOptions = (
       image: "/personIcon.svg",
       link: `/${aboutMe.slug.current}`,
     });
-  if (isDesktop)
-    optionsArray.push({
-      isActive: slug === "kundvagn" ? true : false,
-      text: "Kundvagn",
-      image: "/shop-cart.svg",
-      link: "/kundvagn",
-    });
+  // if (isDesktop)
+  //   optionsArray.push({
+  //     isActive: slug === "kundvagn" ? true : false,
+  //     text: "Kundvagn",
+  //     image: "/shop-cart.svg",
+  //     link: "/kundvagn",
+  //   });
 
   return optionsArray;
 };

@@ -1,6 +1,10 @@
 import { useRouter } from "next/router";
 import client from "../../client";
-import { AboutMe, Product as ProductType } from "../../generalTypes";
+import {
+  AboutMe,
+  productSanityReturn,
+  Product as ProductType,
+} from "../../generalTypes";
 // @ts-ignore
 import imageUrlBuilder from "@sanity/image-url";
 import Image from "next/image";
@@ -25,7 +29,6 @@ import {
 import { screenSizes } from "../../styles/globalStyleVariables";
 import { useEffect, useState } from "react";
 import { ButtonContainer } from "../../components/GlobalElements/ActionButtonElements";
-import SquareLoader from "react-spinners/SquareLoader";
 import Loading from "../../components/Loading";
 import Alert from "../../components/Alert";
 
@@ -37,6 +40,20 @@ const urlFor = (source: string) => {
 
 const Header = styled.h1`
   margin-bottom: 0;
+`;
+
+const A = styled.a`
+  text-decoration: underline;
+`;
+
+const ImageContainerDiv = styled.div`
+  box-shadow: 0px 0px 10px -5px rgba(70, 70, 70, 0.4);
+  overflow: hidden;
+  border-radius: 25px;
+  position: relative;
+  height: 230px;
+  width: 230px;
+  transition: 0.5s;
 `;
 
 const ThumbContainer = styled.div`
@@ -103,15 +120,16 @@ const BlockContainer = styled.div`
 
 const Product = ({
   product,
-  aboutMe,
+  settings,
 }: {
   product: string;
-  aboutMe: string;
+  settings: string;
 }) => {
   if (!product) {
     return <Loading />;
   }
-  const _aboutMe: AboutMe = JSON.parse(aboutMe).aboutme;
+  const _aboutMe: AboutMe = JSON.parse(settings).aboutme;
+  const _settings: productSanityReturn = JSON.parse(settings);
   const _product: ProductType = JSON.parse(product);
   const [isDesktop, setisDesktop] = useState(false);
   const [navoverlayHeight, setnavoverlayHeight] = useState(0);
@@ -269,6 +287,20 @@ const Product = ({
                   {isDesktop ? <Header>{_product.title}</Header> : ""}
                   <H3>Beskrivning</H3>
                   <SmallParagraph>{_product.desc}</SmallParagraph>
+                  <H3>Köp det här konstverket</H3>
+                  <SmallParagraph>
+                    <p>
+                      Kontakta mig gärna på{" "}
+                      <A
+                        target="_blank"
+                        href={`mailto:marina.k.sundberg@gmail.com?subject=Tavla: ${_product.title}`}
+                      >
+                        marina.k.sundberg@gmail.com
+                      </A>{" "}
+                      ifall du är intresserad av att köpa konstverket eller har
+                      frågor.
+                    </p>
+                  </SmallParagraph>
                   <H3>Storlek</H3>
                   <SmallParagraph>
                     {`${_product.productWidth} x ${_product.productHeight}${
@@ -277,18 +309,30 @@ const Product = ({
                     cm
                   </SmallParagraph>
                   <H3>Pris</H3>
-                  <SmallParagraph>{_product.price} kr</SmallParagraph>
+                  <SmallParagraph>
+                    {_product.price} kr (ev. porto tillkommer)
+                  </SmallParagraph>
+                  {/* <ImageContainerDiv>
+                    <Image
+                      src={
+                        urlFor(_settings.swishImage.asset._ref)
+                          .width(740)
+                          .url() || "/noImage.jpg"
+                      }
+                      layout="fill"
+                    ></Image>
+                  </ImageContainerDiv> */}
                 </Block2>
               </BlockContainer>
             </CenterContent>
           </ContentContainer>
         </Background>
         <ButtonContainer>
-          <ActionButton
+          {/* <ActionButton
             disabled={alreadyInCart}
             onClick={handleAddToCart}
             text={message.length > 0 ? message : "Lägg till i kundvagn"}
-          ></ActionButton>
+          ></ActionButton> */}
         </ButtonContainer>
       </>
     );
@@ -312,14 +356,15 @@ export async function getStaticProps({ params }: { params: any }) {
     ? (postJson = JSON.stringify(productData))
     : (postJson = '{"undefined":"true"}');
 
-  const settingsquery = '*[_type == "settings"][0]{aboutme->{title, slug}}';
-  const settings: AboutMe = await client.fetch(settingsquery);
+  const settingsquery =
+    '*[_type == "settings"][0]{aboutme->{title, slug}, purchaseDescription, swishImage}';
+  const settings: productSanityReturn = await client.fetch(settingsquery);
   const settingsJson = JSON.stringify(settings);
 
   return {
     props: {
       product: postJson,
-      aboutMe: settingsJson,
+      settings: settingsJson,
     },
   };
 }

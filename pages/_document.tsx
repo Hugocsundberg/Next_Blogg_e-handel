@@ -1,6 +1,7 @@
 import Document from "next/document";
 import { ServerStyleSheet } from "styled-components";
 import React from "react";
+import Head from "next/head";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: any) {
