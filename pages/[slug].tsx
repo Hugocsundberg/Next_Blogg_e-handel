@@ -183,7 +183,8 @@ export async function getStaticPaths() {
   const aboutMeSettings: Array<aboutMeSetting> = await client.fetch(
     aboutMePostQuery
   );
-  const aboutMePostSlug = aboutMeSettings[0].aboutme.slug.current;
+  const aboutMePostSlug =
+    aboutMeSettings[0]?.aboutme?.slug?.current ?? undefined;
 
   // Get all posts except 'aboutme' post
   const postsQueryWithoutAboutMe = `*[_type == "post" && slug.current != "${aboutMePostSlug}"]{"slug": slug.current}[0...20]`;
